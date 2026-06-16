@@ -1,0 +1,100 @@
+.animate__animated.animate__bounceInLeft{
+	  --animate-duration: 1s;
+	   --animate-delay: 0.9s;
+	   display: inline-block;
+	   width: 400px; 
+	   font-weight:700
+}
+
+.animate__animated.animate__bounceInRight{
+	--animate-duration: 1.5s;
+	   --animate-delay: 0.9s;
+	   display: inline-block;
+	   width: 400px; 
+	   text-transform: uppercase;	
+	   font-weight:700
+}
+
+.Encabezado{
+	
+	background-color: #22577a; 
+	color:white; 
+	text-align: center; 
+	padding: 10px;
+}
+
+.topbarra{
+
+		color: black;  
+		text-align: center; 
+		padding: 6px;
+        background-color: #fb8500;
+}
+
+.title_middle{
+
+	font-size:19px; 
+	text-transform: uppercase;
+	margin-top: 30px;
+	margin-bottom: 12px;
+}
+
+.title_middletop{
+	font-size: 30px; font-weight:700;
+	padding-top: 1px;
+	padding-bottom: 1px;
+}
+
+.myEducation{
+
+	
+
+}
+.mydescription{
+
+	font-size:22px; 
+	text-transform: uppercase;
+	margin-top: 30px;
+	margin-bottom: 12px;
+}
+
+.container{
+	position: relative;
+	margin-left: 25%;
+	max-width: 960px;
+	height: 80vh;
+	width: 100%;
+	height: 100%;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),0 1px 2px rgba(0, 0, 0, 0.23);
+	background-color: ghostwhite;
+	border-radius: 4px;
+	padding: 2em;
+	overflow: auto;
+}
+
+.Foto_perfil{
+	display: inline-block; 
+	width:30%; 
+	margin-top: 20px;
+}
+
+@media (min-width: 200px) {
+	th{
+		display: flex;
+	}
+	td{
+		display: flex;
+		width: auto;
+	}
+	td:nth-of-type(1){
+		font-size: 1em;
+	}
+	.content{
+		padding: 1em;
+	}
+}
+@media (min-height: 100px){
+	.content{
+		height: .2em;
+	}
+}
