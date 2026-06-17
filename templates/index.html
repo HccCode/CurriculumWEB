@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ data.profile.name }}</title>
+    <title>{{ data.profile.name }} - Network & Software Engineer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -12,6 +12,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
 
     <div class="mesh-bg">
         <div class="blob blob-1"></div>
@@ -26,9 +29,9 @@
         <div class="bento-card hero-card slide-up" style="--delay: 0.1s; border-top: 3px solid var(--accent-blue);">
             <div class="hero-content">
                 <div class="status-badge">
-                    <span class="pulse-dot"></span> En Línea
+                    <span class="pulse-dot"></span> NOC Core: En Línea (SLA Óptimo)
                 </div>
-                <h1 class="name gradient-text">{{ data.profile.name }}</h1>
+                <h1 class="name gradient-text hover-glitch">{{ data.profile.name }}</h1>
                 <h2 class="role">{{ data.profile.role }}</h2>
                 <p class="bio">
                     {{ data.profile.bio }}
@@ -48,7 +51,9 @@
 
         <div class="bento-card location-card slide-up" style="--delay: 0.2s;">
             <div class="location-info">
-                <i class="fas fa-globe-americas icon-glow"></i>
+                <div class="radar-container">
+                    <i class="fas fa-globe-americas icon-glow"></i>
+                </div>
                 <div>
                     <h3 class="loc-title">Base de Operaciones</h3>
                     <p class="loc-text">{{ data.profile.location }}</p>
@@ -79,7 +84,7 @@
                 </div>
                 <span class="term-title">network_monitor.exe</span>
             </div>
-            <div class="terminal-body">
+            <div class="terminal-body crt-effect">
                 <p><span class="prompt">core_noc@hector_uribe:~$</span> <span id="typewriter"></span><span class="cursor-blink">_</span></p>
             </div>
         </div>
@@ -243,6 +248,14 @@
     </div>
 
     <script>
+        // --- SCROLL PROGRESS BAR ---
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scroll-progress').style.width = scrolled + "%";
+        });
+
         const modal = document.getElementById('contactModal');
         const statusDiv = document.getElementById('form-status');
         function openModal() { modal.classList.add('active'); statusDiv.innerHTML = ''; }
