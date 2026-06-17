@@ -16,20 +16,19 @@
     <!-- Scroll Progress Bar -->
     <div id="scroll-progress"></div>
 
-    <div class="mesh-bg">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-    </div>
+    <!-- Fondo Interactivo de Nodos de Red -->
+    <canvas id="network-canvas" class="mesh-bg"></canvas>
 
     <div class="custom-cursor" id="cursor"></div>
     <div class="noise-bg"></div>
 
     <div class="bento-container" id="bento-container">
         
+        <!-- HERO CARD -->
         <div class="bento-card hero-card slide-up" style="--delay: 0.1s; border-top: 3px solid var(--accent-blue);">
             <div class="hero-content">
                 <div class="status-badge">
-                    <span class="pulse-dot"></span> NOC Core: En Línea (SLA Óptimo)
+                    <span class="pulse-dot"></span> <span id="uptime-counter" style="font-family: 'JetBrains Mono'; margin-left: 5px;">UPTIME: 999d 14h 22m 10s</span>
                 </div>
                 <h1 class="name gradient-text hover-glitch">{{ data.profile.name }}</h1>
                 <h2 class="role">{{ data.profile.role }}</h2>
@@ -49,13 +48,14 @@
             </div>
         </div>
 
+        <!-- LOCATION -->
         <div class="bento-card location-card slide-up" style="--delay: 0.2s;">
             <div class="location-info">
                 <div class="radar-container">
                     <i class="fas fa-globe-americas icon-glow"></i>
                 </div>
                 <div>
-                    <h3 class="loc-title">Base de Operaciones</h3>
+                    <h3 class="loc-title hacker-text" data-value="BASE DE OPERACIONES">Base de Operaciones</h3>
                     <p class="loc-text">{{ data.profile.location }}</p>
                 </div>
             </div>
@@ -65,6 +65,7 @@
             </div>
         </div>
 
+        <!-- MARQUEE -->
         <div class="bento-card marquee-card slide-up" style="--delay: 0.3s;">
             <div class="marquee-track">
                 <div class="marquee-content">
@@ -77,6 +78,7 @@
             </div>
         </div>
 
+        <!-- TERMINAL -->
         <div class="bento-card terminal-card slide-up" style="--delay: 0.4s;">
             <div class="terminal-header">
                 <div class="term-dots">
@@ -89,6 +91,7 @@
             </div>
         </div>
 
+        <!-- STATS -->
         <div class="bento-card stats-card slide-up" style="--delay: 0.5s;">
             <div class="stat-box">
                 <span class="stat-number">8+</span>
@@ -106,8 +109,9 @@
             </div>
         </div>
 
+        <!-- EXPERIENCE -->
         <div class="bento-card exp-card slide-up" style="--delay: 0.6s;">
-            <h3 class="card-title">Experiencia Profesional</h3>
+            <h3 class="card-title hacker-text" data-value="EXPERIENCIA PROFESIONAL">Experiencia Profesional</h3>
             <div class="exp-list">
                 {% for exp in data.experience %}
                 <div class="exp-item">
@@ -122,8 +126,9 @@
             </div>
         </div>
 
+        <!-- PROJECTS -->
         <div class="bento-card projects-card slide-up" style="--delay: 0.7s;">
-            <h3 class="card-title">Arquitectura, Automatización y Redes</h3>
+            <h3 class="card-title hacker-text" data-value="ARQUITECTURA Y REDES">Arquitectura, Automatización y Redes</h3>
             <div class="project-list">
                 {% for proj in data.projects %}
                 <div class="project-box">
@@ -137,8 +142,9 @@
             </div>
         </div>
 
+        <!-- TECH STACK -->
         <div class="bento-card tech-card slide-up" style="--delay: 0.8s;">
-            <h3 class="card-title">Stack Técnico & Especialidades</h3>
+            <h3 class="card-title hacker-text" data-value="STACK TÉCNICO & ESPECIALIDADES">Stack Técnico & Especialidades</h3>
             <div class="tags-container">
                 {% for tech in data.tech_stack %}
                 <span class="mono-tag"><i class="{{ tech.icon }}"></i> {{ tech.name }}</span>
@@ -146,8 +152,9 @@
             </div>
         </div>
         
+        <!-- CONTACT -->
         <div class="bento-card contact-card slide-up" style="--delay: 0.9s; border-bottom: 3px solid var(--accent-green);">
-            <h3 class="card-title">Conectar</h3>
+            <h3 class="card-title hacker-text" data-value="CONECTAR">Conectar</h3>
             <div class="link-grid">
                 <a href="{{ data.profile.github }}" target="_blank" class="tech-btn primary-btn magnetic-element">
                     <i class="fab fa-github"></i> GitHub
@@ -163,7 +170,7 @@
 
     </div>
 
-    <!-- MODAL -->
+    <!-- MODAL DE CONTACTO -->
     <div class="modal-overlay" id="contactModal">
         <div class="modal-content">
             <button class="close-modal" onclick="closeModal()"><i class="fas fa-times"></i></button>
@@ -174,17 +181,14 @@
                     <label class="form-label">Tu Correo Electrónico</label>
                     <input type="email" id="sender_email" class="modal-input" name="email" required placeholder="ejemplo@correo.com">
                 </div>
-                
                 <div class="form-group-modal">
                     <label class="form-label">Asunto</label>
                     <input type="text" id="subject" class="modal-input" name="subject" required placeholder="Oportunidad laboral / Proyecto...">
                 </div>
-                
                 <div class="form-group-modal">
                     <label class="form-label">Mensaje</label>
                     <textarea id="message" class="modal-textarea" name="message" required placeholder="Escribe los detalles de tu mensaje aquí..."></textarea>
                 </div>
-                
                 <button type="submit" id="submit-msg-btn" class="glow-btn" style="width: 100%; justify-content: center; border: none; cursor: pointer; font-family: 'Inter', sans-serif; margin-top: 5px; padding: 12px;">
                     <i class="fas fa-paper-plane"></i> Enviar Mensaje
                 </button>
@@ -206,12 +210,10 @@
                     <span><strong>GitHub:</strong> {{ data.profile.github | replace('https://', '') }}</span>
                 </div>
             </div>
-            
             <div style="margin-bottom: 25px;">
                 <h3 style="font-size: 12pt; color: #1a202c; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin: 0 0 10px 0; letter-spacing: 0.5px;">Perfil Profesional</h3>
                 <p style="font-size: 10pt; color: #4a5568; text-align: justify; margin: 0; line-height: 1.6;">{{ data.profile.bio }}</p>
             </div>
-
             <div style="margin-bottom: 25px;">
                 <h3 style="font-size: 12pt; color: #1a202c; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin: 0 0 15px 0; letter-spacing: 0.5px;">Experiencia Laboral</h3>
                 {% for exp in data.experience %}
@@ -225,7 +227,6 @@
                 </div>
                 {% endfor %}
             </div>
-
             <div style="margin-bottom: 25px;">
                 <h3 style="font-size: 12pt; color: #1a202c; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin: 0 0 15px 0; letter-spacing: 0.5px;">Proyectos Destacados</h3>
                 {% for proj in data.projects %}
@@ -235,7 +236,6 @@
                 </div>
                 {% endfor %}
             </div>
-
             <div>
                 <h3 style="font-size: 12pt; color: #1a202c; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin: 0 0 12px 0; letter-spacing: 0.5px;">Competencias & Tecnologías</h3>
                 <div style="font-size: 9.5pt; display: flex; flex-wrap: wrap; gap: 6px;">
@@ -247,8 +247,9 @@
         </div>
     </div>
 
+    <!-- SCRIPT PRINCIPAL -->
     <script>
-        // --- SCROLL PROGRESS BAR ---
+        /* 1. SCROLL PROGRESS BAR */
         window.addEventListener('scroll', () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -256,12 +257,109 @@
             document.getElementById('scroll-progress').style.width = scrolled + "%";
         });
 
+        /* 2. UPTIME COUNTER */
+        let uptimeSeconds = 86392500; // Inicia con ~999 días
+        function updateUptime() {
+            uptimeSeconds++;
+            let d = Math.floor(uptimeSeconds / (3600*24));
+            let h = Math.floor(uptimeSeconds % (3600*24) / 3600);
+            let m = Math.floor(uptimeSeconds % 3600 / 60);
+            let s = Math.floor(uptimeSeconds % 60);
+            document.getElementById("uptime-counter").innerText = `UPTIME: ${d}d ${h}h ${m}m ${s}s`;
+        }
+        setInterval(updateUptime, 1000);
+
+        /* 3. HACKER TEXT EFFECT */
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
+        document.querySelectorAll('.hacker-text').forEach(el => {
+            el.addEventListener('mouseover', event => {
+                let iterations = 0;
+                const interval = setInterval(() => {
+                    event.target.innerText = event.target.innerText.split("")
+                        .map((letter, index) => {
+                            if(index < iterations) return event.target.dataset.value[index];
+                            return letters[Math.floor(Math.random() * 42)];
+                        }).join("");
+                    if(iterations >= event.target.dataset.value.length) clearInterval(interval);
+                    iterations += 1 / 3;
+                }, 30);
+            });
+        });
+
+        /* 4. NETWORK CANVAS BACKGROUND */
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let particlesArray = [];
+        const mouse = { x: null, y: null, radius: 150 };
+
+        window.addEventListener('mousemove', function(event) { mouse.x = event.x; mouse.y = event.y; });
+        window.addEventListener('mouseout', function(){ mouse.x = undefined; mouse.y = undefined; });
+        window.addEventListener('resize', function(){ canvas.width = innerWidth; canvas.height = innerHeight; initNetwork(); });
+
+        class Node {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY; this.size = size; this.color = color;
+            }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false); ctx.fillStyle = this.color; ctx.fill(); }
+            update() {
+                if(this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+                if(this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+                
+                // Interacción con el cursor
+                let dx = mouse.x - this.x; let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx*dx + dy*dy);
+                if(distance < mouse.radius + this.size){
+                    if(mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 1;
+                    if(mouse.x > this.x && this.x > this.size * 10) this.x -= 1;
+                    if(mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 1;
+                    if(mouse.y > this.y && this.y > this.size * 10) this.y -= 1;
+                }
+                this.x += this.directionX; this.y += this.directionY;
+                this.draw();
+            }
+        }
+        function initNetwork() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 13000;
+            for(let i=0; i<numberOfParticles; i++){
+                let size = (Math.random() * 2) + 0.5;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * 1) - 0.5;
+                let directionY = (Math.random() * 1) - 0.5;
+                let color = '#3b82f6';
+                particlesArray.push(new Node(x, y, directionX, directionY, size, color));
+            }
+        }
+        function connectNodes() {
+            let opacityValue = 1;
+            for(let a=0; a<particlesArray.length; a++){
+                for(let b=a; b<particlesArray.length; b++){
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    if(distance < (canvas.width/8) * (canvas.height/8)){
+                        opacityValue = 1 - (distance/18000);
+                        ctx.strokeStyle = 'rgba(16, 185, 129,' + opacityValue + ')';
+                        ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(particlesArray[a].x, particlesArray[a].y); ctx.lineTo(particlesArray[b].x, particlesArray[b].y); ctx.stroke();
+                    }
+                }
+            }
+        }
+        function animateNetwork() {
+            requestAnimationFrame(animateNetwork);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+            for(let i=0; i<particlesArray.length; i++){ particlesArray[i].update(); }
+            connectNodes();
+        }
+        initNetwork(); animateNetwork();
+
+        /* 5. MODAL DE CONTACTO & API FORMSPREE */
         const modal = document.getElementById('contactModal');
         const statusDiv = document.getElementById('form-status');
         function openModal() { modal.classList.add('active'); statusDiv.innerHTML = ''; }
         function closeModal() { modal.classList.remove('active'); document.getElementById('contactForm').reset(); }
-        window.onclick = function(event) { if (event.target == modal) { closeModal(); } }
-
+        
         async function submitForm(event) {
             event.preventDefault();
             const btn = document.getElementById('submit-msg-btn');
@@ -278,6 +376,7 @@
             finally { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; }
         }
 
+        /* 6. DESCARGA PDF ATS-FRIENDLY */
         function downloadPDF() {
             const btn = document.getElementById('download-btn');
             const originalContent = btn.innerHTML;
@@ -289,10 +388,11 @@
             html2pdf().set(opt).from(element).save().then(() => { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; }).catch(() => { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; });
         }
 
+        /* 7. CUSTOM CURSOR & TILT EFFECT */
         const cursor = document.getElementById('cursor');
         if (window.matchMedia("(min-width: 768px)").matches) {
             document.addEventListener('mousemove', e => { cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`; });
-            document.querySelectorAll('a, button, .bento-card, .modal-content').forEach(el => {
+            document.querySelectorAll('a, button, .bento-card, .modal-content, .hacker-text').forEach(el => {
                 el.addEventListener('mouseenter', () => cursor.classList.add('active'));
                 el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
             });
@@ -321,6 +421,7 @@
             card.addEventListener('mouseleave', () => { card.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`; card.style.zIndex = "1"; });
         });
 
+        /* 8. CLOCK & TYPEWRITER */
         function updateClock() { document.getElementById('live-time').innerText = new Date().toLocaleTimeString('es-MX', { timeZone: 'America/Tijuana', hour: '2-digit', minute:'2-digit', second:'2-digit', hour12: false }); }
         setInterval(updateClock, 1000); updateClock();
 
