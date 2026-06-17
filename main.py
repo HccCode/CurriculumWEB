@@ -84,8 +84,8 @@ async def send_contact_email(form: ContactForm):
     SMTP_PORT = 587
     
     # IMPORTANTE: Reemplaza esto con tus datos reales
-    SENDER_EMAIL = "tu-correo@gmail.com" # Desde dónde se envía (tu propio correo)
-    SENDER_PASSWORD = "xxxx xxxx xxxx xxxx" # Contraseña de aplicación de Google
+    SENDER_EMAIL = "hectorum9214@gmail.com" # Desde dónde se envía (tu propio correo)
+    SENDER_PASSWORD = "ornc ddpj fybr dwlm" # Contraseña de aplicación de Google
     
     # Obtenemos el correo destino guardado en tu panel de administrador
     data = get_data()
