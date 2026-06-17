@@ -175,13 +175,11 @@
                 <a href="{{ data.profile.linkedin }}" target="_blank" class="tech-btn primary-btn magnetic-element">
                     <i class="fab fa-linkedin"></i> LinkedIn
                 </a>
-                <a href="mailto:{{ data.profile.email }}" class="tech-btn outline-btn magnetic-element">
+                <a href="javascript:void(0)" onclick="copyEmail('{{ data.profile.email }}')" class="tech-btn outline-btn magnetic-element">
                     <i class="fas fa-envelope"></i> Email
                 </a>
             </div>
         </div>
-
-    </div>
 
     <!-- ========================================================================= -->
     <!-- CONTENEDOR OCULTO PARA EL PDF (ESTILO PROFESIONAL HARVARD / ATS-FRIENDLY) -->
@@ -392,6 +390,39 @@
         window.addEventListener("focus", () => {
             document.title = docTitle;
         });
+
+        // --- FUNCIÓN PARA COPIAR CORREO ---
+        function copyEmail(email) {
+            if (!email) {
+                alert("Correo no configurado en el panel de administrador.");
+                return;
+            }
+            navigator.clipboard.writeText(email).then(() => {
+                // Crear y mostrar notificación emergente (Toast)
+                const toast = document.createElement('div');
+                toast.innerHTML = '<i class="fas fa-check-circle"></i> Correo copiado: ' + email;
+                toast.style.cssText = `
+                    position: fixed; bottom: 20px; right: 20px; 
+                    background: #10b981; color: white; padding: 1rem 2rem; 
+                    border-radius: 8px; z-index: 99999;
+                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+                    transition: opacity 0.3s; opacity: 0; font-family: 'Inter', sans-serif;
+                `;
+                document.body.appendChild(toast);
+                
+                // Animar la entrada
+                setTimeout(() => toast.style.opacity = '1', 10);
+                
+                // Remover después de 3 segundos
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }).catch(err => {
+                console.error('Error al copiar el correo: ', err);
+            });
+        }
+        
     </script>
 </body>
 </html>
