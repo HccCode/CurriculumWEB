@@ -12,7 +12,7 @@
         .dashboard { max-width: 1000px; margin: 0 auto; display: grid; gap: 2rem; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
         .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
-        h2 { margin-top: 0; font-size: 1.2rem; color: #94a3b8; margin-bottom: 1.5rem; }
+        h2 { margin-top: 0; font-size: 1.2rem; color: #94a3b8; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 10px;}
         .form-group { margin-bottom: 1rem; }
         label { display: block; font-size: 0.85rem; margin-bottom: 0.5rem; color: #cbd5e1; }
         input, textarea { width: 100%; background: #0f172a; border: 1px solid var(--border); color: white; padding: 0.8rem; border-radius: 6px; font-family: 'Inter', sans-serif; box-sizing: border-box; }
@@ -20,12 +20,11 @@
         input:focus, textarea:focus { outline: none; border-color: var(--accent); }
         .btn { background: var(--accent); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
         .btn:hover { background: #2563eb; }
-        .btn-outline { background: transparent; border: 1px solid var(--border); }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: #f8fafc;}
         .btn-outline:hover { background: rgba(255,255,255,0.05); }
-        .list-item { background: #0f172a; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid var(--border); position: relative;}
-        .remove-btn { position: absolute; top: 10px; right: 10px; background: #ef4444; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; }
-        .toast { position: fixed; bottom: 20px; right: 20px; background: #10b981; color: white; padding: 1rem 2rem; border-radius: 8px; transform: translateY(100px); opacity: 0; transition: 0.3s; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #10b981; color: white; padding: 1rem 2rem; border-radius: 8px; transform: translateY(100px); opacity: 0; transition: 0.3s; z-index: 100;}
         .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.error { background: #ef4444; }
     </style>
 </head>
 <body>
@@ -34,7 +33,7 @@
         <div class="header">
             <h1>Panel de Control del Currículum</h1>
             <div>
-                <a href="/" target="_blank" class="btn btn-outline" style="text-decoration:none; margin-right:10px;"><i class="fas fa-external-link-alt"></i> Ver CV</a>
+                <a href="/" target="_blank" class="btn btn-outline" style="text-decoration:none; margin-right:10px;"><i class="fas fa-external-link-alt"></i> Ver CV Público</a>
                 <button class="btn" onclick="saveData()"><i class="fas fa-save"></i> Guardar Cambios</button>
             </div>
         </div>
@@ -42,11 +41,11 @@
         <div class="panel">
             <h2><i class="fas fa-user"></i> Información General</h2>
             <div class="form-group">
-                <label>Nombre</label>
+                <label>Nombre Completo</label>
                 <input type="text" id="p_name" value="{{ data.profile.name }}">
             </div>
             <div class="form-group">
-                <label>Rol / Título</label>
+                <label>Rol / Título Profesional</label>
                 <input type="text" id="p_role" value="{{ data.profile.role }}">
             </div>
             <div class="form-group">
@@ -60,12 +59,17 @@
                 <div class="form-group"><label>LinkedIn URL</label><input type="text" id="p_linkedin" value="{{ data.profile.linkedin }}"></div>
             </div>
         </div>
+        
     </div>
 
-    <div id="toast" class="toast"><i class="fas fa-check-circle"></i> Cambios sincronizados y guardados en data.json</div>
+    <div id="toast" class="toast"><i class="fas fa-check-circle"></i> Cambios guardados correctamente</div>
 
     <script>
         async function saveData() {
+            const btn = document.querySelector('.btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+            
+            // Recopilamos la información editada
             const payload = {
                 profile: {
                     name: document.getElementById('p_name').value,
@@ -75,22 +79,34 @@
                     email: document.getElementById('p_email').value,
                     github: document.getElementById('p_github').value,
                     linkedin: document.getElementById('p_linkedin').value,
-                    resume_link: "CV_Hector_Uribe.pdf" // Mantener fijo o hacer dinámico
+                    resume_link: "CV_Hector_Uribe.pdf"
                 },
-                experience: {{ data.experience | tojson }}, // Simplificado para este ejemplo
-                projects: {{ data.projects | tojson }}
+                // Inyectamos la experiencia y proyectos existentes para no borrarlos
+                experience: {{ data.experience | tojson | safe }}, 
+                projects: {{ data.projects | tojson | safe }}
             };
 
-            const res = await fetch('/api/save', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+            try {
+                const res = await fetch('/api/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
 
-            if(res.ok) {
                 const toast = document.getElementById('toast');
-                toast.classList.add('show');
+                if(res.ok) {
+                    toast.innerHTML = '<i class="fas fa-check-circle"></i> Cambios guardados correctamente';
+                    toast.className = 'toast show';
+                } else {
+                    toast.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error al guardar';
+                    toast.className = 'toast show error';
+                }
                 setTimeout(() => toast.classList.remove('show'), 3000);
+            } catch (error) {
+                console.error(error);
+                alert("Error de conexión con el servidor");
+            } finally {
+                btn.innerHTML = '<i class="fas fa-save"></i> Guardar Cambios';
             }
         }
     </script>

@@ -3,18 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hector Uribe - Software Developer</title>
+    <title>{{ data.profile.name }} - Software Developer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="/static/css/all.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./css/all.css">
+    <link rel="stylesheet" href="/static/css/all.css">
 </head>
 <body>
 
     <div class="custom-cursor" id="cursor"></div>
-
     <div class="noise-bg"></div>
 
     <div class="bento-container" id="bento-container">
@@ -24,20 +22,20 @@
                 <div class="status-badge">
                     <span class="pulse-dot"></span> Sistemas en Tiempo Real Activos
                 </div>
-                <h1 class="name gradient-text">Hector Uribe</h1>
-                <h2 class="role">&gt; Full-Stack Software Developer_</h2>
+                <h1 class="name gradient-text">{{ data.profile.name }}</h1>
+                <h2 class="role">{{ data.profile.role }}</h2>
                 <p class="bio">
-                    Especializado en la creación de interfaces de alta precisión, arquitecturas backend escalables y paneles de auditoría. Orientado a la consistencia estricta de componentes y al manejo eficiente de flujos operativos y estadísticos.
+                    {{ data.profile.bio }}
                 </p>
                 <div class="hero-actions">
-                    <a href="CV_Hector_Uribe.pdf" download="CV_Hector_Uribe.pdf" class="glow-btn magnetic-element">
+                    <a href="{{ data.profile.resume_link }}" download class="glow-btn magnetic-element">
                         <i class="fas fa-file-pdf"></i> Descargar Resume
                     </a>
                 </div>
             </div>
             <div class="hero-visual">
                 <div class="avatar-wrapper">
-                    <img src="https://pbs.twimg.com/media/CMOrTsXVEAAF6tr.jpg" alt="Hector Uribe" class="avatar">
+                    <img src="https://pbs.twimg.com/media/CMOrTsXVEAAF6tr.jpg" alt="{{ data.profile.name }}" class="avatar">
                 </div>
             </div>
         </div>
@@ -47,7 +45,7 @@
                 <i class="fas fa-globe-americas icon-glow"></i>
                 <div>
                     <h3 class="loc-title">Base de Operaciones</h3>
-                    <p class="loc-text">Mexicali, B.C.</p>
+                    <p class="loc-text">{{ data.profile.location }}</p>
                 </div>
             </div>
             <div class="time-display">
@@ -105,55 +103,31 @@
         <div class="bento-card exp-card slide-up" style="--delay: 0.6s;">
             <h3 class="card-title">Experiencia</h3>
             <div class="exp-list">
+                {% for exp in data.experience %}
                 <div class="exp-item">
                     <div class="exp-header">
-                        <span class="exp-role">Ingeniero de Operación y Soporte</span>
-                        <span class="exp-date">2022 — Pres</span>
+                        <span class="exp-role">{{ exp.role }}</span>
+                        <span class="exp-date">{{ exp.date }}</span>
                     </div>
-                    <span class="exp-company">Metrocarrier</span>
-                    <p class="exp-desc">Gestión de infraestructura, resolución de incidencias de misión crítica y monitoreo avanzado de sistemas operacionales.</p>
+                    <span class="exp-company">{{ exp.company }}</span>
+                    <p class="exp-desc">{{ exp.desc }}</p>
                 </div>
-                <div class="exp-item">
-                    <div class="exp-header">
-                        <span class="exp-role">Auxiliar de TI</span>
-                        <span class="exp-date">2021</span>
-                    </div>
-                    <span class="exp-company">Comercial de Carnes Frías</span>
-                </div>
-                <div class="exp-item">
-                    <div class="exp-header">
-                        <span class="exp-role">Ingeniero de Soporte</span>
-                        <span class="exp-date">2018 — 2021</span>
-                    </div>
-                    <span class="exp-company">Profuels México</span>
-                </div>
+                {% endfor %}
             </div>
         </div>
 
         <div class="bento-card projects-card slide-up" style="--delay: 0.7s;">
             <h3 class="card-title">Arquitectura y Desarrollo</h3>
             <div class="project-list">
+                {% for proj in data.projects %}
                 <div class="project-box">
                     <div class="project-top">
-                        <i class="fas fa-desktop project-icon"></i>
-                        <h4>Control de Estados en Tiempo Real</h4>
+                        <i class="{{ proj.icon }} project-icon"></i>
+                        <h4>{{ proj.title }}</h4>
                     </div>
-                    <p>Aplicación de gestión de flujos operativos con un layout frontend de componentes milimétricos y temporizadores sincronizados.</p>
+                    <p>{{ proj.desc }}</p>
                 </div>
-                <div class="project-box">
-                    <div class="project-top">
-                        <i class="fas fa-chart-line project-icon"></i>
-                        <h4>Dashboard Analítico y Auditoría</h4>
-                    </div>
-                    <p>Panel estadístico con módulos de seguridad integrados, backend en Python y consultas optimizadas para trazabilidad de historial.</p>
-                </div>
-                <div class="project-box">
-                    <div class="project-top">
-                        <i class="fas fa-map-marked-alt project-icon"></i>
-                        <h4>Validador Geográfico Excel</h4>
-                    </div>
-                    <p>Motor lógico para la validación territorial y carga de inventarios, previniendo cruces de datos mediante reglas estrictas.</p>
-                </div>
+                {% endfor %}
             </div>
         </div>
 
@@ -172,13 +146,13 @@
         <div class="bento-card contact-card slide-up" style="--delay: 0.9s;">
             <h3 class="card-title">Conectar</h3>
             <div class="link-grid">
-                <a href="https://github.com/Hector7x" target="_blank" class="tech-btn primary-btn magnetic-element">
+                <a href="{{ data.profile.github }}" target="_blank" class="tech-btn primary-btn magnetic-element">
                     <i class="fab fa-github"></i> GitHub
                 </a>
-                <a href="https://www.linkedin.com/in/hectorum" target="_blank" class="tech-btn primary-btn magnetic-element">
+                <a href="{{ data.profile.linkedin }}" target="_blank" class="tech-btn primary-btn magnetic-element">
                     <i class="fab fa-linkedin"></i> LinkedIn
                 </a>
-                <a href="mailto:hectorum9214@gmail.com" class="tech-btn outline-btn magnetic-element">
+                <a href="mailto:{{ data.profile.email }}" class="tech-btn outline-btn magnetic-element">
                     <i class="fas fa-envelope"></i> Email
                 </a>
             </div>
