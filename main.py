@@ -24,11 +24,19 @@ def get_data():
 
 @app.get("/", response_class=HTMLResponse)
 async def read_cv(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request, "data": get_data()})
+    return templates.TemplateResponse(
+        request=request, 
+        name="index.html", 
+        context={"data": get_data()}
+    )
 
 @app.get("/admin", response_class=HTMLResponse)
 async def read_admin(request: Request):
-    return templates.TemplateResponse("admin.html", {"request": request, "data": get_data()})
+    return templates.TemplateResponse(
+        request=request, 
+        name="admin.html", 
+        context={"data": get_data()}
+    )
 
 @app.post("/api/save")
 async def save_data(request: Request):
