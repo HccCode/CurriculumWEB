@@ -136,8 +136,6 @@ body { font-family: 'Inter', sans-serif; background-color: transparent; color: v
 
 .tags-container { display: flex; flex-wrap: wrap; gap: 10px; }
 .mono-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.84rem; font-weight: 600; border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 12px; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.02); color: #cbd5e1; }
-
-/* --- ANIMACIÓN PULSO GLOW EN LOS ICONOS DE TECNOLOGÍA --- */
 .mono-tag i { transition: transform 0.3s ease; color: var(--accent-blue); }
 .mono-tag:hover i { animation: techPulse 1s infinite alternate; text-shadow: 0 0 10px currentColor; }
 @keyframes techPulse { 0% { transform: scale(1); } 100% { transform: scale(1.25); } }

@@ -13,7 +13,6 @@
 </head>
 <body>
 
-    <!-- Fondo Mesh Gradient Premium Animado -->
     <div class="mesh-bg">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
@@ -24,7 +23,6 @@
 
     <div class="bento-container" id="bento-container">
         
-        <!-- HERO CARD -->
         <div class="bento-card hero-card slide-up" style="--delay: 0.1s; border-top: 3px solid var(--accent-blue);">
             <div class="hero-content">
                 <div class="status-badge">
@@ -48,7 +46,6 @@
             </div>
         </div>
 
-        <!-- LOCATION & TIME CARD -->
         <div class="bento-card location-card slide-up" style="--delay: 0.2s;">
             <div class="location-info">
                 <i class="fas fa-globe-americas icon-glow"></i>
@@ -63,7 +60,6 @@
             </div>
         </div>
 
-        <!-- INFINITE MARQUEE CARD -->
         <div class="bento-card marquee-card slide-up" style="--delay: 0.3s;">
             <div class="marquee-track">
                 <div class="marquee-content">
@@ -76,7 +72,6 @@
             </div>
         </div>
 
-        <!-- TERMINAL CARD (Frases adaptadas a redes troncales) -->
         <div class="bento-card terminal-card slide-up" style="--delay: 0.4s;">
             <div class="terminal-header">
                 <div class="term-dots">
@@ -89,10 +84,9 @@
             </div>
         </div>
 
-        <!-- QUICK STATS CARD -->
         <div class="bento-card stats-card slide-up" style="--delay: 0.5s;">
             <div class="stat-box">
-                <span class="stat-number">6+</span>
+                <span class="stat-number">8+</span>
                 <span class="stat-label">Años en<br>Telecom & TI</span>
             </div>
             <div class="stat-divider"></div>
@@ -107,7 +101,6 @@
             </div>
         </div>
 
-        <!-- EXPERIENCE CARD -->
         <div class="bento-card exp-card slide-up" style="--delay: 0.6s;">
             <h3 class="card-title">Experiencia Profesional</h3>
             <div class="exp-list">
@@ -124,7 +117,6 @@
             </div>
         </div>
 
-        <!-- PROJECTS CARD -->
         <div class="bento-card projects-card slide-up" style="--delay: 0.7s;">
             <h3 class="card-title">Arquitectura, Automatización y Redes</h3>
             <div class="project-list">
@@ -140,7 +132,6 @@
             </div>
         </div>
 
-        <!-- TECH STACK CARD DINÁMICO -->
         <div class="bento-card tech-card slide-up" style="--delay: 0.8s;">
             <h3 class="card-title">Stack Técnico & Especialidades</h3>
             <div class="tags-container">
@@ -150,7 +141,6 @@
             </div>
         </div>
         
-        <!-- CONTACT CARD -->
         <div class="bento-card contact-card slide-up" style="--delay: 0.9s; border-bottom: 3px solid var(--accent-green);">
             <h3 class="card-title">Conectar</h3>
             <div class="link-grid">
@@ -168,7 +158,7 @@
 
     </div>
 
-    <!-- VENTANA EMERGENTE FLOTANTE (MODAL OVERLAY PREMIUM) -->
+    <!-- MODAL -->
     <div class="modal-overlay" id="contactModal">
         <div class="modal-content">
             <button class="close-modal" onclick="closeModal()"><i class="fas fa-times"></i></button>
@@ -198,7 +188,7 @@
         </div>
     </div>
 
-    <!-- CONTENEDOR OCULTO PARA EL PDF - DISEÑO CORPORATIVO ESTRICTO (ESTILO HARVARD) -->
+    <!-- CONTENEDOR OCULTO PARA EL PDF -->
     <div style="position: absolute; left: -9999px; top: -9999px; visibility: hidden; z-index: -1;">
         <div id="cv-template" style="font-family: 'Arial', Helvetica, sans-serif; color: #2d3748; background: #fff; width: 800px; box-sizing: border-box; padding: 50px 60px;">
             <div style="border-bottom: 3px solid #2b6cb0; padding-bottom: 15px; margin-bottom: 25px;">
@@ -253,62 +243,28 @@
     </div>
 
     <script>
-        // --- CONTROLES DE LA VENTANA EMERGENTE (MODAL) ---
         const modal = document.getElementById('contactModal');
         const statusDiv = document.getElementById('form-status');
-
-        function openModal() {
-            modal.classList.add('active');
-            statusDiv.innerHTML = '';
-        }
-
-        function closeModal() {
-            modal.classList.remove('active');
-            document.getElementById('contactForm').reset();
-        }
-
+        function openModal() { modal.classList.add('active'); statusDiv.innerHTML = ''; }
+        function closeModal() { modal.classList.remove('active'); document.getElementById('contactForm').reset(); }
         window.onclick = function(event) { if (event.target == modal) { closeModal(); } }
 
-        // --- ENVÍO DE CORREO VIA FORMSPREE ---
         async function submitForm(event) {
             event.preventDefault();
             const btn = document.getElementById('submit-msg-btn');
             const originalContent = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
             btn.style.pointerEvents = 'none';
-
-            // REEMPLAZAR ESTA URL POR TU ENDPOINT COMPLETO OBTENIDO EN INTEGRATION
             const FORMSPREE_URL = "https://formspree.io/f/mqakevzz"; 
-
-            const payload = {
-                email: document.getElementById('sender_email').value,
-                subject: document.getElementById('subject').value,
-                message: document.getElementById('message').value
-            };
-
+            const payload = { email: document.getElementById('sender_email').value, subject: document.getElementById('subject').value, message: document.getElementById('message').value };
             try {
-                const res = await fetch(FORMSPREE_URL, {
-                    method: 'POST',
-                    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (res.ok) {
-                    statusDiv.innerHTML = '<span style="color: var(--accent-green);"><i class="fas fa-check-circle"></i> Mensaje enviado exitosamente.</span>';
-                    document.getElementById('contactForm').reset();
-                    setTimeout(closeModal, 2500);
-                } else {
-                    statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error al enviar, verifica el endpoint.</span>';
-                }
-            } catch(e) {
-                statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error de red o conexión.</span>';
-            } finally {
-                btn.innerHTML = originalContent;
-                btn.style.pointerEvents = 'auto';
-            }
+                const res = await fetch(FORMSPREE_URL, { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (res.ok) { statusDiv.innerHTML = '<span style="color: var(--accent-green);"><i class="fas fa-check-circle"></i> Mensaje enviado exitosamente.</span>'; document.getElementById('contactForm').reset(); setTimeout(closeModal, 2500); } 
+                else { statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error al enviar, verifica el endpoint.</span>'; }
+            } catch(e) { statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error de red o conexión.</span>'; } 
+            finally { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; }
         }
 
-        // --- DESCARGA PDF ---
         function downloadPDF() {
             const btn = document.getElementById('download-btn');
             const originalContent = btn.innerHTML;
@@ -320,7 +276,6 @@
             html2pdf().set(opt).from(element).save().then(() => { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; }).catch(() => { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; });
         }
 
-        // --- INTERACCIONES Y HOVER ---
         const cursor = document.getElementById('cursor');
         if (window.matchMedia("(min-width: 768px)").matches) {
             document.addEventListener('mousemove', e => { cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`; });
@@ -356,7 +311,6 @@
         function updateClock() { document.getElementById('live-time').innerText = new Date().toLocaleTimeString('es-MX', { timeZone: 'America/Tijuana', hour: '2-digit', minute:'2-digit', second:'2-digit', hour12: false }); }
         setInterval(updateClock, 1000); updateClock();
 
-        // Typewriter adaptado a Telecomunicaciones
         const phrases = [
             "sincronizando radioenlaces de microondas...",
             "monitoreando anillos core de fibra óptica... OK.",

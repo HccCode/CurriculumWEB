@@ -26,7 +26,13 @@
             "role": "Ingeniero de Soporte y Telecomunicaciones",
             "company": "Profuels México",
             "date": "2018 — 2021",
-            "desc": "Despliegue, comisionamiento y alineación de radioenlaces de microondas punto a punto y multipunto (Ubiquiti, Cambium Networks) para telemetría industrial en sitios remotos. Administración distribuidas de firewalls de seguridad perimetral y soporte técnico integral de infraestructura de red bajo sistemas de tickets centralizados."
+            "desc": "Soporte técnico integral y gestión de infraestructura de TI/Redes para estaciones de servicio (gasolineras). Despliegue, comisionamiento y alineación de radioenlaces de microondas (Ubiquiti, Cambium Networks) para telemetría en sitios remotos. Administración distribuida de firewalls perimetrales y resolución de incidencias críticas bajo sistemas de tickets centralizados."
+        },
+        {
+            "role": "Ingeniero de Soporte de Enlaces",
+            "company": "RED 7",
+            "date": "2016 — 2018",
+            "desc": "Soporte técnico, despliegue y mantenimiento de radioenlaces de última milla (Ubiquiti) para el sector corporativo. Configuración avanzada, gestión de ancho de banda y administración de ruteo/conmutación en equipos MikroTik, asegurando el rendimiento y la estabilidad de la conectividad para clientes empresariales."
         }
     ],
     "projects": [
