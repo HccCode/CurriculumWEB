@@ -10,7 +10,7 @@ import secrets
 app = FastAPI()
 security = HTTPBasic()
 
-# Rutas absolutas
+# Determinación de rutas absolutas para entornos de producción (Render)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "data.json")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
@@ -19,17 +19,32 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
-# --- CREDENCIALES DE ADMINISTRADOR ---
+# Credenciales de acceso al panel de administración
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "secreto123"
 
 def get_data():
     if not os.path.exists(DATA_FILE):
-        return {}
+        return {
+            "profile": {"name": "Hector Uribe", "role": "", "bio": "", "location": "", "email": "", "github": "", "linkedin": "", "resume_link": "CV_Hector_Uribe.pdf"},
+            "experience": [],
+            "projects": [],
+            "tech_stack": []
+        }
     with open(DATA_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
+        try:
+            content = json.load(f)
+            if "tech_stack" not in content:
+                content["tech_stack"] = []
+            return content
+        except Exception:
+            return {
+                "profile": {"name": "Hector Uribe", "role": "", "bio": "", "location": "", "email": "", "github": "", "linkedin": "", "resume_link": "CV_Hector_Uribe.pdf"},
+                "experience": [],
+                "projects": [],
+                "tech_stack": []
+            }
 
-# Función para verificar usuario y contraseña
 def verify_credentials(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = secrets.compare_digest(credentials.username, ADMIN_USERNAME)
     correct_password = secrets.compare_digest(credentials.password, ADMIN_PASSWORD)
@@ -37,7 +52,7 @@ def verify_credentials(credentials: HTTPBasicCredentials = Depends(security)):
     if not (correct_username and correct_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Correo o contraseña incorrectos",
+            detail="Credenciales de acceso inválidas",
             headers={"WWW-Authenticate": "Basic"},
         )
     return credentials.username
@@ -50,7 +65,6 @@ async def read_cv(request: Request):
         context={"data": get_data()}
     )
 
-# Ruta protegida con Dependencia (pedirá usuario y contraseña)
 @app.get("/admin", response_class=HTMLResponse)
 async def read_admin(request: Request, username: str = Depends(verify_credentials)):
     return templates.TemplateResponse(

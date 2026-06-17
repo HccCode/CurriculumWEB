@@ -134,12 +134,16 @@
         <div class="bento-card tech-card slide-up" style="--delay: 0.8s;">
             <h3 class="card-title">Stack Técnico & Herramientas</h3>
             <div class="tags-container">
-                <span class="mono-tag code-react"><i class="fab fa-react"></i> React</span>
-                <span class="mono-tag code-python"><i class="fab fa-python"></i> Python</span>
-                <span class="mono-tag code-api"><i class="fas fa-server"></i> FastAPI</span>
-                <span class="mono-tag code-db"><i class="fas fa-database"></i> PostgreSQL</span>
-                <span class="mono-tag text-tag">UI/UX Precision</span>
-                <span class="mono-tag text-tag">IT Infrastructure</span>
+                {% if data.tech_stack %}
+                    {% for tech in data.tech_stack %}
+                    <span class="mono-tag"><i class="{{ tech.icon }}"></i> {{ tech.name }}</span>
+                    {% endfor %}
+                {% else %}
+                    <span class="mono-tag"><i class="fab fa-react"></i> React</span>
+                    <span class="mono-tag"><i class="fab fa-python"></i> Python</span>
+                    <span class="mono-tag"><i class="fas fa-server"></i> FastAPI</span>
+                    <span class="mono-tag"><i class="fas fa-database"></i> PostgreSQL</span>
+                {% endif %}
             </div>
         </div>
         
@@ -161,7 +165,6 @@
     </div>
 
     <script>
-        // 1. Cursor Personalizado Invertido
         const cursor = document.getElementById('cursor');
         
         if (window.matchMedia("(min-width: 768px)").matches) {
@@ -176,7 +179,6 @@
             });
         }
 
-        // 2. Elementos Magnéticos (Botones)
         const magnetics = document.querySelectorAll('.magnetic-element');
         magnetics.forEach(btn => {
             btn.addEventListener('mousemove', e => {
@@ -190,7 +192,6 @@
             });
         });
 
-        // 3. Efecto 3D Tilt y Linterna
         const cards = document.querySelectorAll('.bento-card');
         cards.forEach(card => {
             card.addEventListener('mousemove', e => {
@@ -216,7 +217,6 @@
             });
         });
 
-        // 4. Reloj en Vivo
         function updateClock() {
             const now = new Date();
             const options = { timeZone: 'America/Tijuana', hour: '2-digit', minute:'2-digit', second:'2-digit', hour12: false };
@@ -225,7 +225,6 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // 5. Efecto Typewriter
         const phrases = [
             "iniciando servicios de backend...",
             "validando schemas de FastAPI... OK.",

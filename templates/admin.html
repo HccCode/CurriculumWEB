@@ -7,34 +7,46 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #0f172a; --panel: #1e293b; --text: #f8fafc; --accent: #3b82f6; --border: #334155; }
+        :root { --bg: #0f172a; --panel: #1e293b; --text: #f8fafc; --accent: #3b82f6; --border: #334155; --danger: #ef4444; --success: #10b981; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 2rem; }
         .dashboard { max-width: 1000px; margin: 0 auto; display: grid; gap: 2rem; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
-        .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
-        h2 { margin-top: 0; font-size: 1.2rem; color: #94a3b8; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 10px;}
+        .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; position: relative; }
+        h2 { margin-top: 0; font-size: 1.2rem; color: #94a3b8; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; display: flex; align-items: center; gap: 10px; }
         .form-group { margin-bottom: 1rem; }
         label { display: block; font-size: 0.85rem; margin-bottom: 0.5rem; color: #cbd5e1; }
         input, textarea { width: 100%; background: #0f172a; border: 1px solid var(--border); color: white; padding: 0.8rem; border-radius: 6px; font-family: 'Inter', sans-serif; box-sizing: border-box; }
-        textarea { resize: vertical; min-height: 100px; }
+        textarea { resize: vertical; min-height: 80px; }
         input:focus, textarea:focus { outline: none; border-color: var(--accent); }
-        .btn { background: var(--accent); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .btn { background: var(--accent); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
         .btn:hover { background: #2563eb; }
         .btn-outline { background: transparent; border: 1px solid var(--border); color: #f8fafc;}
         .btn-outline:hover { background: rgba(255,255,255,0.05); }
-        .toast { position: fixed; bottom: 20px; right: 20px; background: #10b981; color: white; padding: 1rem 2rem; border-radius: 8px; transform: translateY(100px); opacity: 0; transition: 0.3s; z-index: 100;}
+        .btn-danger { background: var(--danger); }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-success { background: var(--success); }
+        .btn-success:hover { background: #059669; }
+        .dynamic-item { background: #0f172a; border: 1px solid var(--border); padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; position: relative; }
+        .item-actions { display: flex; justify-content: flex-end; margin-top: 0.5rem; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: var(--success); color: white; padding: 1rem 2rem; border-radius: 8px; transform: translateY(100px); opacity: 0; transition: 0.3s; z-index: 100;}
         .toast.show { transform: translateY(0); opacity: 1; }
-        .toast.error { background: #ef4444; }
+        .toast.error { background: var(--danger); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+        .tags-wrapper { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+        .tag-pill { background: #334155; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); }
+        .section-header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .section-header-actions h2 { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
     </style>
 </head>
 <body>
 
     <div class="dashboard">
         <div class="header">
-            <h1>Panel de Control del Currículum</h1>
+            <h1>Panel de Control Maestro</h1>
             <div>
                 <a href="/" target="_blank" class="btn btn-outline" style="text-decoration:none; margin-right:10px;"><i class="fas fa-external-link-alt"></i> Ver CV Público</a>
-                <button class="btn" onclick="saveData()"><i class="fas fa-save"></i> Guardar Cambios</button>
+                <button class="btn" id="save-btn" onclick="saveData()"><i class="fas fa-save"></i> Guardar Cambios</button>
             </div>
         </div>
 
@@ -42,34 +54,207 @@
             <h2><i class="fas fa-user"></i> Información General</h2>
             <div class="form-group">
                 <label>Nombre Completo</label>
-                <input type="text" id="p_name" value="{{ data.profile.name }}">
+                <input type="text" id="p_name" value="{{ data.profile.name if data.profile else '' }}">
             </div>
             <div class="form-group">
                 <label>Rol / Título Profesional</label>
-                <input type="text" id="p_role" value="{{ data.profile.role }}">
+                <input type="text" id="p_role" value="{{ data.profile.role if data.profile else '' }}">
             </div>
             <div class="form-group">
                 <label>Biografía (Resumen)</label>
-                <textarea id="p_bio">{{ data.profile.bio }}</textarea>
+                <textarea id="p_bio">{{ data.profile.bio if data.profile else '' }}</textarea>
             </div>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
-                <div class="form-group"><label>Ubicación</label><input type="text" id="p_location" value="{{ data.profile.location }}"></div>
-                <div class="form-group"><label>Email</label><input type="text" id="p_email" value="{{ data.profile.email }}"></div>
-                <div class="form-group"><label>GitHub URL</label><input type="text" id="p_github" value="{{ data.profile.github }}"></div>
-                <div class="form-group"><label>LinkedIn URL</label><input type="text" id="p_linkedin" value="{{ data.profile.linkedin }}"></div>
+            <div class="grid-2">
+                <div class="form-group"><label>Ubicación</label><input type="text" id="p_location" value="{{ data.profile.location if data.profile else '' }}"></div>
+                <div class="form-group"><label>Email</label><input type="text" id="p_email" value="{{ data.profile.email if data.profile else '' }}"></div>
+                <div class="form-group"><label>GitHub URL</label><input type="text" id="p_github" value="{{ data.profile.github if data.profile else '' }}"></div>
+                <div class="form-group"><label>LinkedIn URL</label><input type="text" id="p_linkedin" value="{{ data.profile.linkedin if data.profile else '' }}"></div>
             </div>
         </div>
-        
+
+        <div class="panel">
+            <div class="section-header-actions">
+                <h2><i class="fas fa-briefcase"></i> Experiencia Laboral</h2>
+                <button class="btn btn-success" onclick="addExp()"><i class="fas fa-plus"></i> Añadir Experiencia</button>
+            </div>
+            <div id="experience-container"></div>
+        </div>
+
+        <div class="panel">
+            <div class="section-header-actions">
+                <h2><i class="fas fa-code"></i> Arquitectura y Desarrollo (Proyectos)</h2>
+                <button class="btn btn-success" onclick="addProj()"><i class="fas fa-plus"></i> Añadir Proyecto</button>
+            </div>
+            <div id="projects-container"></div>
+        </div>
+
+        <div class="panel">
+            <h2><i class="fas fa-tools"></i> Stack Técnico & Herramientas</h2>
+            <div class="form-group">
+                <div class="grid-3" style="align-items: end;">
+                    <div>
+                        <label>Nombre de la Tecnología</label>
+                        <input type="text" id="new-tech-name" placeholder="ej. React">
+                    </div>
+                    <div>
+                        <label>Icono FontAwesome (Clase completa)</label>
+                        <input type="text" id="new-tech-icon" placeholder="ej. fab fa-react">
+                    </div>
+                    <div>
+                        <button class="btn btn-success" type="button" onclick="addTech()" style="width: 100%; justify-content: center; height: 46px;">
+                            <i class="fas fa-plus"></i> Agregar Stack
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="tags-wrapper" id="tech-container"></div>
+        </div>
     </div>
 
     <div id="toast" class="toast"><i class="fas fa-check-circle"></i> Cambios guardados correctamente</div>
 
     <script>
+        let experienceList = {{ (data.experience if data.experience else []) | tojson | safe }};
+        let projectsList = {{ (data.projects if data.projects else []) | tojson | safe }};
+        let techList = {{ (data.tech_stack if data.tech_stack else []) | tojson | safe }};
+
+        function renderExperience() {
+            const container = document.getElementById('experience-container');
+            container.innerHTML = '';
+            if (experienceList.length === 0) {
+                container.innerHTML = '<p style="color: #64748b; font-style: italic;">No hay registros de experiencia.</p>';
+                return;
+            }
+            experienceList.forEach((exp, index) => {
+                container.innerHTML += `
+                    <div class="dynamic-item">
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>Puesto / Rol</label>
+                                <input type="text" value="${exp.role || ''}" oninput="updateExp(${index}, 'role', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Empresa</label>
+                                <input type="text" value="${exp.company || ''}" oninput="updateExp(${index}, 'company', this.value)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Periodo de Tiempo (ej. 2022 — Pres)</label>
+                            <input type="text" value="${exp.date || ''}" oninput="updateExp(${index}, 'date', this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label>Descripción de Funciones / Logros</label>
+                            <textarea oninput="updateExp(${index}, 'desc', this.value)">${exp.desc || ''}</textarea>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn btn-danger" onclick="removeExp(${index})"><i class="fas fa-trash"></i> Eliminar</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function updateExp(index, field, value) {
+            experienceList[index][field] = value;
+        }
+
+        function addExp() {
+            experienceList.push({ role: '', company: '', date: '', desc: '' });
+            renderExperience();
+        }
+
+        function removeExp(index) {
+            experienceList.splice(index, 1);
+            renderExperience();
+        }
+
+        function renderProjects() {
+            const container = document.getElementById('projects-container');
+            container.innerHTML = '';
+            if (projectsList.length === 0) {
+                container.innerHTML = '<p style="color: #64748b; font-style: italic;">No hay registros de proyectos.</p>';
+                return;
+            }
+            projectsList.forEach((proj, index) => {
+                container.innerHTML += `
+                    <div class="dynamic-item">
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>Título del Proyecto</label>
+                                <input type="text" value="${proj.title || ''}" oninput="updateProj(${index}, 'title', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Clase de Icono FontAwesome (ej. fas fa-desktop)</label>
+                                <input type="text" value="${proj.icon || ''}" oninput="updateProj(${index}, 'icon', this.value)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Descripción del Proyecto</label>
+                            <textarea oninput="updateProj(${index}, 'desc', this.value)">${proj.desc || ''}</textarea>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn btn-danger" onclick="removeProj(${index})"><i class="fas fa-trash"></i> Eliminar</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function updateProj(index, field, value) {
+            projectsList[index][field] = value;
+        }
+
+        function addProj() {
+            projectsList.push({ title: '', icon: 'fas fa-code', desc: '' });
+            renderProjects();
+        }
+
+        function removeProj(index) {
+            projectsList.splice(index, 1);
+            renderProjects();
+        }
+
+        function renderTechStack() {
+            const container = document.getElementById('tech-container');
+            container.innerHTML = '';
+            if (techList.length === 0) {
+                container.innerHTML = '<p style="color: #64748b; font-style: italic;">No hay tecnologías añadidas.</p>';
+                return;
+            }
+            techList.forEach((tech, index) => {
+                container.innerHTML += `
+                    <div class="tag-pill">
+                        <i class="${tech.icon || 'fas fa-code'}" style="color: #3b82f6;"></i>
+                        <span>${tech.name || ''}</span>
+                        <i class="fas fa-times" onclick="removeTech(${index})" style="color: #ef4444; cursor: pointer; margin-left: 5px;"></i>
+                    </div>
+                `;
+            });
+        }
+
+        function addTech() {
+            const nameInput = document.getElementById('new-tech-name');
+            const iconInput = document.getElementById('new-tech-icon');
+            if (nameInput.value.trim() !== '') {
+                techList.push({
+                    name: nameInput.value.trim(),
+                    icon: iconInput.value.trim() || 'fas fa-code'
+                });
+                nameInput.value = '';
+                iconInput.value = '';
+                renderTechStack();
+            }
+        }
+
+        function removeTech(index) {
+            techList.splice(index, 1);
+            renderTechStack();
+        }
+
         async function saveData() {
-            const btn = document.querySelector('.btn');
+            const btn = document.getElementById('save-btn');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
             
-            // Recopilamos la información editada
             const payload = {
                 profile: {
                     name: document.getElementById('p_name').value,
@@ -81,9 +266,9 @@
                     linkedin: document.getElementById('p_linkedin').value,
                     resume_link: "CV_Hector_Uribe.pdf"
                 },
-                // Inyectamos la experiencia y proyectos existentes para no borrarlos
-                experience: {{ data.experience | tojson | safe }}, 
-                projects: {{ data.projects | tojson | safe }}
+                experience: experienceList,
+                projects: projectsList,
+                tech_stack: techList
             };
 
             try {
@@ -95,7 +280,7 @@
 
                 const toast = document.getElementById('toast');
                 if(res.ok) {
-                    toast.innerHTML = '<i class="fas fa-check-circle"></i> Cambios guardados correctamente';
+                    toast.innerHTML = '<i class="fas fa-check-circle"></i> Cambios sincronizados con data.json';
                     toast.className = 'toast show';
                 } else {
                     toast.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error al guardar';
@@ -104,11 +289,15 @@
                 setTimeout(() => toast.classList.remove('show'), 3000);
             } catch (error) {
                 console.error(error);
-                alert("Error de conexión con el servidor");
+                alert("Error de comunicación");
             } finally {
                 btn.innerHTML = '<i class="fas fa-save"></i> Guardar Cambios';
             }
         }
+
+        renderExperience();
+        renderProjects();
+        renderTechStack();
     </script>
 </body>
 </html>
