@@ -3,6 +3,10 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from pydantic import BaseModel
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 import json
 import os
 import secrets
@@ -10,7 +14,7 @@ import secrets
 app = FastAPI()
 security = HTTPBasic()
 
-# Determinación de rutas absolutas para entornos de producción (Render)
+# Rutas absolutas
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "data.json")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
@@ -19,31 +23,15 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
-# Credenciales de acceso al panel de administración
+# --- CREDENCIALES DE ADMINISTRADOR ---
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "secreto123"
 
 def get_data():
     if not os.path.exists(DATA_FILE):
-        return {
-            "profile": {"name": "Hector Uribe", "role": "", "bio": "", "location": "", "email": "", "github": "", "linkedin": "", "resume_link": "CV_Hector_Uribe.pdf"},
-            "experience": [],
-            "projects": [],
-            "tech_stack": []
-        }
+        return {}
     with open(DATA_FILE, "r", encoding="utf-8") as f:
-        try:
-            content = json.load(f)
-            if "tech_stack" not in content:
-                content["tech_stack"] = []
-            return content
-        except Exception:
-            return {
-                "profile": {"name": "Hector Uribe", "role": "", "bio": "", "location": "", "email": "", "github": "", "linkedin": "", "resume_link": "CV_Hector_Uribe.pdf"},
-                "experience": [],
-                "projects": [],
-                "tech_stack": []
-            }
+        return json.load(f)
 
 def verify_credentials(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = secrets.compare_digest(credentials.username, ADMIN_USERNAME)
@@ -52,7 +40,7 @@ def verify_credentials(credentials: HTTPBasicCredentials = Depends(security)):
     if not (correct_username and correct_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Credenciales de acceso inválidas",
+            detail="Correo o contraseña incorrectos",
             headers={"WWW-Authenticate": "Basic"},
         )
     return credentials.username
@@ -82,3 +70,48 @@ async def save_data(request: Request):
         return {"status": "success"}
     except Exception as e:
         return {"status": "error", "message": str(e)}
+
+# --- NUEVO: ENDPOINT PARA ENVÍO DE CORREOS ---
+class ContactForm(BaseModel):
+    sender_email: str
+    subject: str
+    message: str
+
+@app.post("/api/contact")
+async def send_contact_email(form: ContactForm):
+    # Configuración de Gmail SMTP
+    SMTP_SERVER = "smtp.gmail.com"
+    SMTP_PORT = 587
+    
+    # IMPORTANTE: Reemplaza esto con tus datos reales
+    SENDER_EMAIL = "tu-correo@gmail.com" # Desde dónde se envía (tu propio correo)
+    SENDER_PASSWORD = "xxxx xxxx xxxx xxxx" # Contraseña de aplicación de Google
+    
+    # Obtenemos el correo destino guardado en tu panel de administrador
+    data = get_data()
+    my_email = data.get("profile", {}).get("email", SENDER_EMAIL)
+    
+    try:
+        msg = MIMEMultipart()
+        msg['From'] = SENDER_EMAIL
+        msg['To'] = my_email
+        msg['Subject'] = f"Contacto CV: {form.subject}"
+        
+        body = f"Has recibido un nuevo mensaje desde tu Currículum Web:\n\n"
+        body += f"Remitente: {form.sender_email}\n"
+        body += f"Asunto: {form.subject}\n\n"
+        body += f"Mensaje:\n{form.message}"
+        
+        msg.attach(MIMEText(body, 'plain'))
+        
+        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+        server.starttls()
+        server.login(SENDER_EMAIL, SENDER_PASSWORD)
+        text = msg.as_string()
+        server.sendmail(SENDER_EMAIL, my_email, text)
+        server.quit()
+        
+        return {"status": "success"}
+    except Exception as e:
+        print(f"Error SMTP: {e}")
+        return {"status": "error", "message": "No se pudo enviar el mensaje. Verifica las credenciales en main.py"}
