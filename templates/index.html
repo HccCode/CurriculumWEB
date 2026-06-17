@@ -179,17 +179,17 @@
             <form id="contactForm" onsubmit="submitForm(event)">
                 <div class="form-group-modal">
                     <label class="form-label">Tu Correo Electrónico</label>
-                    <input type="email" id="sender_email" class="modal-input" required placeholder="ejemplo@correo.com">
+                    <input type="email" id="sender_email" class="modal-input" name="email" required placeholder="ejemplo@correo.com">
                 </div>
                 
                 <div class="form-group-modal">
                     <label class="form-label">Asunto</label>
-                    <input type="text" id="subject" class="modal-input" required placeholder="Oportunidad laboral / Proyecto...">
+                    <input type="text" id="subject" class="modal-input" name="subject" required placeholder="Oportunidad laboral / Proyecto...">
                 </div>
                 
                 <div class="form-group-modal">
                     <label class="form-label">Mensaje</label>
-                    <textarea id="message" class="modal-textarea" required placeholder="Escribe los detalles de tu mensaje aquí..."></textarea>
+                    <textarea id="message" class="modal-textarea" name="message" required placeholder="Escribe los detalles de tu mensaje aquí..."></textarea>
                 </div>
                 
                 <button type="submit" id="submit-msg-btn" class="glow-btn" style="width: 100%; justify-content: center; border: none; cursor: pointer; font-family: 'Inter', sans-serif; margin-top: 5px; padding: 12px;">
@@ -207,7 +207,9 @@
                 <h2 style="font-size: 14pt; color: #2b6cb0; margin: 0 0 10px 0; font-weight: 500;">{{ data.profile.role | replace('>', '') | replace('_', '') | trim }}</h2>
                 <div style="font-size: 10pt; color: #4a5568; display: flex; gap: 15px; flex-wrap: wrap;">
                     <span><strong>Ubicación:</strong> {{ data.profile.location }}</span> |
-                    <span><strong>Email:</strong> {{ data.profile.email }}</span>
+                    <span><strong>Email:</strong> {{ data.profile.email }}</span> |
+                    <span><strong>LinkedIn:</strong> {{ data.profile.linkedin | replace('https://www.', '') }}</span> |
+                    <span><strong>GitHub:</strong> {{ data.profile.github | replace('https://', '') }}</span>
                 </div>
             </div>
             
@@ -228,6 +230,35 @@
                     <p style="font-size: 10pt; color: #4a5568; margin: 0; line-height: 1.5;">• {{ exp.desc }}</p>
                 </div>
                 {% endfor %}
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3 style="font-size: 12pt; color: #2d3748; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; margin: 0 0 15px 0;">Proyectos Destacados</h3>
+                {% for proj in data.projects %}
+                <div style="margin-bottom: 15px; page-break-inside: avoid;">
+                    <h4 style="font-size: 11.5pt; color: #1a202c; margin: 0 0 4px 0; font-weight: 600;">{{ proj.title }}</h4>
+                    <p style="font-size: 10pt; color: #4a5568; margin: 0; line-height: 1.5; padding-left: 15px; position: relative;">
+                        <span style="position: absolute; left: 0; top: 0; color: #2b6cb0;">•</span>
+                        {{ proj.desc }}
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div>
+                <h3 style="font-size: 12pt; color: #2d3748; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; margin: 0 0 12px 0;">Stack Técnico & Herramientas</h3>
+                <div style="font-size: 10pt; display: flex; flex-wrap: wrap; gap: 8px;">
+                    {% if data.tech_stack %}
+                        {% for tech in data.tech_stack %}
+                            <span style="background: #f7fafc; color: #4a5568; padding: 5px 12px; border-radius: 4px; border: 1px solid #e2e8f0; font-weight: 500;">{{ tech.name }}</span>
+                        {% endfor %}
+                    {% else %}
+                        <span style="background: #f7fafc; color: #4a5568; padding: 5px 12px; border-radius: 4px; border: 1px solid #e2e8f0; font-weight: 500;">React</span>
+                        <span style="background: #f7fafc; color: #4a5568; padding: 5px 12px; border-radius: 4px; border: 1px solid #e2e8f0; font-weight: 500;">Python</span>
+                        <span style="background: #f7fafc; color: #4a5568; padding: 5px 12px; border-radius: 4px; border: 1px solid #e2e8f0; font-weight: 500;">FastAPI</span>
+                        <span style="background: #f7fafc; color: #4a5568; padding: 5px 12px; border-radius: 4px; border: 1px solid #e2e8f0; font-weight: 500;">PostgreSQL</span>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
@@ -251,6 +282,7 @@
             if (event.target == modal) { closeModal(); }
         }
 
+        // --- ENVÍO DE CORREO VIA FORMSPREE ---
         async function submitForm(event) {
             event.preventDefault();
             const btn = document.getElementById('submit-msg-btn');
@@ -259,26 +291,31 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
             btn.style.pointerEvents = 'none';
 
+            // REEMPLAZA "TU_CODIGO_AQUI" POR EL CÓDIGO QUE TE DA FORMSPREE
+            const FORMSPREE_URL = "https://formspree.io/f/3026340560458742882";
+
             const payload = {
-                sender_email: document.getElementById('sender_email').value,
+                email: document.getElementById('sender_email').value,
                 subject: document.getElementById('subject').value,
                 message: document.getElementById('message').value
             };
 
             try {
-                const res = await fetch('/api/contact', {
+                const res = await fetch(FORMSPREE_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json' 
+                    },
                     body: JSON.stringify(payload)
                 });
-                const responseData = await res.json();
 
-                if (responseData.status === 'success') {
+                if (res.ok) {
                     statusDiv.innerHTML = '<span style="color: var(--accent-green);"><i class="fas fa-check-circle"></i> Mensaje enviado exitosamente.</span>';
                     document.getElementById('contactForm').reset();
                     setTimeout(closeModal, 2500);
                 } else {
-                    statusDiv.innerHTML = `<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error: ${responseData.message}</span>`;
+                    statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error al enviar el mensaje.</span>';
                 }
             } catch(e) {
                 statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error de conexión.</span>';
