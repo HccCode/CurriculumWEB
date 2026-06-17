@@ -3,17 +3,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ data.profile.name }} - Software Developer</title>
+    <title>{{ data.profile.name }} - Network & Software Engineer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/css/all.css">
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
+    <!-- Fondo Mesh Gradient Premium Animado -->
     <div class="mesh-bg">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
@@ -24,10 +24,11 @@
 
     <div class="bento-container" id="bento-container">
         
-        <div class="bento-card hero-card slide-up" style="--delay: 0.1s;">
+        <!-- HERO CARD -->
+        <div class="bento-card hero-card slide-up" style="--delay: 0.1s; border-top: 3px solid var(--accent-blue);">
             <div class="hero-content">
                 <div class="status-badge">
-                    <span class="pulse-dot"></span> Sistemas en Tiempo Real Activos
+                    <span class="pulse-dot"></span> NOC Core: En Línea (SLA Óptimo)
                 </div>
                 <h1 class="name gradient-text">{{ data.profile.name }}</h1>
                 <h2 class="role">{{ data.profile.role }}</h2>
@@ -47,6 +48,7 @@
             </div>
         </div>
 
+        <!-- LOCATION & TIME CARD -->
         <div class="bento-card location-card slide-up" style="--delay: 0.2s;">
             <div class="location-info">
                 <i class="fas fa-globe-americas icon-glow"></i>
@@ -61,54 +63,53 @@
             </div>
         </div>
 
+        <!-- INFINITE MARQUEE CARD -->
         <div class="bento-card marquee-card slide-up" style="--delay: 0.3s;">
             <div class="marquee-track">
                 <div class="marquee-content">
-                    <span>FRONTEND ARCHITECTURE</span> <span class="star">✦</span>
-                    <span>BACKEND SYSTEMS</span> <span class="star">✦</span>
-                    <span>UI/UX PRECISION</span> <span class="star">✦</span>
-                    <span>DATA VALIDATION</span> <span class="star">✦</span>
-                    <span>REAL-TIME AUDIT</span> <span class="star">✦</span>
-                    <span>FRONTEND ARCHITECTURE</span> <span class="star">✦</span>
-                    <span>BACKEND SYSTEMS</span> <span class="star">✦</span>
-                    <span>UI/UX PRECISION</span> <span class="star">✦</span>
-                    <span>DATA VALIDATION</span> <span class="star">✦</span>
-                    <span>REAL-TIME AUDIT</span> <span class="star">✦</span>
+                    <span>MICROWAVE BACKHAUL SYSTEMS</span> <span class="star">✦</span>
+                    <span>DWDM FIBER OPTIC CORE</span> <span class="star">✦</span>
+                    <span>NETWORK OPERATION CENTER (NOC)</span> <span class="star">✦</span>
+                    <span>FASTAPI & REACT AUTOMATION</span> <span class="star">✦</span>
+                    <span>SLA HIGH AVAILABILITY</span> <span class="star">✦</span>
                 </div>
             </div>
         </div>
 
+        <!-- TERMINAL CARD (Frases adaptadas a redes troncales) -->
         <div class="bento-card terminal-card slide-up" style="--delay: 0.4s;">
             <div class="terminal-header">
                 <div class="term-dots">
                     <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
                 </div>
-                <span class="term-title">sys_monitor.exe</span>
+                <span class="term-title">network_monitor.exe</span>
             </div>
             <div class="terminal-body">
-                <p><span class="prompt">$</span> <span id="typewriter"></span><span class="cursor-blink">_</span></p>
+                <p><span class="prompt">core_noc@hector_uribe:~$</span> <span id="typewriter"></span><span class="cursor-blink">_</span></p>
             </div>
         </div>
 
+        <!-- QUICK STATS CARD -->
         <div class="bento-card stats-card slide-up" style="--delay: 0.5s;">
             <div class="stat-box">
                 <span class="stat-number">6+</span>
-                <span class="stat-label">Años de<br>Experiencia</span>
+                <span class="stat-label">Años en<br>Telecom & TI</span>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-box">
-                <span class="stat-number">99<span class="stat-small">%</span></span>
-                <span class="stat-label">Precisión en<br>Layouts UI</span>
+                <span class="stat-number">99.99<span class="stat-small">%</span></span>
+                <span class="stat-label">Disponibilidad<br>de Enlaces Troncales</span>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-box">
                 <span class="stat-number">24/7</span>
-                <span class="stat-label">Soporte y<br>Monitoreo</span>
+                <span class="stat-label">Soporte y<br>Monitoreo Activo</span>
             </div>
         </div>
 
+        <!-- EXPERIENCE CARD -->
         <div class="bento-card exp-card slide-up" style="--delay: 0.6s;">
-            <h3 class="card-title">Experiencia</h3>
+            <h3 class="card-title">Experiencia Profesional</h3>
             <div class="exp-list">
                 {% for exp in data.experience %}
                 <div class="exp-item">
@@ -123,13 +124,14 @@
             </div>
         </div>
 
+        <!-- PROJECTS CARD -->
         <div class="bento-card projects-card slide-up" style="--delay: 0.7s;">
-            <h3 class="card-title">Arquitectura y Desarrollo</h3>
+            <h3 class="card-title">Arquitectura, Automatización y Redes</h3>
             <div class="project-list">
                 {% for proj in data.projects %}
                 <div class="project-box">
                     <div class="project-top">
-                        <i class="{{ proj.icon }} project-icon"></i>
+                        <i class="{{ proj.icon }} project-icon" style="color: var(--accent-blue);"></i>
                         <h4>{{ proj.title }}</h4>
                     </div>
                     <p>{{ proj.desc }}</p>
@@ -138,23 +140,18 @@
             </div>
         </div>
 
+        <!-- TECH STACK CARD DINÁMICO -->
         <div class="bento-card tech-card slide-up" style="--delay: 0.8s;">
-            <h3 class="card-title">Stack Técnico & Herramientas</h3>
+            <h3 class="card-title">Stack Técnico & Especialidades</h3>
             <div class="tags-container">
-                {% if data.tech_stack %}
-                    {% for tech in data.tech_stack %}
-                    <span class="mono-tag"><i class="{{ tech.icon }}"></i> {{ tech.name }}</span>
-                    {% endfor %}
-                {% else %}
-                    <span class="mono-tag"><i class="fab fa-react"></i> React</span>
-                    <span class="mono-tag"><i class="fab fa-python"></i> Python</span>
-                    <span class="mono-tag"><i class="fas fa-server"></i> FastAPI</span>
-                    <span class="mono-tag"><i class="fas fa-database"></i> PostgreSQL</span>
-                {% endif %}
+                {% for tech in data.tech_stack %}
+                <span class="mono-tag"><i class="{{ tech.icon }}"></i> {{ tech.name }}</span>
+                {% endfor %}
             </div>
         </div>
         
-        <div class="bento-card contact-card slide-up" style="--delay: 0.9s;">
+        <!-- CONTACT CARD -->
+        <div class="bento-card contact-card slide-up" style="--delay: 0.9s; border-bottom: 3px solid var(--accent-green);">
             <h3 class="card-title">Conectar</h3>
             <div class="link-grid">
                 <a href="{{ data.profile.github }}" target="_blank" class="tech-btn primary-btn magnetic-element">
@@ -171,6 +168,7 @@
 
     </div>
 
+    <!-- VENTANA EMERGENTE FLOTANTE (MODAL OVERLAY PREMIUM) -->
     <div class="modal-overlay" id="contactModal">
         <div class="modal-content">
             <button class="close-modal" onclick="closeModal()"><i class="fas fa-times"></i></button>
@@ -200,71 +198,62 @@
         </div>
     </div>
 
+    <!-- CONTENEDOR OCULTO PARA EL PDF - DISEÑO CORPORATIVO ESTRICTO (ESTILO HARVARD) -->
     <div style="position: absolute; left: -9999px; top: -9999px; visibility: hidden; z-index: -1;">
-        <div id="cv-template" style="font-family: 'Arial', Helvetica, sans-serif; color: #333; background: #fff; width: 800px; box-sizing: border-box; padding: 50px 60px;">
-            <div style="border-bottom: 2px solid #2b6cb0; padding-bottom: 15px; margin-bottom: 25px;">
-                <h1 style="font-size: 28pt; color: #1a202c; margin: 0 0 5px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">{{ data.profile.name }}</h1>
-                <h2 style="font-size: 14pt; color: #2b6cb0; margin: 0 0 10px 0; font-weight: 500;">{{ data.profile.role | replace('>', '') | replace('_', '') | trim }}</h2>
-                <div style="font-size: 10pt; color: #4a5568; display: flex; gap: 15px; flex-wrap: wrap;">
+        <div id="cv-template" style="font-family: 'Arial', Helvetica, sans-serif; color: #2d3748; background: #fff; width: 800px; box-sizing: border-box; padding: 50px 60px;">
+            <div style="border-bottom: 3px solid #2b6cb0; padding-bottom: 15px; margin-bottom: 25px;">
+                <h1 style="font-size: 26pt; color: #1a202c; margin: 0 0 5px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">{{ data.profile.name }}</h1>
+                <h2 style="font-size: 13pt; color: #2b6cb0; margin: 0 0 12px 0; font-weight: 600;">{{ data.profile.role | replace('>', '') | replace('_', '') | trim }}</h2>
+                <div style="font-size: 9.5pt; color: #4a5568; display: flex; gap: 12px; flex-wrap: wrap; line-height: 1.4;">
                     <span><strong>Ubicación:</strong> {{ data.profile.location }}</span> |
                     <span><strong>Email:</strong> {{ data.profile.email }}</span> |
-                    <span><strong>LinkedIn:</strong> {{ data.profile.linkedin | replace('https://www.', '') }}</span> |
+                    <span><strong>LinkedIn:</strong> {{ data.profile.linkedin | replace('https://', '') }}</span> |
                     <span><strong>GitHub:</strong> {{ data.profile.github | replace('https://', '') }}</span>
                 </div>
             </div>
             
             <div style="margin-bottom: 25px;">
-                <h3 style="font-size: 12pt; color: #2d3748; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; margin: 0 0 10px 0;">Perfil Profesional</h3>
-                <p style="font-size: 10.5pt; color: #4a5568; text-align: justify; margin: 0; line-height: 1.6;">{{ data.profile.bio }}</p>
+                <h3 style="font-size: 12pt; color: #1a202c; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin: 0 0 10px 0; letter-spacing: 0.5px;">Perfil Profesional</h3>
+                <p style="font-size: 10pt; color: #4a5568; text-align: justify; margin: 0; line-height: 1.6;">{{ data.profile.bio }}</p>
             </div>
 
             <div style="margin-bottom: 25px;">
-                <h3 style="font-size: 12pt; color: #2d3748; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; margin: 0 0 15px 0;">Experiencia Laboral</h3>
+                <h3 style="font-size: 12pt; color: #1a202c; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin: 0 0 15px 0; letter-spacing: 0.5px;">Experiencia Laboral</h3>
                 {% for exp in data.experience %}
-                <div style="margin-bottom: 15px; page-break-inside: avoid;">
-                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                        <h4 style="font-size: 11.5pt; color: #1a202c; margin: 0; font-weight: 600;">{{ exp.role }}</h4>
-                        <span style="font-size: 10pt; color: #2b6cb0; font-weight: 600;">{{ exp.date }}</span>
+                <div style="margin-bottom: 16px; page-break-inside: avoid;">
+                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;">
+                        <h4 style="font-size: 11pt; color: #1a202c; margin: 0; font-weight: 700;">{{ exp.role }}</h4>
+                        <span style="font-size: 9.5pt; color: #2b6cb0; font-weight: 700;">{{ exp.date }}</span>
                     </div>
-                    <div style="font-size: 10.5pt; color: #4a5568; font-style: italic; margin-bottom: 5px;">{{ exp.company }}</div>
-                    <p style="font-size: 10pt; color: #4a5568; margin: 0; line-height: 1.5;">• {{ exp.desc }}</p>
+                    <div style="font-size: 10pt; color: #4a5568; font-style: italic; margin-bottom: 6px; font-weight: 600;">{{ exp.company }}</div>
+                    <p style="font-size: 9.5pt; color: #4a5568; margin: 0; line-height: 1.5; text-align: justify;">• {{ exp.desc }}</p>
                 </div>
                 {% endfor %}
             </div>
 
             <div style="margin-bottom: 25px;">
-                <h3 style="font-size: 12pt; color: #2d3748; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; margin: 0 0 15px 0;">Proyectos Destacados</h3>
+                <h3 style="font-size: 12pt; color: #1a202c; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin: 0 0 15px 0; letter-spacing: 0.5px;">Proyectos Destacados</h3>
                 {% for proj in data.projects %}
-                <div style="margin-bottom: 15px; page-break-inside: avoid;">
-                    <h4 style="font-size: 11.5pt; color: #1a202c; margin: 0 0 4px 0; font-weight: 600;">{{ proj.title }}</h4>
-                    <p style="font-size: 10pt; color: #4a5568; margin: 0; line-height: 1.5; padding-left: 15px; position: relative;">
-                        <span style="position: absolute; left: 0; top: 0; color: #2b6cb0;">•</span>
-                        {{ proj.desc }}
-                    </p>
+                <div style="margin-bottom: 14px; page-break-inside: avoid;">
+                    <h4 style="font-size: 11pt; color: #1a202c; margin: 0 0 4px 0; font-weight: 700;">{{ proj.title }}</h4>
+                    <p style="font-size: 9.5pt; color: #4a5568; margin: 0; line-height: 1.5; text-align: justify;">• {{ proj.desc }}</p>
                 </div>
                 {% endfor %}
             </div>
 
             <div>
-                <h3 style="font-size: 12pt; color: #2d3748; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; margin: 0 0 12px 0;">Stack Técnico & Herramientas</h3>
-                <div style="font-size: 10pt; display: flex; flex-wrap: wrap; gap: 8px;">
-                    {% if data.tech_stack %}
-                        {% for tech in data.tech_stack %}
-                            <span style="background: #f7fafc; color: #4a5568; padding: 5px 12px; border-radius: 4px; border: 1px solid #e2e8f0; font-weight: 500;">{{ tech.name }}</span>
-                        {% endfor %}
-                    {% else %}
-                        <span style="background: #f7fafc; color: #4a5568; padding: 5px 12px; border-radius: 4px; border: 1px solid #e2e8f0; font-weight: 500;">React</span>
-                        <span style="background: #f7fafc; color: #4a5568; padding: 5px 12px; border-radius: 4px; border: 1px solid #e2e8f0; font-weight: 500;">Python</span>
-                        <span style="background: #f7fafc; color: #4a5568; padding: 5px 12px; border-radius: 4px; border: 1px solid #e2e8f0; font-weight: 500;">FastAPI</span>
-                        <span style="background: #f7fafc; color: #4a5568; padding: 5px 12px; border-radius: 4px; border: 1px solid #e2e8f0; font-weight: 500;">PostgreSQL</span>
-                    {% endif %}
+                <h3 style="font-size: 12pt; color: #1a202c; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin: 0 0 12px 0; letter-spacing: 0.5px;">Competencias & Tecnologías</h3>
+                <div style="font-size: 9.5pt; display: flex; flex-wrap: wrap; gap: 6px;">
+                    {% for tech in data.tech_stack %}
+                    <span style="background: #f7fafc; color: #4a5568; padding: 4px 10px; border-radius: 4px; border: 1px solid #e2e8f0; font-weight: 500;">{{ tech.name }}</span>
+                    {% endfor %}
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- CONTROLES DE LA VENTANA EMERGENTE ---
+        // --- CONTROLES DE LA VENTANA EMERGENTE (MODAL) ---
         const modal = document.getElementById('contactModal');
         const statusDiv = document.getElementById('form-status');
 
@@ -278,21 +267,18 @@
             document.getElementById('contactForm').reset();
         }
 
-        window.onclick = function(event) {
-            if (event.target == modal) { closeModal(); }
-        }
+        window.onclick = function(event) { if (event.target == modal) { closeModal(); } }
 
         // --- ENVÍO DE CORREO VIA FORMSPREE ---
         async function submitForm(event) {
             event.preventDefault();
             const btn = document.getElementById('submit-msg-btn');
             const originalContent = btn.innerHTML;
-            
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
             btn.style.pointerEvents = 'none';
 
-            // REEMPLAZA "TU_CODIGO_AQUI" POR EL CÓDIGO QUE TE DA FORMSPREE
-            const FORMSPREE_URL = "https://formspree.io/f/xjgddjpa";
+            // REEMPLAZAR ESTA URL POR TU ENDPOINT COMPLETO OBTENIDO EN INTEGRATION
+            const FORMSPREE_URL = "https://formspree.io/f/mqakevzz"; 
 
             const payload = {
                 email: document.getElementById('sender_email').value,
@@ -303,10 +289,7 @@
             try {
                 const res = await fetch(FORMSPREE_URL, {
                     method: 'POST',
-                    headers: { 
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json' 
-                    },
+                    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
@@ -315,10 +298,10 @@
                     document.getElementById('contactForm').reset();
                     setTimeout(closeModal, 2500);
                 } else {
-                    statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error al enviar el mensaje.</span>';
+                    statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error al enviar, verifica el endpoint.</span>';
                 }
             } catch(e) {
-                statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error de conexión.</span>';
+                statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error de red o conexión.</span>';
             } finally {
                 btn.innerHTML = originalContent;
                 btn.style.pointerEvents = 'auto';
@@ -329,7 +312,7 @@
         function downloadPDF() {
             const btn = document.getElementById('download-btn');
             const originalContent = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sincronizando PDF...';
             btn.style.pointerEvents = 'none';
             const element = document.getElementById('cv-template');
             const safeName = '{{ data.profile.name }}'.replace(/\s+/g, '_');
@@ -337,7 +320,7 @@
             html2pdf().set(opt).from(element).save().then(() => { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; }).catch(() => { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; });
         }
 
-        // --- INTERACCIONES ---
+        // --- INTERACCIONES Y HOVER ---
         const cursor = document.getElementById('cursor');
         if (window.matchMedia("(min-width: 768px)").matches) {
             document.addEventListener('mousemove', e => { cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`; });
@@ -373,7 +356,14 @@
         function updateClock() { document.getElementById('live-time').innerText = new Date().toLocaleTimeString('es-MX', { timeZone: 'America/Tijuana', hour: '2-digit', minute:'2-digit', second:'2-digit', hour12: false }); }
         setInterval(updateClock, 1000); updateClock();
 
-        const phrases = ["iniciando servicios de backend...", "validando schemas de FastAPI... OK.", "sincronizando componentes React...", "eficiencia espacial al 100%.", "auditando bases de datos..."];
+        // Typewriter adaptado a Telecomunicaciones
+        const phrases = [
+            "sincronizando radioenlaces de microondas...",
+            "monitoreando anillos core de fibra óptica... OK.",
+            "analizando umbrales de pérdida por inserción óptica...",
+            "validando esquemas de enrutamiento dinámico (BGP/OSPF)...",
+            "mantenimiento proactivo NOC: disponibilidad 99.99%."
+        ];
         let idx = 0; let chIdx = 0; let isDeleting = false; let isWaiting = false;
         function typeLoop() {
             if (isWaiting) return;
@@ -381,12 +371,12 @@
             const typewriterEl = document.getElementById("typewriter");
             if (isDeleting) { typewriterEl.innerText = currentPhrase.substring(0, chIdx - 1); chIdx--; if (chIdx === 0) { isDeleting = false; idx = (idx + 1) % phrases.length; } } 
             else { typewriterEl.innerText = currentPhrase.substring(0, chIdx + 1); chIdx++; if (chIdx === currentPhrase.length) { isWaiting = true; setTimeout(() => { isWaiting = false; isDeleting = true; }, 2500); } }
-            setTimeout(typeLoop, isDeleting ? 25 : 50);
+            setTimeout(typeLoop, isDeleting ? 20 : 45);
         }
         typeLoop();
 
         let docTitle = document.title;
-        window.addEventListener("blur", () => { document.title = "¡No te vayas! 👨‍💻 | " + docTitle.split(" - ")[0]; });
+        window.addEventListener("blur", () => { document.title = "⚠️ NOC ALERT: Enlace inactivo | " + docTitle.split(" - ")[0]; });
         window.addEventListener("focus", () => { document.title = docTitle; });
     </script>
 </body>

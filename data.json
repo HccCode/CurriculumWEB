@@ -1,49 +1,76 @@
 {
     "profile": {
         "name": "Hector Uribe Montaño",
-        "role": "Ingeniero en Informatica",
-        "bio": "Especializado en la creación de interfaces de alta precisión, arquitecturas backend escalables y paneles de auditoría. Orientado a la consistencia estricta de componentes y al manejo eficiente de flujos operativos y estadísticos.",
+        "role": "> Ingeniero de Operación y Soporte de Redes Troncales_",
+        "bio": "Ingeniero especializado en la operación, monitoreo avanzado y soporte crítico de infraestructura de telecomunicaciones de transporte. Experto en la gestión de redes de Fibra Óptica (DWDM, GPON) y Radioenlaces de Microondas de alta capacidad (Cambium, Ubiquiti). Orientado a la alta disponibilidad core, automatización de auditorías de datos y optimización de flujos en tiempo real bajo estrictos acuerdos de nivel de servicio (SLA).",
         "location": "Mexicali, B.C.",
-        "email": "tu-correo@email.com",
+        "email": "hectorum9214@gmail.com",
         "github": "https://github.com/Hector7x",
         "linkedin": "https://www.linkedin.com/in/hectorum",
         "resume_link": "CV_Hector_Uribe.pdf"
     },
     "experience": [
         {
+            "role": "Ingeniero de Operación y Soporte Troncal",
             "company": "Metrocarrier",
             "date": "2022 — Pres",
-            "desc": "Gestión de infraestructura, resolución de incidencias de misión crítica y monitoreo avanzado de sistemas operacionales.",
-            "role": "Ingeniero de Operación y Soporte"
+            "desc": "Operación y supervisión 24/7 de la red de transporte nacional (Core DWDM y anillos de Fibra Óptica). Diagnóstico de fallas de atenuación óptica, troubleshooting avanzado en protocolos de enrutamiento dinámico y soporte de tercer nivel a radioenlaces de microondas licenciados. Responsable directo de mantener la disponibilidad de infraestructura troncal por encima del 99.99% cumpliendo métricas críticas de SLA."
         },
         {
+            "role": "Auxiliar de TI e Infraestructura de Red",
             "company": "Comercial de Carnes Frías",
             "date": "2021",
-            "desc": "Soporte técnico interno, mantenimiento de equipos y seguridad de redes locales.",
-            "role": "Auxiliar de TI"
+            "desc": "Administración de la infraestructura de red local (LAN/WLAN corporativa). Configuración de routers, switches y balanceadores de carga, despliegue de sistemas inteligentes de seguridad por CCTV (Dahua) y automatización del control de inventarios físicos mediante procesamiento lógico de datos."
         },
         {
+            "role": "Ingeniero de Soporte y Telecomunicaciones",
             "company": "Profuels México",
             "date": "2018 — 2021",
-            "desc": "Atención corporativa de soporte técnico. Gestión centralizada de incidencias mediante sistema de tickets.",
-            "role": "Ingeniero de Soporte"
+            "desc": "Despliegue, comisionamiento y alineación de radioenlaces de microondas punto a punto y multipunto (Ubiquiti, Cambium Networks) para telemetría industrial en sitios remotos. Administración distribuidas de firewalls de seguridad perimetral y soporte técnico integral de infraestructura de red bajo sistemas de tickets centralizados."
         }
     ],
     "projects": [
         {
-            "desc": "Aplicación de gestión de flujos operativos con un layout frontend de componentes milimétricos y temporizadores sincronizados.",
-            "icon": "fas fa-desktop",
-            "title": "Control de Estados en Tiempo Real"
+            "title": "Monitoreo de Radioenlaces y Conectividad",
+            "icon": "fas fa-network-wired",
+            "desc": "Módulo en tiempo real para la visualización gráfica de estados de atenuación, ruido y disponibilidad en radioenlaces de microondas mediante componentes milimétricos y temporizadores."
         },
         {
-            "desc": "Panel estadístico con módulos de seguridad integrados, backend en Python y consultas optimizadas para trazabilidad de historial.",
+            "title": "Dashboard Analítico de Auditoría SLA",
             "icon": "fas fa-chart-line",
-            "title": "Dashboard Analítico y Auditoría"
+            "title_alt": "Dashboard Analítico",
+            "desc": "Panel estadístico centralizado encargado de recopilar logs históricos de caídas ópticas e incidencias de red, optimizando los tiempos de respuesta y análisis de causa raíz corporativa."
         },
         {
-            "desc": "Motor lógico para la validación territorial y carga de inventarios, previniendo cruces de datos mediante reglas estrictas.",
+            "title": "Validador Geográfico de Inventario Óptico",
             "icon": "fas fa-map-marked-alt",
-            "title": "Validador Geográfico Excel"
+            "desc": "Motor lógico en Python que procesa archivos de inventario en Excel para validar coordenadas, IDs de equipos y evitar cruces territoriales de fibra óptica o torres de microondas."
+        }
+    ],
+    "tech_stack": [
+        {
+            "name": "Fibra Óptica (DWDM/GPON)",
+            "icon": "fas fa-wave-square"
+        },
+        {
+            "name": "Radioenlaces (Cambium/Ubiquiti)",
+            "icon": "fas fa-broadcast-tower"
+        },
+        {
+            "name": "FastAPI & Python Backend",
+            "icon": "fab fa-python"
+        },
+        {
+            "name": "React UI Core",
+            "icon": "fab fa-react"
+        },
+        {
+            "name": "PostgreSQL Architecture",
+            "icon": "fas fa-database"
+        },
+        {
+            "name": "Infraestructura de Red (Routing & Switching)",
+            "icon": "fas fa-server"
         }
     ]
 }
