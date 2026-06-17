@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/css/all.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
@@ -28,9 +30,9 @@
                     {{ data.profile.bio }}
                 </p>
                 <div class="hero-actions">
-                    <a href="{{ data.profile.resume_link }}" download class="glow-btn magnetic-element">
+                    <button id="download-btn" onclick="downloadPDF()" class="glow-btn magnetic-element" style="border:none; cursor:pointer; font-family: 'Inter', sans-serif;">
                         <i class="fas fa-file-pdf"></i> Descargar Resume
-                    </a>
+                    </button>
                 </div>
             </div>
             <div class="hero-visual">
@@ -164,7 +166,104 @@
 
     </div>
 
+    <div style="position: absolute; left: -9999px; top: -9999px; visibility: hidden; z-index: -1;">
+        <div id="cv-template" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #222; background: #fff; width: 800px; box-sizing: border-box; padding: 40px;">
+            
+            <div style="text-align: center; margin-bottom: 25px;">
+                <h1 style="font-size: 26pt; color: #111; margin: 0; font-weight: 700; letter-spacing: -0.5px;">{{ data.profile.name }}</h1>
+                <h2 style="font-size: 13pt; color: #555; margin: 5px 0 10px 0; font-weight: 400;">{{ data.profile.role | replace('>', '') | replace('_', '') | trim }}</h2>
+                <div style="font-size: 10pt; color: #666; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; border-bottom: 1px solid #ddd; padding-bottom: 15px;">
+                    <span>{{ data.profile.location }}</span> |
+                    <span>{{ data.profile.email }}</span> |
+                    <span>{{ data.profile.linkedin }}</span> |
+                    <span>{{ data.profile.github }}</span>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <h3 style="font-size: 12pt; color: #111; text-transform: uppercase; border-bottom: 2px solid #111; padding-bottom: 5px; margin-bottom: 10px;">Perfil Profesional</h3>
+                <p style="font-size: 10.5pt; text-align: justify; margin: 0; line-height: 1.5;">{{ data.profile.bio }}</p>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <h3 style="font-size: 12pt; color: #111; text-transform: uppercase; border-bottom: 2px solid #111; padding-bottom: 5px; margin-bottom: 15px;">Experiencia Laboral</h3>
+                {% for exp in data.experience %}
+                <div style="margin-bottom: 15px; page-break-inside: avoid;">
+                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                        <h4 style="font-size: 11pt; color: #222; margin: 0;">{{ exp.role }}</h4>
+                        <span style="font-size: 10pt; color: #555; font-weight: 600;">{{ exp.date }}</span>
+                    </div>
+                    <div style="font-size: 10.5pt; color: #444; font-weight: 600; margin-bottom: 5px;">{{ exp.company }}</div>
+                    <p style="font-size: 10pt; margin: 0; line-height: 1.5;">{{ exp.desc }}</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <h3 style="font-size: 12pt; color: #111; text-transform: uppercase; border-bottom: 2px solid #111; padding-bottom: 5px; margin-bottom: 15px;">Proyectos Destacados</h3>
+                {% for proj in data.projects %}
+                <div style="margin-bottom: 15px; page-break-inside: avoid;">
+                    <h4 style="font-size: 11pt; color: #222; margin: 0 0 5px 0;">{{ proj.title }}</h4>
+                    <p style="font-size: 10pt; margin: 0; line-height: 1.5;">{{ proj.desc }}</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div>
+                <h3 style="font-size: 12pt; color: #111; text-transform: uppercase; border-bottom: 2px solid #111; padding-bottom: 5px; margin-bottom: 10px;">Stack Técnico & Herramientas</h3>
+                <p style="font-size: 10pt; margin: 0; line-height: 1.8;">
+                    {% if data.tech_stack %}
+                        {% for tech in data.tech_stack %}
+                            <span style="background: #f9f9f9; padding: 4px 8px; border-radius: 4px; border: 1px solid #ddd; margin-right: 5px; margin-bottom: 5px; display: inline-block;">{{ tech.name }}</span>
+                        {% endfor %}
+                    {% else %}
+                        <span style="background: #f9f9f9; padding: 4px 8px; border-radius: 4px; border: 1px solid #ddd; margin-right: 5px; display: inline-block;">React</span>
+                        <span style="background: #f9f9f9; padding: 4px 8px; border-radius: 4px; border: 1px solid #ddd; margin-right: 5px; display: inline-block;">Python</span>
+                        <span style="background: #f9f9f9; padding: 4px 8px; border-radius: 4px; border: 1px solid #ddd; margin-right: 5px; display: inline-block;">FastAPI</span>
+                        <span style="background: #f9f9f9; padding: 4px 8px; border-radius: 4px; border: 1px solid #ddd; margin-right: 5px; display: inline-block;">PostgreSQL</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
     <script>
+        // --- FUNCIÓN DE DESCARGA PDF ---
+        function downloadPDF() {
+            const btn = document.getElementById('download-btn');
+            const originalContent = btn.innerHTML;
+            
+            // Animación de carga
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
+            btn.style.pointerEvents = 'none';
+
+            const element = document.getElementById('cv-template');
+            
+            // Limpia el nombre para evitar problemas al guardar el archivo
+            const safeName = '{{ data.profile.name }}'.replace(/\s+/g, '_');
+            
+            const opt = {
+                margin:       15,
+                filename:     `CV_${safeName}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Generar y guardar el PDF
+            html2pdf().set(opt).from(element).save().then(() => {
+                btn.innerHTML = originalContent;
+                btn.style.pointerEvents = 'auto';
+            }).catch(err => {
+                console.error(err);
+                btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error al generar';
+                setTimeout(() => { 
+                    btn.innerHTML = originalContent; 
+                    btn.style.pointerEvents = 'auto'; 
+                }, 2000);
+            });
+        }
+
+        // --- SCRIPTS EXISTENTES DE INTERACTIVIDAD ---
         const cursor = document.getElementById('cursor');
         
         if (window.matchMedia("(min-width: 768px)").matches) {
