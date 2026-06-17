@@ -14,6 +14,11 @@
 </head>
 <body>
 
+    <div class="mesh-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
     <div class="custom-cursor" id="cursor"></div>
     <div class="noise-bg"></div>
 
@@ -226,19 +231,17 @@
             </div>
         </div>
     </div>
+
     <script>
         // --- FUNCIÓN DE DESCARGA PDF ---
         function downloadPDF() {
             const btn = document.getElementById('download-btn');
             const originalContent = btn.innerHTML;
             
-            // Animación de carga
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
             btn.style.pointerEvents = 'none';
 
             const element = document.getElementById('cv-template');
-            
-            // Limpia el nombre para evitar problemas al guardar el archivo
             const safeName = '{{ data.profile.name }}'.replace(/\s+/g, '_');
             
             const opt = {
@@ -249,7 +252,6 @@
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            // Generar y guardar el PDF
             html2pdf().set(opt).from(element).save().then(() => {
                 btn.innerHTML = originalContent;
                 btn.style.pointerEvents = 'auto';
@@ -354,6 +356,15 @@
             setTimeout(typeLoop, isDeleting ? speed / 2 : speed);
         }
         typeLoop();
+
+        // 6. Micro-interacción: Cambio de Título de Pestaña (Focus/Blur)
+        let docTitle = document.title;
+        window.addEventListener("blur", () => {
+            document.title = "¡No te vayas! 👨‍💻 | " + docTitle.split(" - ")[0];
+        });
+        window.addEventListener("focus", () => {
+            document.title = docTitle;
+        });
     </script>
 </body>
 </html>
