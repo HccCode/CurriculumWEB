@@ -17,6 +17,29 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 @media (min-width: 768px) { body, a, button, input, textarea { cursor: none !important; } }
 
+/* NUEVO: Boot Screen Overlay */
+#boot-screen {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: #000; z-index: 9999999;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    font-family: 'JetBrains Mono', monospace; color: var(--accent-green);
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+.boot-text {
+    text-align: left; width: 400px; font-size: 0.9rem; line-height: 1.8;
+    animation: glitchText 0.3s infinite; text-shadow: 0 0 8px var(--accent-green);
+}
+.boot-hidden { opacity: 0; visibility: hidden; }
+
+@keyframes glitchText {
+    0% { transform: translate(0) }
+    20% { transform: translate(-2px, 1px) }
+    40% { transform: translate(-1px, -1px) }
+    60% { transform: translate(2px, 1px) }
+    80% { transform: translate(1px, -1px) }
+    100% { transform: translate(0) }
+}
+
 /* Scrollbar y Progress Bar Lineal */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg-base); }
@@ -73,6 +96,7 @@ body { font-family: 'Inter', sans-serif; background-color: transparent; color: v
 .bento-card::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.04) 0%, transparent 60%); pointer-events: none; z-index: 5; opacity: 0; transition: opacity 0.3s; }
 .bento-card:hover { border-color: rgba(255,255,255,0.22); box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.5), 0 25px 50px rgba(0,0,0,0.8), 0 0 35px rgba(59, 130, 246, 0.15); }
 .bento-card:hover::before, .bento-card:hover::after { opacity: 1; }
+.bento-card > * { position: relative; z-index: 3; transform: translateZ(20px); }
 
 /* Capas 3D de Parallax */
 .parallax-layer-1 { transform: translateZ(10px); transition: transform 0.3s; position: relative; z-index: 3;}
@@ -104,6 +128,15 @@ body { font-family: 'Inter', sans-serif; background-color: transparent; color: v
 .avatar { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; filter: grayscale(8%); }
 
 .location-card { justify-content: center; align-items: center; text-align: center; gap: 0.8rem; }
+
+/* NUEVO: Server Load Equalizer */
+.server-load { display: flex; gap: 4px; align-items: flex-end; height: 24px; padding-bottom: 4px;}
+.server-load .bar { width: 4px; background: var(--accent-green); animation: eq 0.8s infinite ease-in-out alternate; border-radius: 2px;}
+.server-load .bar:nth-child(1) { animation-delay: 0.1s; }
+.server-load .bar:nth-child(2) { animation-delay: 0.4s; }
+.server-load .bar:nth-child(3) { animation-delay: 0.2s; }
+.server-load .bar:nth-child(4) { animation-delay: 0.5s; }
+@keyframes eq { 0% { height: 4px; } 100% { height: 100%; box-shadow: 0 0 8px var(--accent-green);} }
 
 /* Radar Ping Effect */
 .radar-container { position: relative; display: inline-block; margin-bottom: 0.3rem; }
@@ -162,6 +195,17 @@ body { font-family: 'Inter', sans-serif; background-color: transparent; color: v
 .primary-btn { background: var(--btn-primary-bg); color: var(--btn-primary-text); }
 .outline-btn { background: transparent; color: var(--btn-outline-text); border: 1px solid var(--border-color); }
 .outline-btn:hover { border-color: var(--text-main); background: rgba(255,255,255,0.03); }
+
+/* NUEVO: Hover effect de Levitación para Iconos */
+.levitate-icon { font-size: 1.2rem; transition: transform 0.3s ease; display: inline-block; }
+.project-box:hover .levitate-icon {
+    animation: levitate 2s ease-in-out infinite;
+    text-shadow: 0 10px 15px rgba(59, 130, 246, 0.6);
+}
+@keyframes levitate {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
 
 .tags-container { display: flex; flex-wrap: wrap; gap: 10px; }
 .mono-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.84rem; font-weight: 600; border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 12px; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.02); color: #cbd5e1; }

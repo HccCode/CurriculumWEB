@@ -13,6 +13,17 @@
 </head>
 <body>
 
+    <!-- NUEVO: Secuencia de Arranque (Boot Screen) -->
+    <div id="boot-screen">
+        <div class="boot-text">
+            > INICIANDO SISTEMA NOC CORE...<br>
+            > ESTABLECIENDO CONEXIÓN SEGURA...<br>
+            > VERIFICANDO INTEGRIDAD DE ENLACES... OK.<br>
+            > CARGANDO PERFIL: HECTOR_URIBE...<br>
+            > <span style="color: #10b981;">ACCESO CONCEDIDO.</span>
+        </div>
+    </div>
+
     <!-- Scroll Progress Bar -->
     <div id="scroll-progress"></div>
 
@@ -60,9 +71,16 @@
                     <p class="loc-text">{{ data.profile.location }}</p>
                 </div>
             </div>
-            <div class="time-display parallax-layer-3">
-                <span id="live-time">00:00:00</span>
-                <span class="time-zone">PST</span>
+            
+            <div class="time-display parallax-layer-3" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                <div>
+                    <span id="live-time">00:00:00</span>
+                    <span class="time-zone">PST</span>
+                </div>
+                <!-- NUEVO: Ecualizador de Carga de Servidor -->
+                <div class="server-load" title="Tráfico de Red">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                </div>
             </div>
         </div>
 
@@ -79,7 +97,7 @@
             </div>
         </div>
 
-        <!-- TERMINAL (Restaurada a Typewriter) -->
+        <!-- TERMINAL CLÁSICA (Restaurada, SIN input, SÓLO Typewriter) -->
         <div class="bento-card terminal-card slide-up" style="--delay: 0.4s;">
             <div class="terminal-header parallax-layer-1">
                 <div class="term-dots">
@@ -87,12 +105,12 @@
                 </div>
                 <span class="term-title">network_monitor.exe</span>
             </div>
-            <div class="terminal-body crt-effect">
+            <div class="terminal-body crt-effect" id="terminal-body">
                 <p class="parallax-layer-2"><span class="prompt">core_noc@hector_uribe:~$</span> <span id="typewriter"></span><span class="cursor-blink">_</span></p>
             </div>
         </div>
 
-        <!-- STATS (Restaurada) -->
+        <!-- STATS (Restaurada sin Gráfico de Ping) -->
         <div class="bento-card stats-card slide-up" style="--delay: 0.5s;">
             <div class="stat-box parallax-layer-2">
                 <span class="stat-number">8+</span>
@@ -134,7 +152,8 @@
                 {% for proj in data.projects %}
                 <div class="project-box parallax-layer-2">
                     <div class="project-top">
-                        <i class="{{ proj.icon }} project-icon" style="color: var(--accent-blue);"></i>
+                        <!-- NUEVO: Icono levitante -->
+                        <i class="{{ proj.icon }} project-icon levitate-icon" style="color: var(--accent-blue);"></i>
                         <h4>{{ proj.title }}</h4>
                     </div>
                     <p class="parallax-layer-1">{{ proj.desc }}</p>
@@ -250,6 +269,13 @@
 
     <!-- SCRIPT PRINCIPAL -->
     <script>
+        /* NUEVO: Boot Screen Logic */
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('boot-screen').classList.add('boot-hidden');
+            }, 1200); 
+        });
+
         /* 1. SCROLL PROGRESS BAR */
         window.addEventListener('scroll', () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -309,6 +335,7 @@
                 if(this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
                 let dx = mouse.x - this.x; let dy = mouse.y - this.y;
                 let distance = Math.sqrt(dx*dx + dy*dy);
+                
                 if(distance < mouse.radius + this.size){
                     if(mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 1;
                     if(mouse.x > this.x && this.x > this.size * 10) this.x -= 1;
@@ -370,7 +397,7 @@
                 const res = await fetch(FORMSPREE_URL, { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 if (res.ok) { statusDiv.innerHTML = '<span style="color: var(--accent-green);"><i class="fas fa-check-circle"></i> Mensaje enviado exitosamente.</span>'; document.getElementById('contactForm').reset(); setTimeout(closeModal, 2500); } 
                 else { statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error al enviar.</span>'; }
-            } catch(e) { statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error de red o conexión.</span>'; } 
+            } catch(e) { statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error de red.</span>'; } 
             finally { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; }
         }
 
