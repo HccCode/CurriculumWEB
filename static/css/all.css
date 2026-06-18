@@ -52,7 +52,7 @@ body { font-family: 'Inter', sans-serif; background-color: transparent; color: v
 
 /* Grid Bento */
 .bento-container { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(min-content, max-content); gap: 1.35rem; max-width: 1200px; width: 100%; perspective: 2000px; }
-.hero-card { grid-column: span 3; } .location-card { grid-column: span 1; } .marquee-card { grid-column: span 4; padding: 0 !important; overflow: hidden; border-radius: 16px !important; } .terminal-card { grid-column: span 2; padding: 0 !important; overflow: hidden; cursor: text;} .stats-card { grid-column: span 2; } .exp-card { grid-column: span 2; grid-row: span 2; } .projects-card { grid-column: span 2; grid-row: span 2; } .tech-card { grid-column: span 3; } .contact-card { grid-column: span 1; }
+.hero-card { grid-column: span 3; } .location-card { grid-column: span 1; } .marquee-card { grid-column: span 4; padding: 0 !important; overflow: hidden; border-radius: 16px !important; } .terminal-card { grid-column: span 2; padding: 0 !important; overflow: hidden; } .stats-card { grid-column: span 2; } .exp-card { grid-column: span 2; grid-row: span 2; } .projects-card { grid-column: span 2; grid-row: span 2; } .tech-card { grid-column: span 3; } .contact-card { grid-column: span 1; }
 
 /* Borde Interior Neón en hover & 3D PARALLAX */
 .bento-card { 
@@ -138,12 +138,7 @@ body { font-family: 'Inter', sans-serif; background-color: transparent; color: v
 .term-dots { display: flex; gap: 6px; } .dot { width: 10px; height: 10px; border-radius: 50%; }
 .dot.red { background: #ff5f56; } .dot.yellow { background: #ffbd2e; } .dot.green { background: #27c93f; }
 .term-title { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #555; margin: 0 auto; }
-.terminal-body { padding: 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #a3a3a3; line-height: 1.5; z-index: 5; overflow-y: auto; display: flex; flex-direction: column; height: 100%;}
-
-/* ESTILOS DE TERMINAL INTERACTIVA */
-.input-line { display: flex; width: 100%; margin-top: 5px;}
-#cmd-input { background: transparent; border: none; color: #f8fafc; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; flex-grow: 1; outline: none; }
-#terminal-output p { margin-bottom: 5px; }
+.terminal-body { padding: 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #a3a3a3; line-height: 1.5; z-index: 5; }
 
 /* CRT Scanline Effect */
 .crt-effect::before {
@@ -159,6 +154,8 @@ body { font-family: 'Inter', sans-serif; background-color: transparent; color: v
 @keyframes scanline { 0% { top: -10%; } 100% { top: 110%; } }
 
 .prompt { color: var(--accent-green); margin-right: 8px; }
+.cursor-blink { animation: blink 1s step-end infinite; color: var(--text-main); }
+@keyframes blink { 50% { opacity: 0; } }
 
 .link-grid { display: flex; flex-direction: column; gap: 0.8rem; height: 100%; justify-content: center; }
 .tech-btn { display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; padding: 12px; border-radius: 12px; font-weight: 600; font-size: 0.9rem; transition: var(--transition); border: none; }

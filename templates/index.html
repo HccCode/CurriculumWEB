@@ -79,26 +79,20 @@
             </div>
         </div>
 
-        <!-- TERMINAL INTERACTIVA -->
-        <div class="bento-card terminal-card slide-up" style="--delay: 0.4s;" onclick="document.getElementById('cmd-input').focus()">
+        <!-- TERMINAL (Restaurada a Typewriter) -->
+        <div class="bento-card terminal-card slide-up" style="--delay: 0.4s;">
             <div class="terminal-header parallax-layer-1">
                 <div class="term-dots">
                     <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
                 </div>
-                <span class="term-title">noc_shell (Interactive)</span>
+                <span class="term-title">network_monitor.exe</span>
             </div>
-            <div class="terminal-body crt-effect" id="terminal-body">
-                <div id="terminal-output" class="parallax-layer-2">
-                    <p style="color: var(--accent-blue);">Conectado al servidor NOC Troncal. Escribe 'help' para ver comandos.</p>
-                </div>
-                <div class="input-line parallax-layer-2">
-                    <span class="prompt">core_noc@hector:~$</span> 
-                    <input type="text" id="cmd-input" autocomplete="off" spellcheck="false" autofocus>
-                </div>
+            <div class="terminal-body crt-effect">
+                <p class="parallax-layer-2"><span class="prompt">core_noc@hector_uribe:~$</span> <span id="typewriter"></span><span class="cursor-blink">_</span></p>
             </div>
         </div>
 
-        <!-- STATS & LIVE PING -->
+        <!-- STATS (Restaurada) -->
         <div class="bento-card stats-card slide-up" style="--delay: 0.5s;">
             <div class="stat-box parallax-layer-2">
                 <span class="stat-number">8+</span>
@@ -110,13 +104,9 @@
                 <span class="stat-label">Disponibilidad<br>Troncal</span>
             </div>
             <div class="stat-divider parallax-layer-1"></div>
-            <div class="stat-box parallax-layer-2" style="width: 120px;">
-                <!-- LIVE PING CHART -->
-                <div style="font-family: 'JetBrains Mono'; color: var(--accent-green); font-size: 1.2rem; font-weight: 700; margin-bottom: 2px;">
-                    <span id="ping-value">12ms</span>
-                </div>
-                <canvas id="ping-chart" width="100" height="35" style="border-bottom: 1px solid rgba(255,255,255,0.1);"></canvas>
-                <span class="stat-label" style="display: block; margin-top: 5px;">Latencia<br>Core Activa</span>
+            <div class="stat-box parallax-layer-2">
+                <span class="stat-number">24/7</span>
+                <span class="stat-label">Soporte y<br>Monitoreo Activo</span>
             </div>
         </div>
 
@@ -362,68 +352,7 @@
         }
         initNetwork(); animateNetwork();
 
-        /* 5. INTERACTIVE TERMINAL LOGIC */
-        const cmdInput = document.getElementById('cmd-input');
-        const termOutput = document.getElementById('terminal-output');
-        const termBody = document.getElementById('terminal-body');
-
-        cmdInput.addEventListener('keydown', function(e) {
-            if(e.key === 'Enter') {
-                let cmd = this.value.trim().toLowerCase();
-                this.value = '';
-                let response = '';
-                
-                if(cmd === 'help') {
-                    response = 'Available commands:<br>&nbsp; status &nbsp;- Check NOC core status<br>&nbsp; ping &nbsp;&nbsp;&nbsp;- Test connection to DNS<br>&nbsp; clear &nbsp;&nbsp;- Clear terminal screen';
-                } else if(cmd === 'status') {
-                    response = '<span style="color: var(--accent-green);">[OK]</span> BGP routes converged.<br><span style="color: var(--accent-green);">[OK]</span> DWDM Rings synced.<br><span style="color: var(--accent-green);">[OK]</span> Microwave telemetry active.';
-                } else if(cmd === 'ping') {
-                    response = 'Pinging 8.8.8.8 with 32 bytes of data:<br>Reply from 8.8.8.8: bytes=32 time=12ms TTL=117<br>Reply from 8.8.8.8: bytes=32 time=11ms TTL=117<br>Ping statistics: 0% packet loss.';
-                } else if(cmd === 'clear') {
-                    termOutput.innerHTML = ''; return;
-                } else if(cmd === '') {
-                    return;
-                } else {
-                    response = `bash: ${cmd}: command not found`;
-                }
-                
-                termOutput.innerHTML += `<p><span class="prompt">core_noc@hector:~$</span> ${cmd}</p><p>${response}</p><br>`;
-                termBody.scrollTop = termBody.scrollHeight;
-            }
-        });
-
-        /* 6. LIVE PING CHART SIMULATOR */
-        const pingCanvas = document.getElementById('ping-chart');
-        if (pingCanvas) {
-            const pCtx = pingCanvas.getContext('2d');
-            let pingData = Array(20).fill(12);
-            function drawPing() {
-                // Simulate ping between 8ms and 16ms
-                pingData.push(12 + (Math.random() * 8 - 4));
-                pingData.shift();
-                
-                pCtx.clearRect(0,0,100,35);
-                pCtx.beginPath();
-                pCtx.moveTo(0, 35 - pingData[0]);
-                for(let i=1; i<pingData.length; i++) {
-                    pCtx.lineTo(i * 5.2, 35 - pingData[i]);
-                }
-                pCtx.strokeStyle = '#10b981';
-                pCtx.lineWidth = 1.5;
-                pCtx.stroke();
-                
-                // Add glow to line
-                pCtx.shadowBlur = 5;
-                pCtx.shadowColor = '#10b981';
-                pCtx.stroke();
-                pCtx.shadowBlur = 0;
-
-                document.getElementById('ping-value').innerText = Math.round(pingData[19]) + 'ms';
-            }
-            setInterval(drawPing, 600);
-        }
-
-        /* 7. MODAL DE CONTACTO & API FORMSPREE */
+        /* 5. MODAL DE CONTACTO & API FORMSPREE */
         const modal = document.getElementById('contactModal');
         const statusDiv = document.getElementById('form-status');
         function openModal() { modal.classList.add('active'); statusDiv.innerHTML = ''; }
@@ -441,11 +370,11 @@
                 const res = await fetch(FORMSPREE_URL, { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 if (res.ok) { statusDiv.innerHTML = '<span style="color: var(--accent-green);"><i class="fas fa-check-circle"></i> Mensaje enviado exitosamente.</span>'; document.getElementById('contactForm').reset(); setTimeout(closeModal, 2500); } 
                 else { statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error al enviar.</span>'; }
-            } catch(e) { statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error de red.</span>'; } 
+            } catch(e) { statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error de red o conexión.</span>'; } 
             finally { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; }
         }
 
-        /* 8. DESCARGA PDF */
+        /* 6. DESCARGA PDF */
         function downloadPDF() {
             const btn = document.getElementById('download-btn');
             const originalContent = btn.innerHTML;
@@ -457,7 +386,7 @@
             html2pdf().set(opt).from(element).save().then(() => { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; }).catch(() => { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; });
         }
 
-        /* 9. PARALLAX 3D TILT EFFECT */
+        /* 7. PARALLAX 3D TILT EFFECT & CUSTOM CURSOR */
         const cursor = document.getElementById('cursor');
         if (window.matchMedia("(min-width: 768px)").matches) {
             document.addEventListener('mousemove', e => { cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`; });
@@ -490,8 +419,35 @@
             card.addEventListener('mouseleave', () => { card.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`; card.style.zIndex = "1"; });
         });
 
+        /* 8. CLOCK & TYPEWRITER ANIMATION (Restaurado) */
         function updateClock() { document.getElementById('live-time').innerText = new Date().toLocaleTimeString('es-MX', { timeZone: 'America/Tijuana', hour: '2-digit', minute:'2-digit', second:'2-digit', hour12: false }); }
         setInterval(updateClock, 1000); updateClock();
+
+        const phrases = [
+            "sincronizando radioenlaces de microondas...",
+            "monitoreando anillos core de fibra óptica... OK.",
+            "analizando umbrales de pérdida por inserción óptica...",
+            "validando esquemas de enrutamiento dinámico (BGP/OSPF)...",
+            "mantenimiento proactivo NOC: disponibilidad 99.99%."
+        ];
+        let idx = 0; let chIdx = 0; let isDeleting = false; let isWaiting = false;
+        function typeLoop() {
+            if (isWaiting) return;
+            const currentPhrase = phrases[idx];
+            const typewriterEl = document.getElementById("typewriter");
+            if (!typewriterEl) return;
+            if (isDeleting) { 
+                typewriterEl.innerText = currentPhrase.substring(0, chIdx - 1); 
+                chIdx--; 
+                if (chIdx === 0) { isDeleting = false; idx = (idx + 1) % phrases.length; } 
+            } else { 
+                typewriterEl.innerText = currentPhrase.substring(0, chIdx + 1); 
+                chIdx++; 
+                if (chIdx === currentPhrase.length) { isWaiting = true; setTimeout(() => { isWaiting = false; isDeleting = true; }, 2500); } 
+            }
+            setTimeout(typeLoop, isDeleting ? 20 : 45);
+        }
+        typeLoop();
 
         let docTitle = document.title;
         window.addEventListener("blur", () => { document.title = "⚠️ NOC ALERT: Enlace inactivo | " + docTitle.split(" - ")[0]; });
