@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Meta etiquetas de seguridad -->
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
     <title>{{ data.profile.name }} - Network & Software Engineer</title>
@@ -15,7 +14,6 @@
 </head>
 <body>
 
-    <!-- Scroll Progress Bar -->
     <div id="scroll-progress"></div>
 
     <canvas id="network-canvas" class="mesh-bg"></canvas>
@@ -24,7 +22,6 @@
 
     <div class="bento-container" id="bento-container">
         
-        <!-- HERO CARD -->
         <div class="bento-card hero-card slide-up" style="--delay: 0.1s; border-top: 3px solid var(--accent-blue);">
             <div class="hero-content">
                 <div class="status-badge parallax-layer-2">
@@ -43,7 +40,6 @@
             </div>
         </div>
 
-        <!-- LOCATION -->
         <div class="bento-card location-card slide-up" style="--delay: 0.2s;">
             <div class="location-info parallax-layer-2">
                 <div class="radar-container">
@@ -62,7 +58,6 @@
             </div>
         </div>
 
-        <!-- MARQUEE -->
         <div class="bento-card marquee-card slide-up" style="--delay: 0.3s;">
             <div class="marquee-track parallax-layer-1">
                 <div class="marquee-content">
@@ -75,7 +70,6 @@
             </div>
         </div>
 
-        <!-- TERMINAL -->
         <div class="bento-card terminal-card slide-up" style="--delay: 0.4s;">
             <div class="terminal-header parallax-layer-1">
                 <div class="term-dots">
@@ -88,7 +82,6 @@
             </div>
         </div>
 
-        <!-- STATS -->
         <div class="bento-card stats-card slide-up" style="--delay: 0.5s;">
             <div class="stat-box parallax-layer-2">
                 <span class="stat-number">8+</span>
@@ -106,7 +99,6 @@
             </div>
         </div>
 
-        <!-- EXPERIENCE -->
         <div class="bento-card exp-card slide-up" style="--delay: 0.6s;">
             <h3 class="card-title hacker-text parallax-layer-1" data-value="EXPERIENCIA PROFESIONAL">Experiencia Profesional</h3>
             <div class="exp-list">
@@ -123,7 +115,6 @@
             </div>
         </div>
 
-        <!-- PROJECTS -->
         <div class="bento-card projects-card slide-up" style="--delay: 0.7s;">
             <h3 class="card-title hacker-text parallax-layer-1" data-value="ARQUITECTURA Y REDES">Arquitectura, Automatización y Redes</h3>
             <div class="project-list">
@@ -139,7 +130,6 @@
             </div>
         </div>
 
-        <!-- TECH STACK -->
         <div class="bento-card tech-card slide-up" style="--delay: 0.8s;">
             <h3 class="card-title hacker-text parallax-layer-1" data-value="STACK TÉCNICO & ESPECIALIDADES">Stack Técnico & Especialidades</h3>
             <div class="tags-container parallax-layer-2">
@@ -149,18 +139,16 @@
             </div>
         </div>
         
-        <!-- CONTACT -->
         <div class="bento-card contact-card slide-up" style="--delay: 0.9s; border-bottom: 3px solid var(--accent-green);">
             <h3 class="card-title hacker-text parallax-layer-1" data-value="CONECTAR">Conectar</h3>
-            <div class="link-grid parallax-layer-2">
-                <!-- 🛡️ Mejora Seguridad: rel="noopener noreferrer" -->
-                <a href="{{ data.profile.github }}" target="_blank" rel="noopener noreferrer" class="tech-btn primary-btn magnetic-element">
+            <div class="social-links-container parallax-layer-2">
+                <a href="{{ data.profile.github }}" target="_blank" rel="noopener noreferrer" class="btn-connect magnetic-element">
                     <i class="fab fa-github"></i> GitHub
                 </a>
-                <a href="{{ data.profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="tech-btn primary-btn magnetic-element">
+                <a href="{{ data.profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="btn-connect magnetic-element">
                     <i class="fab fa-linkedin"></i> LinkedIn
                 </a>
-                <button onclick="openModal()" class="tech-btn outline-btn magnetic-element" style="width: 100%; border-radius: 12px; cursor: pointer; font-family: 'Inter', sans-serif;">
+                <button onclick="openModal()" class="btn-connect magnetic-element">
                     <i class="fas fa-envelope"></i> Contactar
                 </button>
             </div>
@@ -168,7 +156,6 @@
 
     </div>
 
-    <!-- MODAL DE CONTACTO -->
     <div class="modal-overlay" id="contactModal">
         <div class="modal-content">
             <button class="close-modal" onclick="closeModal()"><i class="fas fa-times"></i></button>
@@ -184,14 +171,13 @@
                     <input type="text" id="subject" class="modal-input" name="subject" required placeholder="Oportunidad laboral / Proyecto...">
                 </div>
 
-                <!-- 🛡️ Mejora Seguridad: Honeypot field (Trampa para bots) -->
                 <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
                 
                 <div class="form-group-modal">
                     <label class="form-label">Mensaje</label>
                     <textarea id="message" class="modal-textarea" name="message" required placeholder="Escribe los detalles de tu mensaje aquí..."></textarea>
                 </div>
-                <button type="submit" id="submit-msg-btn" class="glow-btn" style="width: 100%; justify-content: center; border: none; cursor: pointer; font-family: 'Inter', sans-serif; margin-top: 5px; padding: 12px;">
+                <button type="submit" id="submit-msg-btn" class="glow-btn" style="width: 100%; justify-content: center; border: none; cursor: pointer; font-family: 'Inter', sans-serif; margin-top: 5px; padding: 12px; background: var(--accent-blue); color: white; border-radius: 8px;">
                     <i class="fas fa-paper-plane"></i> Enviar Mensaje
                 </button>
             </form>
@@ -199,7 +185,6 @@
         </div>
     </div>
 
-    <!-- SCRIPT PRINCIPAL -->
     <script>
         /* SCROLL PROGRESS BAR */
         let isScrolling;
