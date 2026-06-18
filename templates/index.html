@@ -17,6 +17,8 @@
 
     <canvas id="network-canvas" class="mesh-bg"></canvas>
 
+    <div class="noise-bg"></div>
+
     <div class="bento-container" id="bento-container">
         
         <!-- HERO CARD -->
@@ -25,12 +27,12 @@
                 <div class="status-badge parallax-layer-2">
                     <span class="pulse-dot"></span> <span id="uptime-counter" style="font-family: 'JetBrains Mono'; margin-left: 5px;">UPTIME: 999d 14h 22m 10s</span>
                 </div>
-                <h1 class="name gradient-text parallax-layer-3">{{ data.profile.name }}</h1>
+                <h1 class="name gradient-text hover-glitch parallax-layer-3">{{ data.profile.name }}</h1>
                 <h2 class="role parallax-layer-2">{{ data.profile.role }}</h2>
                 <p class="bio parallax-layer-1">
                     {{ data.profile.bio }}
                 </p>
-                <!-- Botón PDF completamente eliminado -->
+                <!-- BOTON PDF ELIMINADO COMPLETAMENTE -->
             </div>
             <div class="hero-visual parallax-layer-3">
                 <div class="avatar-wrapper">
@@ -46,7 +48,7 @@
                     <i class="fas fa-globe-americas icon-glow"></i>
                 </div>
                 <div>
-                    <h3 class="loc-title">Base de Operaciones</h3>
+                    <h3 class="loc-title hacker-text" data-value="BASE DE OPERACIONES">Base de Operaciones</h3>
                     <p class="loc-text">{{ data.profile.location }}</p>
                 </div>
             </div>
@@ -54,9 +56,6 @@
                 <div>
                     <span id="live-time">00:00:00</span>
                     <span class="time-zone">PST</span>
-                </div>
-                <div class="server-load" title="Tráfico de Red">
-                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
                 </div>
             </div>
         </div>
@@ -74,16 +73,16 @@
             </div>
         </div>
 
-        <!-- TERMINAL (Clásica Typewriter Mejorada a LOGS) -->
+        <!-- TERMINAL (Clásica Typewriter) -->
         <div class="bento-card terminal-card slide-up" style="--delay: 0.4s;">
             <div class="terminal-header parallax-layer-1">
                 <div class="term-dots">
                     <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
                 </div>
-                <span class="term-title">syslog_noc_core.sh</span>
+                <span class="term-title">network_monitor.exe</span>
             </div>
             <div class="terminal-body crt-effect" id="terminal-body">
-                <p class="parallax-layer-2"><span id="typewriter"></span><span class="cursor-blink">_</span></p>
+                <p class="parallax-layer-2"><span class="prompt">core_noc@hector_uribe:~$</span> <span id="typewriter"></span><span class="cursor-blink">_</span></p>
             </div>
         </div>
 
@@ -105,10 +104,10 @@
             </div>
         </div>
 
-        <!-- EXPERIENCE (NUEVO: LÍNEA DE TIEMPO CONECTADA) -->
+        <!-- EXPERIENCE -->
         <div class="bento-card exp-card slide-up" style="--delay: 0.6s;">
-            <h3 class="card-title parallax-layer-1">Experiencia Profesional</h3>
-            <div class="exp-list timeline">
+            <h3 class="card-title hacker-text parallax-layer-1" data-value="EXPERIENCIA PROFESIONAL">Experiencia Profesional</h3>
+            <div class="exp-list">
                 {% for exp in data.experience %}
                 <div class="exp-item parallax-layer-2">
                     <div class="exp-header">
@@ -124,12 +123,12 @@
 
         <!-- PROJECTS -->
         <div class="bento-card projects-card slide-up" style="--delay: 0.7s;">
-            <h3 class="card-title parallax-layer-1">Arquitectura, Automatización y Redes</h3>
+            <h3 class="card-title hacker-text parallax-layer-1" data-value="ARQUITECTURA Y REDES">Arquitectura, Automatización y Redes</h3>
             <div class="project-list">
                 {% for proj in data.projects %}
                 <div class="project-box parallax-layer-2">
                     <div class="project-top">
-                        <i class="{{ proj.icon }} project-icon levitate-icon" style="color: var(--accent-blue);"></i>
+                        <i class="{{ proj.icon }} project-icon" style="color: var(--accent-blue);"></i>
                         <h4>{{ proj.title }}</h4>
                     </div>
                     <p class="parallax-layer-1">{{ proj.desc }}</p>
@@ -138,22 +137,19 @@
             </div>
         </div>
 
-        <!-- TECH STACK (NUEVO: STATUS DOTS EN CADA TECNOLOGÍA) -->
+        <!-- TECH STACK -->
         <div class="bento-card tech-card slide-up" style="--delay: 0.8s;">
-            <h3 class="card-title parallax-layer-1">Stack Técnico & Especialidades</h3>
+            <h3 class="card-title hacker-text parallax-layer-1" data-value="STACK TÉCNICO & ESPECIALIDADES">Stack Técnico & Especialidades</h3>
             <div class="tags-container parallax-layer-2">
                 {% for tech in data.tech_stack %}
-                <span class="mono-tag">
-                    <span class="status-dot"></span>
-                    <i class="{{ tech.icon }}"></i> {{ tech.name }}
-                </span>
+                <span class="mono-tag"><i class="{{ tech.icon }}"></i> {{ tech.name }}</span>
                 {% endfor %}
             </div>
         </div>
         
         <!-- CONTACT -->
         <div class="bento-card contact-card slide-up" style="--delay: 0.9s; border-bottom: 3px solid var(--accent-green);">
-            <h3 class="card-title parallax-layer-1">Conectar</h3>
+            <h3 class="card-title hacker-text parallax-layer-1" data-value="CONECTAR">Conectar</h3>
             <div class="link-grid parallax-layer-2">
                 <a href="{{ data.profile.github }}" target="_blank" class="tech-btn primary-btn magnetic-element">
                     <i class="fab fa-github"></i> GitHub
@@ -196,7 +192,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT PRINCIPAL -->
+    <!-- SCRIPT PRINCIPAL (Sin Lógica de PDF) -->
     <script>
         /* 1. SCROLL PROGRESS BAR */
         let isScrolling;
@@ -207,7 +203,7 @@
                 const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 const scrolled = (winScroll / height) * 100;
                 document.getElementById('scroll-progress').style.width = scrolled + "%";
-            }, 10);
+            }, 10); // Ligero throttle para rendimiento
         });
 
         /* 2. UPTIME COUNTER */
@@ -222,7 +218,24 @@
         }
         setInterval(updateUptime, 1000);
 
-        /* 3. NETWORK CANVAS BACKGROUND (Rendimiento Optimizado) */
+        /* 3. HACKER TEXT EFFECT */
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
+        document.querySelectorAll('.hacker-text').forEach(el => {
+            el.addEventListener('mouseover', event => {
+                let iterations = 0;
+                const interval = setInterval(() => {
+                    event.target.innerText = event.target.innerText.split("")
+                        .map((letter, index) => {
+                            if(index < iterations) return event.target.dataset.value[index];
+                            return letters[Math.floor(Math.random() * 42)];
+                        }).join("");
+                    if(iterations >= event.target.dataset.value.length) clearInterval(interval);
+                    iterations += 1 / 3;
+                }, 30);
+            });
+        });
+
+        /* 4. NETWORK CANVAS BACKGROUND (Rendimiento Optimizado) */
         const canvas = document.getElementById('network-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
@@ -256,6 +269,7 @@
         }
         function initNetwork() {
             particlesArray = [];
+            // OPTIMIZACIÓN: Menos partículas para mejor rendimiento
             let numberOfParticles = (canvas.height * canvas.width) / 18000; 
             for(let i=0; i<numberOfParticles; i++){
                 let size = (Math.random() * 2) + 0.5;
@@ -287,7 +301,7 @@
         }
         initNetwork(); animateNetwork();
 
-        /* 4. MODAL DE CONTACTO & API FORMSPREE */
+        /* 5. MODAL DE CONTACTO & API FORMSPREE */
         const modal = document.getElementById('contactModal');
         const statusDiv = document.getElementById('form-status');
         function openModal() { modal.classList.add('active'); statusDiv.innerHTML = ''; }
@@ -309,36 +323,49 @@
             finally { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; }
         }
 
-        /* 5. PARALLAX 3D TILT EFFECT (Desactivado en móviles para rendimiento) */
-        if (window.matchMedia("(min-width: 768px)").matches) {
-            let isTicking = false;
-            document.querySelectorAll('.bento-card').forEach(card => {
-                card.addEventListener('mousemove', e => {
-                    if(!isTicking) {
-                        window.requestAnimationFrame(() => {
-                            const rect = card.getBoundingClientRect();
-                            const x = e.clientX - rect.left; const y = e.clientY - rect.top;
-                            card.style.setProperty("--mouse-x", `${x}px`); card.style.setProperty("--mouse-y", `${y}px`);
-                            const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -4; 
-                            const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 4;
-                            card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-                            card.style.zIndex = "10";
-                            isTicking = false;
-                        });
-                        isTicking = true;
-                    }
-                });
-                card.addEventListener('mouseleave', () => { card.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`; card.style.zIndex = "1"; });
+        /* 6. PARALLAX 3D TILT EFFECT */
+        // Eliminado Cursor Custom
+        document.querySelectorAll('.magnetic-element').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const rect = btn.getBoundingClientRect();
+                const x = (e.clientX - rect.left - rect.width / 2) * 0.4; 
+                const y = (e.clientY - rect.top - rect.height / 2) * 0.4;
+                btn.style.transform = `translate(${x}px, ${y}px)`;
             });
-        }
+            btn.addEventListener('mouseleave', () => { btn.style.transform = `translate(0px, 0px)`; });
+        });
 
-        /* 6. RELOJ Y TYPEWRITER (FORMATO LOGS NOC) */
+        // Throttle para el movimiento 3D de las tarjetas para mejor rendimiento
+        let isTicking = false;
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                if(!isTicking) {
+                    window.requestAnimationFrame(() => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+                        card.style.setProperty("--mouse-x", `${x}px`); card.style.setProperty("--mouse-y", `${y}px`);
+                        const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -4; 
+                        const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 4;
+                        card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                        card.style.zIndex = "10";
+                        isTicking = false;
+                    });
+                    isTicking = true;
+                }
+            });
+            card.addEventListener('mouseleave', () => { card.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`; card.style.zIndex = "1"; });
+        });
+
+        /* 7. CLOCK & TYPEWRITER ANIMATION (Clásica) */
         function updateClock() { document.getElementById('live-time').innerText = new Date().toLocaleTimeString('es-MX', { timeZone: 'America/Tijuana', hour: '2-digit', minute:'2-digit', second:'2-digit', hour12: false }); }
         setInterval(updateClock, 1000); updateClock();
 
         const phrases = [
-            "[INFO] Validando enrutamiento dinámico OSPF...",
-            "[ OK ] SLA Troncal: 99.99%. Todo en orden."
+            "sincronizando radioenlaces de microondas...",
+            "monitoreando anillos core de fibra óptica... OK.",
+            "analizando umbrales de pérdida por inserción óptica...",
+            "validando esquemas de enrutamiento dinámico (BGP/OSPF)...",
+            "mantenimiento proactivo NOC: disponibilidad 99.99%."
         ];
         let idx = 0; let chIdx = 0; let isDeleting = false; let isWaiting = false;
         function typeLoop() {
@@ -353,9 +380,9 @@
             } else { 
                 typewriterEl.innerText = currentPhrase.substring(0, chIdx + 1); 
                 chIdx++; 
-                if (chIdx === currentPhrase.length) { isWaiting = true; setTimeout(() => { isWaiting = false; isDeleting = true; }, 3000); } 
+                if (chIdx === currentPhrase.length) { isWaiting = true; setTimeout(() => { isWaiting = false; isDeleting = true; }, 2500); } 
             }
-            setTimeout(typeLoop, isDeleting ? 15 : 45);
+            setTimeout(typeLoop, isDeleting ? 20 : 45);
         }
         typeLoop();
 
