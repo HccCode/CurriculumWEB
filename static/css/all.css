@@ -17,7 +17,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 @media (min-width: 768px) { body, a, button, input, textarea { cursor: none !important; } }
 
-/* NUEVO: Boot Screen Overlay */
+/* Boot Screen Overlay */
 #boot-screen {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     background: #000; z-index: 9999999;
@@ -129,7 +129,7 @@ body { font-family: 'Inter', sans-serif; background-color: transparent; color: v
 
 .location-card { justify-content: center; align-items: center; text-align: center; gap: 0.8rem; }
 
-/* NUEVO: Server Load Equalizer */
+/* Server Load Equalizer */
 .server-load { display: flex; gap: 4px; align-items: flex-end; height: 24px; padding-bottom: 4px;}
 .server-load .bar { width: 4px; background: var(--accent-green); animation: eq 0.8s infinite ease-in-out alternate; border-radius: 2px;}
 .server-load .bar:nth-child(1) { animation-delay: 0.1s; }
@@ -196,7 +196,7 @@ body { font-family: 'Inter', sans-serif; background-color: transparent; color: v
 .outline-btn { background: transparent; color: var(--btn-outline-text); border: 1px solid var(--border-color); }
 .outline-btn:hover { border-color: var(--text-main); background: rgba(255,255,255,0.03); }
 
-/* NUEVO: Hover effect de Levitación para Iconos */
+/* Hover effect de Levitación para Iconos */
 .levitate-icon { font-size: 1.2rem; transition: transform 0.3s ease; display: inline-block; }
 .project-box:hover .levitate-icon {
     animation: levitate 2s ease-in-out infinite;

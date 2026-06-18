@@ -217,50 +217,66 @@
         </div>
     </div>
 
-    <!-- CONTENEDOR OCULTO PARA EL PDF -->
-    <div style="position: absolute; left: -9999px; top: -9999px; visibility: hidden; z-index: -1;">
-        <div id="cv-template" style="font-family: 'Arial', Helvetica, sans-serif; color: #2d3748; background: #fff; width: 800px; box-sizing: border-box; padding: 50px 60px;">
-            <div style="border-bottom: 3px solid #2b6cb0; padding-bottom: 15px; margin-bottom: 25px;">
-                <h1 style="font-size: 26pt; color: #1a202c; margin: 0 0 5px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">{{ data.profile.name }}</h1>
-                <h2 style="font-size: 13pt; color: #2b6cb0; margin: 0 0 12px 0; font-weight: 600;">{{ data.profile.role | replace('>', '') | replace('_', '') | trim }}</h2>
-                <div style="font-size: 9.5pt; color: #4a5568; display: flex; gap: 12px; flex-wrap: wrap; line-height: 1.4;">
-                    <span><strong>Ubicación:</strong> {{ data.profile.location }}</span> |
-                    <span><strong>Email:</strong> {{ data.profile.email }}</span> |
-                    <span><strong>LinkedIn:</strong> {{ data.profile.linkedin | replace('https://', '') }}</span> |
-                    <span><strong>GitHub:</strong> {{ data.profile.github | replace('https://', '') }}</span>
+    <!-- CONTENEDOR OCULTO PARA EL PDF (NUEVO DISEÑO PROFESIONAL ATS-FRIENDLY) -->
+    <!-- NOTA: position absolute fuera de pantalla en vez de visibility:hidden -->
+    <div style="position: absolute; left: -15000px; top: 0; z-index: -100;">
+        <div id="cv-template" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; background: #fff; width: 794px; padding: 40px; box-sizing: border-box;">
+            <!-- Header -->
+            <div style="text-align: center; border-bottom: 2px solid #1a202c; padding-bottom: 20px; margin-bottom: 20px;">
+                <h1 style="font-size: 28pt; color: #0f172a; margin: 0 0 5px 0; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">{{ data.profile.name }}</h1>
+                <h2 style="font-size: 14pt; color: #3b82f6; margin: 0 0 15px 0; font-weight: 500; letter-spacing: 0.5px;">{{ data.profile.role | replace('>', '') | replace('_', '') | trim }}</h2>
+                <div style="font-size: 10pt; color: #475569; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                    <span>{{ data.profile.location }}</span> |
+                    <span>{{ data.profile.email }}</span> |
+                    <span>{{ data.profile.linkedin | replace('https://', '') }}</span> |
+                    <span>{{ data.profile.github | replace('https://', '') }}</span>
                 </div>
             </div>
-            <div style="margin-bottom: 25px;">
-                <h3 style="font-size: 12pt; color: #1a202c; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin: 0 0 10px 0; letter-spacing: 0.5px;">Perfil Profesional</h3>
-                <p style="font-size: 10pt; color: #4a5568; text-align: justify; margin: 0; line-height: 1.6;">{{ data.profile.bio }}</p>
+
+            <!-- Resumen -->
+            <div style="margin-bottom: 20px;">
+                <h3 style="font-size: 13pt; color: #0f172a; text-transform: uppercase; border-bottom: 1px solid #cbd5e1; padding-bottom: 5px; margin: 0 0 10px 0;">Perfil Profesional</h3>
+                <p style="font-size: 10.5pt; color: #334155; text-align: justify; margin: 0; line-height: 1.5;">{{ data.profile.bio }}</p>
             </div>
-            <div style="margin-bottom: 25px;">
-                <h3 style="font-size: 12pt; color: #1a202c; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin: 0 0 15px 0; letter-spacing: 0.5px;">Experiencia Laboral</h3>
+
+            <!-- Experiencia -->
+            <div style="margin-bottom: 20px;">
+                <h3 style="font-size: 13pt; color: #0f172a; text-transform: uppercase; border-bottom: 1px solid #cbd5e1; padding-bottom: 5px; margin: 0 0 15px 0;">Experiencia Laboral</h3>
                 {% for exp in data.experience %}
-                <div style="margin-bottom: 16px; page-break-inside: avoid;">
-                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;">
-                        <h4 style="font-size: 11pt; color: #1a202c; margin: 0; font-weight: 700;">{{ exp.role }}</h4>
-                        <span style="font-size: 9.5pt; color: #2b6cb0; font-weight: 700;">{{ exp.date }}</span>
+                <div style="margin-bottom: 15px; page-break-inside: avoid;">
+                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px;">
+                        <h4 style="font-size: 11.5pt; color: #0f172a; margin: 0; font-weight: 700;">{{ exp.role }}</h4>
+                        <span style="font-size: 10pt; color: #3b82f6; font-weight: 600;">{{ exp.date }}</span>
                     </div>
-                    <div style="font-size: 10pt; color: #4a5568; font-style: italic; margin-bottom: 6px; font-weight: 600;">{{ exp.company }}</div>
-                    <p style="font-size: 9.5pt; color: #4a5568; margin: 0; line-height: 1.5; text-align: justify;">• {{ exp.desc }}</p>
+                    <div style="font-size: 10.5pt; color: #475569; font-weight: 600; font-style: normal; margin-bottom: 6px;">{{ exp.company }}</div>
+                    <p style="font-size: 10pt; color: #334155; margin: 0; line-height: 1.5; padding-left: 15px; position: relative;">
+                        <span style="position: absolute; left: 0; top: 0; color: #3b82f6;">•</span>
+                        {{ exp.desc }}
+                    </p>
                 </div>
                 {% endfor %}
             </div>
-            <div style="margin-bottom: 25px;">
-                <h3 style="font-size: 12pt; color: #1a202c; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin: 0 0 15px 0; letter-spacing: 0.5px;">Proyectos Destacados</h3>
+
+            <!-- Proyectos -->
+            <div style="margin-bottom: 20px;">
+                <h3 style="font-size: 13pt; color: #0f172a; text-transform: uppercase; border-bottom: 1px solid #cbd5e1; padding-bottom: 5px; margin: 0 0 15px 0;">Proyectos Destacados</h3>
                 {% for proj in data.projects %}
-                <div style="margin-bottom: 14px; page-break-inside: avoid;">
-                    <h4 style="font-size: 11pt; color: #1a202c; margin: 0 0 4px 0; font-weight: 700;">{{ proj.title }}</h4>
-                    <p style="font-size: 9.5pt; color: #4a5568; margin: 0; line-height: 1.5; text-align: justify;">• {{ proj.desc }}</p>
+                <div style="margin-bottom: 12px; page-break-inside: avoid;">
+                    <h4 style="font-size: 11.5pt; color: #0f172a; margin: 0 0 4px 0; font-weight: 700;">{{ proj.title }}</h4>
+                    <p style="font-size: 10pt; color: #334155; margin: 0; line-height: 1.5; padding-left: 15px; position: relative;">
+                        <span style="position: absolute; left: 0; top: 0; color: #3b82f6;">•</span>
+                        {{ proj.desc }}
+                    </p>
                 </div>
                 {% endfor %}
             </div>
+
+            <!-- Tecnologías -->
             <div>
-                <h3 style="font-size: 12pt; color: #1a202c; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin: 0 0 12px 0; letter-spacing: 0.5px;">Competencias & Tecnologías</h3>
-                <div style="font-size: 9.5pt; display: flex; flex-wrap: wrap; gap: 6px;">
+                <h3 style="font-size: 13pt; color: #0f172a; text-transform: uppercase; border-bottom: 1px solid #cbd5e1; padding-bottom: 5px; margin: 0 0 12px 0;">Competencias & Stack Técnico</h3>
+                <div style="font-size: 10pt; display: flex; flex-wrap: wrap; gap: 8px;">
                     {% for tech in data.tech_stack %}
-                    <span style="background: #f7fafc; color: #4a5568; padding: 4px 10px; border-radius: 4px; border: 1px solid #e2e8f0; font-weight: 500;">{{ tech.name }}</span>
+                    <span style="background: #f1f5f9; color: #334155; padding: 6px 12px; border-radius: 6px; border: 1px solid #e2e8f0; font-weight: 500;">{{ tech.name }}</span>
                     {% endfor %}
                 </div>
             </div>
@@ -269,14 +285,12 @@
 
     <!-- SCRIPT PRINCIPAL -->
     <script>
-        /* NUEVO: Boot Screen Logic */
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.getElementById('boot-screen').classList.add('boot-hidden');
             }, 1200); 
         });
 
-        /* 1. SCROLL PROGRESS BAR */
         window.addEventListener('scroll', () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -284,7 +298,6 @@
             document.getElementById('scroll-progress').style.width = scrolled + "%";
         });
 
-        /* 2. UPTIME COUNTER */
         let uptimeSeconds = 86392500; 
         function updateUptime() {
             uptimeSeconds++;
@@ -296,7 +309,6 @@
         }
         setInterval(updateUptime, 1000);
 
-        /* 3. HACKER TEXT EFFECT */
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
         document.querySelectorAll('.hacker-text').forEach(el => {
             el.addEventListener('mouseover', event => {
@@ -313,7 +325,6 @@
             });
         });
 
-        /* 4. NETWORK CANVAS BACKGROUND */
         const canvas = document.getElementById('network-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
@@ -379,7 +390,6 @@
         }
         initNetwork(); animateNetwork();
 
-        /* 5. MODAL DE CONTACTO & API FORMSPREE */
         const modal = document.getElementById('contactModal');
         const statusDiv = document.getElementById('form-status');
         function openModal() { modal.classList.add('active'); statusDiv.innerHTML = ''; }
@@ -401,19 +411,39 @@
             finally { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; }
         }
 
-        /* 6. DESCARGA PDF */
+        /* DESCARGA PDF CORREGIDA */
         function downloadPDF() {
             const btn = document.getElementById('download-btn');
             const originalContent = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sincronizando PDF...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando PDF...';
             btn.style.pointerEvents = 'none';
+            
             const element = document.getElementById('cv-template');
             const safeName = '{{ data.profile.name }}'.replace(/\s+/g, '_');
-            const opt = { margin: 0, filename: `CV_${safeName}.pdf`, image: { type: 'jpeg', quality: 1.0 }, html2canvas: { scale: 3, useCORS: true, logging: false }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
-            html2pdf().set(opt).from(element).save().then(() => { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; }).catch(() => { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; });
+            
+            const opt = { 
+                margin: 0, 
+                filename: `CV_${safeName}.pdf`, 
+                image: { type: 'jpeg', quality: 1.0 }, 
+                html2canvas: { scale: 3, useCORS: true, logging: false }, 
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } 
+            };
+            
+            html2pdf().set(opt).from(element).save()
+            .then(() => { 
+                btn.innerHTML = originalContent; 
+                btn.style.pointerEvents = 'auto'; 
+            })
+            .catch((err) => { 
+                console.error("Error PDF:", err);
+                btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error';
+                setTimeout(() => {
+                    btn.innerHTML = originalContent; 
+                    btn.style.pointerEvents = 'auto';
+                }, 3000);
+            });
         }
 
-        /* 7. PARALLAX 3D TILT EFFECT & CUSTOM CURSOR */
         const cursor = document.getElementById('cursor');
         if (window.matchMedia("(min-width: 768px)").matches) {
             document.addEventListener('mousemove', e => { cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`; });
@@ -446,7 +476,6 @@
             card.addEventListener('mouseleave', () => { card.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`; card.style.zIndex = "1"; });
         });
 
-        /* 8. CLOCK & TYPEWRITER ANIMATION (Restaurado) */
         function updateClock() { document.getElementById('live-time').innerText = new Date().toLocaleTimeString('es-MX', { timeZone: 'America/Tijuana', hour: '2-digit', minute:'2-digit', second:'2-digit', hour12: false }); }
         setInterval(updateClock, 1000); updateClock();
 
