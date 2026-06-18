@@ -3,6 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Meta etiquetas de seguridad -->
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    
     <title>{{ data.profile.name }} - Network & Software Engineer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,7 +35,6 @@
                 <p class="bio parallax-layer-1">
                     {{ data.profile.bio }}
                 </p>
-                <!-- BOTON PDF ELIMINADO COMPLETAMENTE -->
             </div>
             <div class="hero-visual parallax-layer-3">
                 <div class="avatar-wrapper">
@@ -73,7 +75,7 @@
             </div>
         </div>
 
-        <!-- TERMINAL (Clásica Typewriter) -->
+        <!-- TERMINAL -->
         <div class="bento-card terminal-card slide-up" style="--delay: 0.4s;">
             <div class="terminal-header parallax-layer-1">
                 <div class="term-dots">
@@ -151,10 +153,11 @@
         <div class="bento-card contact-card slide-up" style="--delay: 0.9s; border-bottom: 3px solid var(--accent-green);">
             <h3 class="card-title hacker-text parallax-layer-1" data-value="CONECTAR">Conectar</h3>
             <div class="link-grid parallax-layer-2">
-                <a href="{{ data.profile.github }}" target="_blank" class="tech-btn primary-btn magnetic-element">
+                <!-- 🛡️ Mejora Seguridad: rel="noopener noreferrer" -->
+                <a href="{{ data.profile.github }}" target="_blank" rel="noopener noreferrer" class="tech-btn primary-btn magnetic-element">
                     <i class="fab fa-github"></i> GitHub
                 </a>
-                <a href="{{ data.profile.linkedin }}" target="_blank" class="tech-btn primary-btn magnetic-element">
+                <a href="{{ data.profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="tech-btn primary-btn magnetic-element">
                     <i class="fab fa-linkedin"></i> LinkedIn
                 </a>
                 <button onclick="openModal()" class="tech-btn outline-btn magnetic-element" style="width: 100%; border-radius: 12px; cursor: pointer; font-family: 'Inter', sans-serif;">
@@ -180,6 +183,10 @@
                     <label class="form-label">Asunto</label>
                     <input type="text" id="subject" class="modal-input" name="subject" required placeholder="Oportunidad laboral / Proyecto...">
                 </div>
+
+                <!-- 🛡️ Mejora Seguridad: Honeypot field (Trampa para bots) -->
+                <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+                
                 <div class="form-group-modal">
                     <label class="form-label">Mensaje</label>
                     <textarea id="message" class="modal-textarea" name="message" required placeholder="Escribe los detalles de tu mensaje aquí..."></textarea>
@@ -192,9 +199,9 @@
         </div>
     </div>
 
-    <!-- SCRIPT PRINCIPAL (Sin Lógica de PDF) -->
+    <!-- SCRIPT PRINCIPAL -->
     <script>
-        /* 1. SCROLL PROGRESS BAR */
+        /* SCROLL PROGRESS BAR */
         let isScrolling;
         window.addEventListener('scroll', () => {
             window.clearTimeout(isScrolling);
@@ -203,10 +210,10 @@
                 const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 const scrolled = (winScroll / height) * 100;
                 document.getElementById('scroll-progress').style.width = scrolled + "%";
-            }, 10); // Ligero throttle para rendimiento
+            }, 10);
         });
 
-        /* 2. UPTIME COUNTER */
+        /* UPTIME COUNTER */
         let uptimeSeconds = 86392500; 
         function updateUptime() {
             uptimeSeconds++;
@@ -218,7 +225,7 @@
         }
         setInterval(updateUptime, 1000);
 
-        /* 3. HACKER TEXT EFFECT */
+        /* HACKER TEXT EFFECT */
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
         document.querySelectorAll('.hacker-text').forEach(el => {
             el.addEventListener('mouseover', event => {
@@ -235,7 +242,7 @@
             });
         });
 
-        /* 4. NETWORK CANVAS BACKGROUND (Rendimiento Optimizado) */
+        /* NETWORK CANVAS BACKGROUND */
         const canvas = document.getElementById('network-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
@@ -269,7 +276,6 @@
         }
         function initNetwork() {
             particlesArray = [];
-            // OPTIMIZACIÓN: Menos partículas para mejor rendimiento
             let numberOfParticles = (canvas.height * canvas.width) / 18000; 
             for(let i=0; i<numberOfParticles; i++){
                 let size = (Math.random() * 2) + 0.5;
@@ -301,7 +307,7 @@
         }
         initNetwork(); animateNetwork();
 
-        /* 5. MODAL DE CONTACTO & API FORMSPREE */
+        /* MODAL DE CONTACTO & FORMSPREE CON HONEYPOT */
         const modal = document.getElementById('contactModal');
         const statusDiv = document.getElementById('form-status');
         function openModal() { modal.classList.add('active'); statusDiv.innerHTML = ''; }
@@ -314,7 +320,10 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
             btn.style.pointerEvents = 'none';
             const FORMSPREE_URL = "https://formspree.io/f/mqakevzz"; 
-            const payload = { email: document.getElementById('sender_email').value, subject: document.getElementById('subject').value, message: document.getElementById('message').value };
+            
+            const formData = new FormData(document.getElementById('contactForm'));
+            const payload = Object.fromEntries(formData.entries());
+            
             try {
                 const res = await fetch(FORMSPREE_URL, { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 if (res.ok) { statusDiv.innerHTML = '<span style="color: var(--accent-green);"><i class="fas fa-check-circle"></i> Mensaje enviado exitosamente.</span>'; document.getElementById('contactForm').reset(); setTimeout(closeModal, 2500); } 
@@ -323,40 +332,30 @@
             finally { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; }
         }
 
-        /* 6. PARALLAX 3D TILT EFFECT */
-        // Eliminado Cursor Custom
-        document.querySelectorAll('.magnetic-element').forEach(btn => {
-            btn.addEventListener('mousemove', e => {
-                const rect = btn.getBoundingClientRect();
-                const x = (e.clientX - rect.left - rect.width / 2) * 0.4; 
-                const y = (e.clientY - rect.top - rect.height / 2) * 0.4;
-                btn.style.transform = `translate(${x}px, ${y}px)`;
+        /* PARALLAX 3D TILT EFFECT */
+        if (window.matchMedia("(min-width: 768px)").matches) {
+            let isTicking = false;
+            document.querySelectorAll('.bento-card').forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    if(!isTicking) {
+                        window.requestAnimationFrame(() => {
+                            const rect = card.getBoundingClientRect();
+                            const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+                            card.style.setProperty("--mouse-x", `${x}px`); card.style.setProperty("--mouse-y", `${y}px`);
+                            const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -4; 
+                            const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 4;
+                            card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                            card.style.zIndex = "10";
+                            isTicking = false;
+                        });
+                        isTicking = true;
+                    }
+                });
+                card.addEventListener('mouseleave', () => { card.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`; card.style.zIndex = "1"; });
             });
-            btn.addEventListener('mouseleave', () => { btn.style.transform = `translate(0px, 0px)`; });
-        });
+        }
 
-        // Throttle para el movimiento 3D de las tarjetas para mejor rendimiento
-        let isTicking = false;
-        document.querySelectorAll('.bento-card').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                if(!isTicking) {
-                    window.requestAnimationFrame(() => {
-                        const rect = card.getBoundingClientRect();
-                        const x = e.clientX - rect.left; const y = e.clientY - rect.top;
-                        card.style.setProperty("--mouse-x", `${x}px`); card.style.setProperty("--mouse-y", `${y}px`);
-                        const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -4; 
-                        const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 4;
-                        card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-                        card.style.zIndex = "10";
-                        isTicking = false;
-                    });
-                    isTicking = true;
-                }
-            });
-            card.addEventListener('mouseleave', () => { card.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`; card.style.zIndex = "1"; });
-        });
-
-        /* 7. CLOCK & TYPEWRITER ANIMATION (Clásica) */
+        /* CLOCK & TYPEWRITER */
         function updateClock() { document.getElementById('live-time').innerText = new Date().toLocaleTimeString('es-MX', { timeZone: 'America/Tijuana', hour: '2-digit', minute:'2-digit', second:'2-digit', hour12: false }); }
         setInterval(updateClock, 1000); updateClock();
 
