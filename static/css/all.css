@@ -1,7 +1,7 @@
 /* --- VARIABLES DEL SISTEMA --- */
 :root {
     --bg-base: #030303;
-    --bg-card: rgba(18, 18, 18, 0.45);
+    --bg-card: rgba(18, 18, 18, 0.55);
     --border-color: rgba(255, 255, 255, 0.08);
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
@@ -15,9 +15,9 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-@media (min-width: 768px) { body, a, button, input, textarea { cursor: none !important; } }
+/* ELIMINADO: @media (min-width: 768px) con cursor:none */
 
-/* Scrollbar y Progress Bar Lineal */
+/* Scrollbar y Progress Bar */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg-base); }
 ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
@@ -31,19 +31,12 @@
     transition: width 0.1s;
 }
 
-/* Custom Cursor */
-.custom-cursor { position: fixed; top: -10px; left: -10px; width: 20px; height: 20px; background: white; border-radius: 50%; pointer-events: none; mix-blend-mode: difference; z-index: 99999; transition: width 0.3s ease, height 0.3s ease, top 0.3s ease, left 0.3s ease; }
-.custom-cursor.active { width: 60px; height: 60px; top: -30px; left: -30px; background: rgba(255,255,255,0.8); }
-
 /* FONDOS: Canvas y Rejilla Hexagonal */
 #network-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -3; background: var(--bg-base); }
-.hex-bg {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background-image: url("data:image/svg+xml,%3Csvg width='40' height='69.28203230275509' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 11.547L40 23.094L20 34.641L0 23.094L0 11.547L20 0L40 11.547ZM20 69.282L20 57.735L0 46.188L0 34.641L20 46.188L40 34.641L40 46.188L20 57.735Z' fill='rgba(59,130,246,0.03)' fill-rule='evenodd'/%3E%3C/svg%3E");
-    z-index: -2; pointer-events: none; animation: pulseHex 8s infinite alternate ease-in-out;
-}
-@keyframes pulseHex { 0% { opacity: 0.3; } 100% { opacity: 1; } }
-.noise-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; opacity: 0.035; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
+
+/* OPTIMIZACIÓN: Se retiró el filtro de ruido SVG pesado y la rejilla animada pesada para evitar lag */
+.noise-bg { display: none; }
+.hex-bg { display: none; }
 
 body { font-family: 'Inter', sans-serif; background-color: transparent; color: var(--text-main); line-height: 1.6; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 3rem 1.5rem; overflow-x: hidden; }
 
@@ -54,7 +47,7 @@ body { font-family: 'Inter', sans-serif; background-color: transparent; color: v
 .bento-container { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(min-content, max-content); gap: 1.35rem; max-width: 1200px; width: 100%; perspective: 2000px; }
 .hero-card { grid-column: span 3; } .location-card { grid-column: span 1; } .marquee-card { grid-column: span 4; padding: 0 !important; overflow: hidden; border-radius: 16px !important; } .terminal-card { grid-column: span 2; padding: 0 !important; overflow: hidden; } .stats-card { grid-column: span 2; } .exp-card { grid-column: span 2; grid-row: span 2; } .projects-card { grid-column: span 2; grid-row: span 2; } .tech-card { grid-column: span 3; } .contact-card { grid-column: span 1; }
 
-/* Borde Interior Neón en hover & 3D PARALLAX */
+/* Borde Interior Neón en hover & 3D PARALLAX OPTIMIZADO */
 .bento-card { 
     background-color: var(--bg-card); 
     border-radius: var(--card-radius); 
@@ -66,8 +59,9 @@ body { font-family: 'Inter', sans-serif; background-color: transparent; color: v
     transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease, border-color 0.4s ease; 
     transform-style: preserve-3d; 
     overflow: hidden;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    /* REDUCIDO DE 16px A 8px PARA EVITAR LAG */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 .bento-card::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: inherit; opacity: 0; transition: opacity 0.5s; background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%); pointer-events: none; z-index: 1; }
 .bento-card::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.04) 0%, transparent 60%); pointer-events: none; z-index: 5; opacity: 0; transition: opacity 0.3s; }
@@ -105,15 +99,6 @@ body { font-family: 'Inter', sans-serif; background-color: transparent; color: v
 .avatar { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; filter: grayscale(8%); }
 
 .location-card { justify-content: center; align-items: center; text-align: center; gap: 0.8rem; }
-
-/* Server Load Equalizer */
-.server-load { display: flex; gap: 4px; align-items: flex-end; height: 24px; padding-bottom: 4px;}
-.server-load .bar { width: 4px; background: var(--accent-green); animation: eq 0.8s infinite ease-in-out alternate; border-radius: 2px;}
-.server-load .bar:nth-child(1) { animation-delay: 0.1s; }
-.server-load .bar:nth-child(2) { animation-delay: 0.4s; }
-.server-load .bar:nth-child(3) { animation-delay: 0.2s; }
-.server-load .bar:nth-child(4) { animation-delay: 0.5s; }
-@keyframes eq { 0% { height: 4px; } 100% { height: 100%; box-shadow: 0 0 8px var(--accent-green);} }
 
 /* Radar Ping Effect */
 .radar-container { position: relative; display: inline-block; margin-bottom: 0.3rem; }
@@ -173,17 +158,6 @@ body { font-family: 'Inter', sans-serif; background-color: transparent; color: v
 .outline-btn { background: transparent; color: var(--btn-outline-text); border: 1px solid var(--border-color); }
 .outline-btn:hover { border-color: var(--text-main); background: rgba(255,255,255,0.03); }
 
-/* Hover effect de Levitación para Iconos */
-.levitate-icon { font-size: 1.2rem; transition: transform 0.3s ease; display: inline-block; }
-.project-box:hover .levitate-icon {
-    animation: levitate 2s ease-in-out infinite;
-    text-shadow: 0 10px 15px rgba(59, 130, 246, 0.6);
-}
-@keyframes levitate {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-}
-
 .tags-container { display: flex; flex-wrap: wrap; gap: 10px; }
 .mono-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.84rem; font-weight: 600; border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 12px; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.02); color: #cbd5e1; }
 .mono-tag i { transition: transform 0.3s ease; color: var(--accent-blue); }
@@ -206,19 +180,19 @@ body { font-family: 'Inter', sans-serif; background-color: transparent; color: v
 .project-top h4 { font-size: 0.95rem; font-weight: 700; }
 .project-box p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; text-align: justify; }
 
+/* Modal de Contacto (Ligero) */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(3, 3, 3, 0.72); backdrop-filter: blur(12px);
+    background: rgba(3, 3, 3, 0.72); backdrop-filter: blur(8px);
     display: flex; justify-content: center; align-items: center;
-    z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
 }
 .modal-overlay.active { opacity: 1; pointer-events: all; }
 .modal-content {
-    background: rgba(18, 18, 18, 0.85); border: 1px solid var(--border-color);
+    background: rgba(18, 18, 18, 0.9); border: 1px solid var(--border-color);
     border-radius: var(--card-radius); padding: 2.5rem; width: 90%; max-width: 460px;
-    position: relative; transform: scale(0.95) translateY(10px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.05);
-    backdrop-filter: blur(20px);
+    position: relative; transform: scale(0.95) translateY(10px); transition: transform 0.3s ease;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
 }
 .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
 .close-modal {

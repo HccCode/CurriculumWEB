@@ -15,11 +15,8 @@
     <!-- Scroll Progress Bar -->
     <div id="scroll-progress"></div>
 
-    <!-- Fondos Multi-Capa (Hex + Canvas) -->
-    <div class="hex-bg"></div>
     <canvas id="network-canvas" class="mesh-bg"></canvas>
 
-    <div class="custom-cursor" id="cursor"></div>
     <div class="noise-bg"></div>
 
     <div class="bento-container" id="bento-container">
@@ -35,7 +32,7 @@
                 <p class="bio parallax-layer-1">
                     {{ data.profile.bio }}
                 </p>
-                <!-- BOTON PDF ELIMINADO -->
+                <!-- BOTON PDF ELIMINADO COMPLETAMENTE -->
             </div>
             <div class="hero-visual parallax-layer-3">
                 <div class="avatar-wrapper">
@@ -59,10 +56,6 @@
                 <div>
                     <span id="live-time">00:00:00</span>
                     <span class="time-zone">PST</span>
-                </div>
-                <!-- Ecualizador de Carga de Servidor (V6) -->
-                <div class="server-load" title="Tráfico de Red">
-                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
                 </div>
             </div>
         </div>
@@ -93,7 +86,7 @@
             </div>
         </div>
 
-        <!-- STATS (Sin Gráfico Ping) -->
+        <!-- STATS -->
         <div class="bento-card stats-card slide-up" style="--delay: 0.5s;">
             <div class="stat-box parallax-layer-2">
                 <span class="stat-number">8+</span>
@@ -135,7 +128,7 @@
                 {% for proj in data.projects %}
                 <div class="project-box parallax-layer-2">
                     <div class="project-top">
-                        <i class="{{ proj.icon }} project-icon levitate-icon" style="color: var(--accent-blue);"></i>
+                        <i class="{{ proj.icon }} project-icon" style="color: var(--accent-blue);"></i>
                         <h4>{{ proj.title }}</h4>
                     </div>
                     <p class="parallax-layer-1">{{ proj.desc }}</p>
@@ -202,11 +195,15 @@
     <!-- SCRIPT PRINCIPAL (Sin Lógica de PDF) -->
     <script>
         /* 1. SCROLL PROGRESS BAR */
+        let isScrolling;
         window.addEventListener('scroll', () => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById('scroll-progress').style.width = scrolled + "%";
+            window.clearTimeout(isScrolling);
+            isScrolling = setTimeout(function() {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                document.getElementById('scroll-progress').style.width = scrolled + "%";
+            }, 10); // Ligero throttle para rendimiento
         });
 
         /* 2. UPTIME COUNTER */
@@ -238,7 +235,7 @@
             });
         });
 
-        /* 4. NETWORK CANVAS BACKGROUND */
+        /* 4. NETWORK CANVAS BACKGROUND (Rendimiento Optimizado) */
         const canvas = document.getElementById('network-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
@@ -272,7 +269,8 @@
         }
         function initNetwork() {
             particlesArray = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 13000;
+            // OPTIMIZACIÓN: Menos partículas para mejor rendimiento
+            let numberOfParticles = (canvas.height * canvas.width) / 18000; 
             for(let i=0; i<numberOfParticles; i++){
                 let size = (Math.random() * 2) + 0.5;
                 let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
@@ -325,16 +323,8 @@
             finally { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; }
         }
 
-        /* 6. PARALLAX 3D TILT EFFECT & CUSTOM CURSOR */
-        const cursor = document.getElementById('cursor');
-        if (window.matchMedia("(min-width: 768px)").matches) {
-            document.addEventListener('mousemove', e => { cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`; });
-            document.querySelectorAll('a, button, .bento-card, .modal-content, .hacker-text').forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.classList.add('active'));
-                el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
-            });
-        }
-
+        /* 6. PARALLAX 3D TILT EFFECT */
+        // Eliminado Cursor Custom
         document.querySelectorAll('.magnetic-element').forEach(btn => {
             btn.addEventListener('mousemove', e => {
                 const rect = btn.getBoundingClientRect();
@@ -345,15 +335,23 @@
             btn.addEventListener('mouseleave', () => { btn.style.transform = `translate(0px, 0px)`; });
         });
 
+        // Throttle para el movimiento 3D de las tarjetas para mejor rendimiento
+        let isTicking = false;
         document.querySelectorAll('.bento-card').forEach(card => {
             card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left; const y = e.clientY - rect.top;
-                card.style.setProperty("--mouse-x", `${x}px`); card.style.setProperty("--mouse-y", `${y}px`);
-                const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -4; 
-                const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 4;
-                card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-                card.style.zIndex = "10";
+                if(!isTicking) {
+                    window.requestAnimationFrame(() => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+                        card.style.setProperty("--mouse-x", `${x}px`); card.style.setProperty("--mouse-y", `${y}px`);
+                        const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -4; 
+                        const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 4;
+                        card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                        card.style.zIndex = "10";
+                        isTicking = false;
+                    });
+                    isTicking = true;
+                }
             });
             card.addEventListener('mouseleave', () => { card.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`; card.style.zIndex = "1"; });
         });
