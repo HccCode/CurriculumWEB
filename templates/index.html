@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
-    <title>{{ data.profile.name }} - Network & Software Engineer</title>
+    <title>{{ data.profile.name }} - Operations & Support Engineer</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%2310b981' stroke-width='10'/><circle cx='50' cy='50' r='15' fill='%233b82f6'/></svg>">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="/static/css/all.css?v=8.0">
+    <link rel="stylesheet" href="/static/css/all.css?v=3.0">
 </head>
 <body>
 
@@ -71,10 +73,10 @@
         <div class="bento-card marquee-card slide-up" style="--delay: 0.3s;">
             <div class="marquee-track parallax-layer-1">
                 <div class="marquee-content">
-                    <span>MICROWAVE SYSTEMS</span> <span class="star">✦</span>
-                    <span>CWDM FIBER OPTIC CORE</span> <span class="star">✦</span>
+                    <span>MICROWAVE BACKHAUL SYSTEMS</span> <span class="star">✦</span>
+                    <span>DWDM FIBER OPTIC CORE</span> <span class="star">✦</span>
                     <span>NETWORK OPERATION CENTER (NOC)</span> <span class="star">✦</span>
-                    <span>SUPPORT</span> <span class="star">✦</span>
+                    <span>UBIQUITI & CAMBIUM NETWORKS</span> <span class="star">✦</span>
                     <span>SLA HIGH AVAILABILITY</span> <span class="star">✦</span>
                 </div>
             </div>
@@ -97,18 +99,18 @@
 
         <div class="bento-card stats-card slide-up" style="--delay: 0.5s;">
             <div class="stat-box parallax-layer-2">
-                <span class="stat-number">8+</span>
-                <span class="stat-label">Años en<br>Telecom & TI</span>
+                <span class="stat-number">5+</span>
+                <span class="stat-label">Años en<br>Soporte & TI</span>
             </div>
             <div class="stat-divider parallax-layer-1"></div>
             <div class="stat-box parallax-layer-2">
-                <span class="stat-number">99.99<span class="stat-small">%</span></span>
-                <span class="stat-label">Disponibilidad</span>
+                <span class="stat-number">99.9<span class="stat-small">%</span></span>
+                <span class="stat-label">Disponibilidad<br>Mantenida</span>
             </div>
             <div class="stat-divider parallax-layer-1"></div>
             <div class="stat-box parallax-layer-2">
                 <span class="stat-number">24/7</span>
-                <span class="stat-label">Soporte</span>
+                <span class="stat-label">Monitoreo<br>Proactivo</span>
             </div>
         </div>
 
@@ -129,7 +131,7 @@
         </div>
 
         <div class="bento-card projects-card slide-up" style="--delay: 0.7s;">
-            <h3 class="card-title hacker-text parallax-layer-1" data-value="ARQUITECTURA Y REDES">Arquitectura, Automatización y Redes</h3>
+            <h3 class="card-title hacker-text parallax-layer-1" data-value="INFRAESTRUCTURA & DESPLIEGUES">Infraestructura & Despliegues</h3>
             <div class="project-list">
                 {% for proj in data.projects %}
                 <div class="project-box parallax-layer-2">
@@ -144,7 +146,7 @@
         </div>
 
         <div class="bento-card tech-card slide-up" style="--delay: 0.8s;">
-            <h3 class="card-title hacker-text parallax-layer-1" data-value="STACK TÉCNICO & ESPECIALIDADES">Stack Técnico & Especialidades</h3>
+            <h3 class="card-title hacker-text parallax-layer-1" data-value="MÓDULOS DE MONITOREO & STACK">Módulos de Monitoreo & Stack</h3>
             <div class="tags-container parallax-layer-2">
                 {% for tech in data.tech_stack %}
                 <div class="mono-tag">
@@ -180,24 +182,28 @@
 
     </div>
 
+    <button id="scrollToTopBtn" class="scroll-to-top" aria-label="Volver arriba">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
     <div class="modal-overlay" id="contactModal">
         <div class="modal-content">
             <button class="close-modal" onclick="closeModal()"><i class="fas fa-times"></i></button>
             <h3 style="margin-top: 0; font-size: 1.4rem; margin-bottom: 1.5rem; font-weight: 700; letter-spacing: -0.5px;">Enviar Mensaje Directo</h3>
             
-            <form id="contactForm" onsubmit="submitForm(event)">
+            <form id="contactForm" action="https://formspree.io/f/mqakevzz" method="POST" onsubmit="submitForm(event)">
                 <div class="form-group-modal">
                     <label class="form-label">Tu Correo Electrónico</label>
                     <input type="email" id="sender_email" class="modal-input" name="email" required placeholder="ejemplo@correo.com">
                 </div>
                 <div class="form-group-modal">
                     <label class="form-label">Asunto</label>
-                    <input type="text" id="subject" class="modal-input" name="subject" required placeholder="Oportunidad laboral / Proyecto...">
+                    <input type="text" id="subject" class="modal-input" name="subject" required placeholder="Soporte / Oportunidad Laboral...">
                 </div>
                 <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
                 <div class="form-group-modal">
                     <label class="form-label">Mensaje</label>
-                    <textarea id="message" class="modal-textarea" name="message" required placeholder="Escribe los detalles de tu mensaje aquí..."></textarea>
+                    <textarea id="message" class="modal-textarea" name="message" required placeholder="Escribe los detalles aquí..."></textarea>
                 </div>
                 <button type="submit" id="submit-msg-btn" class="glow-btn" style="width: 100%; justify-content: center; border: none; cursor: pointer; font-family: 'Inter', sans-serif; margin-top: 5px; padding: 12px; background: var(--accent-blue); color: white; border-radius: 8px;">
                     <i class="fas fa-paper-plane"></i> Enviar Mensaje
@@ -207,14 +213,6 @@
         </div>
     </div>
 
-    <script src="/static/js/main.js?v=2.0"></script>
-
-    <button id="scrollToTopBtn" class="scroll-to-top" aria-label="Volver arriba">
-            <i class="fas fa-chevron-up"></i>
-        </button>
-
-        <!-- JS Externo (Modularizado) -->
-        <script src="/static/js/main.js?v=2.0"></script>
-    
+    <script src="/static/js/main.js?v=3.0"></script>
 </body>
 </html>

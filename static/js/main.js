@@ -8,7 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (winScroll / height) * 100;
-            document.getElementById('scroll-progress').style.width = scrolled + "%";
+            const progressEl = document.getElementById('scroll-progress');
+            if(progressEl) progressEl.style.width = scrolled + "%";
         }, 10);
     });
 
@@ -157,7 +158,8 @@ document.addEventListener("DOMContentLoaded", () => {
         function iniciarSecuenciaNOC(ip) {
             const mensajes = [
                 `Iniciando escaneo de red...`,
-                `Detectando conexión entrante desde IP: ${ip}...`
+                `Detectando conexión entrante desde IP: ${ip}...`,
+                `sincronizando radioenlaces de microondas...`
             ];
             
             let mensajeIndex = 0;
@@ -193,6 +195,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // --- SCROLL TO TOP BUTTON (ÁMBITO AISLADO) ---
+    {
+        const btnSubirNOC = document.getElementById("scrollToTopBtn");
+        if (btnSubirNOC) {
+            window.addEventListener("scroll", () => {
+                if (window.scrollY > 300) {
+                    btnSubirNOC.classList.add("show");
+                } else {
+                    btnSubirNOC.classList.remove("show");
+                }
+            });
+
+            btnSubirNOC.addEventListener("click", () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            });
+        }
+    }
+
     // --- TITLE ALERT ON BLUR ---
     let docTitle = document.title;
     window.addEventListener("blur", () => { document.title = "⚠️ NOC ALERT: Enlace inactivo | " + docTitle.split(" - ")[0]; });
@@ -201,7 +224,6 @@ document.addEventListener("DOMContentLoaded", () => {
 }); // Fin del DOMContentLoaded
 
 // --- FUNCIONES GLOBALES PARA EL MODAL ---
-// Deben estar fuera del DOMContentLoaded para ser accesibles desde el HTML (onclick)
 function openModal() { 
     document.getElementById('contactModal').classList.add('active'); 
     document.getElementById('form-status').innerHTML = ''; 
@@ -234,7 +256,7 @@ async function submitForm(event) {
             document.getElementById('contactForm').reset(); 
             setTimeout(closeModal, 2500); 
         } else { 
-            statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error: ¿Verificaste el formulario en Formspree?</span>'; 
+            statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error al conectar con el endpoint.</span>'; 
         }
     } catch(e) { 
         statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error de red.</span>'; 
@@ -243,23 +265,3 @@ async function submitForm(event) {
         btn.style.pointerEvents = 'auto'; 
     }
 }
-
-// --- SCROLL TO TOP BUTTON ---
-    const botonSubir = document.getElementById("scrollToTopBtn");
-    
-    if (botonSubir) {
-        window.addEventListener("scroll", () => {
-            if (window.scrollY > 300) {
-                botonSubir.classList.add("show");
-            } else {
-                botonSubir.classList.remove("show");
-            }
-        });
-
-        botonSubir.addEventListener("click", () => {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        });
-    }
