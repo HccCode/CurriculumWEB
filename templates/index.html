@@ -1,163 +1,446 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hector Uribe Montaño | Operations & Support Engineer</title>
-    <link rel="stylesheet" href="/static/css/all.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    
+    <title>{{ data.profile.name }} - Network & Software Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="/static/css/all.css?v=6.0">
+
+    <style>
+        /* --- BARRAS DE SEÑAL DINÁMICAS --- */
+        .network-signal { display: flex; align-items: flex-end; gap: 3px; height: 16px; margin-right: 5px; }
+        .network-signal .bar { width: 4px; background-color: rgba(16, 185, 129, 0.2); border-radius: 2px; }
+        .network-signal .bar-1 { height: 6px;  animation: sig1 2s infinite ease-in-out; }
+        .network-signal .bar-2 { height: 9px;  animation: sig2 2s infinite ease-in-out; }
+        .network-signal .bar-3 { height: 12px; animation: sig3 2s infinite ease-in-out; }
+        .network-signal .bar-4 { height: 16px; animation: sig4 2s infinite ease-in-out; }
+
+        @keyframes sig1 { 0%, 100% { opacity: 0.3; } 10%, 90% { opacity: 1; background-color: #10b981; box-shadow: 0 0 8px #10b981; } }
+        @keyframes sig2 { 0%, 100% { opacity: 0.3; } 25%, 75% { opacity: 1; background-color: #10b981; box-shadow: 0 0 8px #10b981; } }
+        @keyframes sig3 { 0%, 100% { opacity: 0.3; } 40%, 60% { opacity: 1; background-color: #10b981; box-shadow: 0 0 8px #10b981; } }
+        @keyframes sig4 { 0%, 100% { opacity: 0.3; } 50%, 55% { opacity: 1; background-color: #10b981; box-shadow: 0 0 8px #10b981; } }
+
+        /* --- BOTONES DE CONTACTO (BENTO GRID) --- */
+        .social-links-container { display: flex; flex-direction: column; gap: 12px; height: 100%; justify-content: center; }
+        .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .social-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 20px 10px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; color: #94a3b8; text-decoration: none; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); position: relative; overflow: hidden; }
+        .social-box i { font-size: 1.9rem; transition: all 0.4s ease; z-index: 2; }
+        .social-box span { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.5px; z-index: 2; transition: all 0.3s ease; }
+        .social-box::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%); transform: translate(-50%, -50%); transition: width 0.4s ease, height 0.4s ease; z-index: 1; border-radius: 50%; }
+        .social-box:hover { background: rgba(255, 255, 255, 0.04); border-color: rgba(59, 130, 246, 0.3); transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); }
+        .social-box:hover::before { width: 160px; height: 160px; }
+        .social-box:hover i { transform: scale(1.15) translateY(-2px); color: #ffffff; }
+        .social-box:hover span { color: #ffffff; }
+
+        .contact-action-btn { position: relative; width: 100%; padding: 16px; background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 16px; color: #3b82f6; font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; font-weight: 700; letter-spacing: 1px; cursor: pointer; overflow: hidden; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); margin-top: 4px; box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.05); }
+        .contact-action-btn .btn-content { display: flex; align-items: center; justify-content: center; gap: 10px; position: relative; z-index: 2; transition: color 0.3s ease; }
+        .contact-action-btn .btn-content i { font-size: 1.1rem; }
+        .contact-action-btn::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); opacity: 0; transition: opacity 0.3s ease; z-index: 1; }
+        .contact-action-btn:hover { transform: translateY(-4px); border-color: transparent; box-shadow: 0 12px 24px rgba(59, 130, 246, 0.3); }
+        .contact-action-btn:hover::after { opacity: 1; }
+        .contact-action-btn:hover .btn-content { color: #ffffff; }
+
+        /* --- LÍNEA DE TIEMPO FIBRA ÓPTICA --- */
+        .exp-item { border-left: 2px solid rgba(59, 130, 246, 0.15); padding-left: 1.5rem; position: relative; transition: all 0.4s ease; }
+        .exp-item::before { content: ''; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg-base); border: 2px solid rgba(59, 130, 246, 0.5); z-index: 4; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .exp-item:hover { border-left-color: #3b82f6; box-shadow: inset 2px 0 10px rgba(59, 130, 246, 0.05); }
+        .exp-item:hover::before { border-color: #3b82f6; background: #3b82f6; box-shadow: 0 0 15px #3b82f6; transform: scale(1.3); }
+
+        /* --- NODOS DE STACK TÉCNICO --- */
+        .mono-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.84rem; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 8px; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); color: #cbd5e1; position: relative; overflow: hidden; transition: all 0.3s ease; }
+        .mono-tag::after { content: ''; display: inline-block; width: 6px; height: 6px; background-color: #94a3b8; border-radius: 50%; margin-left: auto; transition: all 0.3s ease; }
+        .mono-tag:hover { background: rgba(59, 130, 246, 0.05); border-color: rgba(59, 130, 246, 0.4); color: #ffffff; transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); }
+        .mono-tag:hover::after { background-color: #10b981; box-shadow: 0 0 8px #10b981; }
+        .mono-tag i { color: #3b82f6; }
+
+        /* --- TARJETAS DE PROYECTO (SERVER RACK ESTÉTICA) --- */
+        .project-box { border: 1px solid rgba(255,255,255,0.03); border-left: 3px solid rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; background: linear-gradient(90deg, rgba(255,255,255,0.02) 0%, rgba(0,0,0,0.2) 100%); transition: all 0.3s ease; cursor: default; }
+        .project-top { display: flex; align-items: center; gap: 12px; margin-bottom: 0.8rem; border-bottom: 1px dashed rgba(255,255,255,0.05); padding-bottom: 10px; }
+        .project-icon { color: #3b82f6; font-size: 1.2rem; transition: transform 0.3s ease, text-shadow 0.3s ease; }
+        .project-box:hover { border-left-color: #3b82f6; background: linear-gradient(90deg, rgba(59, 130, 246, 0.05) 0%, rgba(0,0,0,0.2) 100%); transform: translateX(4px); }
+        .project-box:hover .project-icon { transform: scale(1.2); text-shadow: 0 0 10px #3b82f6; }
+    </style>
 </head>
 <body>
-    <!-- Navegación -->
-    <nav class="navbar">
-        <div class="logo">
-            <span class="logo-circle">H</span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#expertise">Expertise</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#projects">Deployments</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-        <a href="#" class="btn-resume">Resume</a>
-    </nav>
 
-    <!-- Sección Hero -->
-    <header class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Hello,<br>I'm <span class="text-accent">Hector</span></h1>
-            <p class="hero-subtitle">
-                Ingeniero de Operación y Soporte radicado en Mexicali. Especializado en el monitoreo de centros de operaciones (NOC), infraestructura de redes, sistemas de videovigilancia y automatización de hardware.
-            </p>
-            <div class="hero-buttons">
-                <a href="#projects" class="btn-primary">View Infrastructure</a>
-                <a href="#contact" class="btn-secondary">Contact Me</a>
+    <div id="scroll-progress"></div>
+
+    <canvas id="network-canvas" class="mesh-bg"></canvas>
+
+    <div class="noise-bg"></div>
+
+    <div class="bento-container" id="bento-container">
+        
+        <div class="bento-card hero-card slide-up" style="--delay: 0.1s; border-top: 3px solid var(--accent-blue);">
+            <div class="hero-content">
+                <div class="status-badge parallax-layer-2">
+                    <span class="pulse-dot"></span> <span id="uptime-counter" style="font-family: 'JetBrains Mono'; margin-left: 5px;">UPTIME: 999d 14h 22m 10s</span>
+                </div>
+                <h1 class="name gradient-text hover-glitch parallax-layer-3">{{ data.profile.name }}</h1>
+                <h2 class="role parallax-layer-2">{{ data.profile.role }}</h2>
+                <p class="bio parallax-layer-1">
+                    {{ data.profile.bio }}
+                </p>
             </div>
-            <div class="hero-stats">
-                <div class="stat-item">
-                    <h3>5+</h3>
-                    <p>Years Exp.</p>
+            <div class="hero-visual parallax-layer-3">
+                <div class="avatar-wrapper">
+                    <img src="https://pbs.twimg.com/media/CMOrTsXVEAAF6tr.jpg" alt="{{ data.profile.name }}" class="avatar">
                 </div>
-                <div class="stat-item">
-                    <h3>99.9%</h3>
-                    <p>Uptime Maintained</p>
+            </div>
+        </div>
+
+        <div class="bento-card location-card slide-up" style="--delay: 0.2s;">
+            <div class="location-info parallax-layer-2">
+                <div class="radar-container">
+                    <i class="fas fa-globe-americas icon-glow"></i>
                 </div>
+                <div>
+                    <h3 class="loc-title hacker-text" data-value="BASE DE OPERACIONES">Base de Operaciones</h3>
+                    <p class="loc-text">{{ data.profile.location }}</p>
+                </div>
+            </div>
+            
+            <div class="time-display parallax-layer-3" style="display:flex; justify-content:center; align-items:center; width:100%; margin-top: 15px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    
+                    <div class="network-signal">
+                        <span class="bar bar-1"></span>
+                        <span class="bar bar-2"></span>
+                        <span class="bar bar-3"></span>
+                        <span class="bar bar-4"></span>
+                    </div>
+                    
+                    <div>
+                        <span id="live-time">00:00:00</span>
+                        <span class="time-zone" style="margin-left: 4px;">PST</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bento-card marquee-card slide-up" style="--delay: 0.3s;">
+            <div class="marquee-track parallax-layer-1">
+                <div class="marquee-content">
+                    <span>MICROWAVE BACKHAUL SYSTEMS</span> <span class="star">✦</span>
+                    <span>DWDM FIBER OPTIC CORE</span> <span class="star">✦</span>
+                    <span>NETWORK OPERATION CENTER (NOC)</span> <span class="star">✦</span>
+                    <span>FASTAPI & REACT AUTOMATION</span> <span class="star">✦</span>
+                    <span>SLA HIGH AVAILABILITY</span> <span class="star">✦</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bento-card terminal-card slide-up" style="--delay: 0.4s;">
+            <div class="terminal-header parallax-layer-1">
+                <div class="term-dots">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                </div>
+                <span class="term-title">network_monitor.exe</span>
+            </div>
+            <div class="terminal-body crt-effect" id="terminal-body">
+                <p class="parallax-layer-2"><span class="prompt">core_noc@hector_uribe:~$</span> <span id="typewriter"></span><span class="cursor-blink">_</span></p>
+            </div>
+        </div>
+
+        <div class="bento-card stats-card slide-up" style="--delay: 0.5s;">
+            <div class="stat-box parallax-layer-2">
+                <span class="stat-number">8+</span>
+                <span class="stat-label">Años en<br>Telecom & TI</span>
+            </div>
+            <div class="stat-divider parallax-layer-1"></div>
+            <div class="stat-box parallax-layer-2">
+                <span class="stat-number">99.99<span class="stat-small">%</span></span>
+                <span class="stat-label">Disponibilidad<br>Troncal</span>
+            </div>
+            <div class="stat-divider parallax-layer-1"></div>
+            <div class="stat-box parallax-layer-2">
+                <span class="stat-number">24/7</span>
+                <span class="stat-label">Soporte y<br>Monitoreo Activo</span>
+            </div>
+        </div>
+
+        <div class="bento-card exp-card slide-up" style="--delay: 0.6s;">
+            <h3 class="card-title hacker-text parallax-layer-1" data-value="EXPERIENCIA PROFESIONAL">Experiencia Profesional</h3>
+            <div class="exp-list">
+                {% for exp in data.experience %}
+                <div class="exp-item parallax-layer-2">
+                    <div class="exp-header">
+                        <span class="exp-role">{{ exp.role }}</span>
+                        <span class="exp-date">{{ exp.date }}</span>
+                    </div>
+                    <span class="exp-company">{{ exp.company }}</span>
+                    <p class="exp-desc parallax-layer-1">{{ exp.desc }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="bento-card projects-card slide-up" style="--delay: 0.7s;">
+            <h3 class="card-title hacker-text parallax-layer-1" data-value="ARQUITECTURA Y REDES">Arquitectura, Automatización y Redes</h3>
+            <div class="project-list">
+                {% for proj in data.projects %}
+                <div class="project-box parallax-layer-2">
+                    <div class="project-top">
+                        <i class="{{ proj.icon }} project-icon" style="color: var(--accent-blue);"></i>
+                        <h4>{{ proj.title }}</h4>
+                    </div>
+                    <p class="parallax-layer-1">{{ proj.desc }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="bento-card tech-card slide-up" style="--delay: 0.8s;">
+            <h3 class="card-title hacker-text parallax-layer-1" data-value="STACK TÉCNICO & ESPECIALIDADES">Stack Técnico & Especialidades</h3>
+            <div class="tags-container parallax-layer-2">
+                {% for tech in data.tech_stack %}
+                <span class="mono-tag"><i class="{{ tech.icon }}"></i> {{ tech.name }}</span>
+                {% endfor %}
             </div>
         </div>
         
-        <div class="hero-visual">
-            <div class="image-container">
-                <!-- Reemplaza la URL con tu foto -->
-                <img src="https://via.placeholder.com/400" alt="Hector Uribe Montaño">
-                <div class="floating-badge badge-1">UniFi / Cambium</div>
-                <div class="floating-badge badge-2">CCTV Systems</div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Sección About (Nueva) -->
-    <section id="about" class="section bg-alt">
-        <div class="section-header">
-            <p class="section-subtitle">A LITTLE ABOUT ME AND MY JOURNEY</p>
-            <h2 class="section-title">About Me</h2>
-        </div>
-        <div class="about-content">
-            <p class="about-text">
-                Mi enfoque profesional se centra en garantizar la continuidad del negocio a través de una infraestructura tecnológica robusta. Puenteo la brecha entre el hardware físico y la gestión en la nube, asegurando redes estables, control de acceso seguro y sistemas de monitoreo proactivos.
-            </p>
-            <blockquote class="about-quote">
-                "Una red invisible es una red bien administrada. El verdadero soporte ocurre antes de que el usuario note el problema."
-            </blockquote>
-        </div>
-    </section>
-
-    <!-- Sección Expertise -->
-    <section id="expertise" class="section">
-        <div class="section-header">
-            <p class="section-subtitle">WHAT I BRING TO THE TABLE</p>
-            <h2 class="section-title">Core Expertise</h2>
-        </div>
-        <div class="grid-container">
-            <div class="card">
-                <h3>Network Infrastructure</h3>
-                <p>Despliegue y administración de redes inalámbricas corporativas, configuración de puntos de acceso, servidores UniFi OS y ruteo avanzado con equipos Cambium y Ubiquiti.</p>
-            </div>
-            <div class="card">
-                <h3>Security & Surveillance</h3>
-                <p>Implementación de sistemas cerrados de televisión (CCTV) análogos e IP, configuración de DVRs (Dahua, Swann) y sistemas de alarma con monitoreo remoto.</p>
-            </div>
-            <div class="card">
-                <h3>Hardware Automation</h3>
-                <p>Instalación de cerraduras electrónicas inteligentes, cableado estructurado de red y automatización de entornos de trabajo (Smart Office) para máxima eficiencia operativa.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección Skills (Nueva) -->
-    <section id="skills" class="section bg-alt">
-        <div class="section-header">
-            <p class="section-subtitle">CORE STRENGTHS</p>
-            <h2 class="section-title">Skills & Stack</h2>
-        </div>
-        <div class="skills-grid">
-            <div class="skill-tag">UniFi OS Server</div>
-            <div class="skill-tag">Cambium Networks</div>
-            <div class="skill-tag">Dahua / Swann CCTV</div>
-            <div class="skill-tag">Python 3.10 / Bash</div>
-            <div class="skill-tag">Helpdesk & Ticketing</div>
-            <div class="skill-tag">Structured Cabling</div>
-            <div class="skill-tag">IoT & Access Control</div>
-            <div class="skill-tag">Linux Server Admin</div>
-        </div>
-    </section>
-
-    <!-- Sección Experiencia -->
-    <section id="experience" class="section">
-        <div class="section-header">
-            <p class="section-subtitle">MY PROFESSIONAL JOURNEY</p>
-            <h2 class="section-title">Experience</h2>
-        </div>
-        <div class="accordion-container">
-            <details class="accordion-item" open>
-                <summary class="accordion-header">
-                    <div>
-                        <h3>NOC Engineer & IT Admin</h3>
-                        <p class="text-muted">Enero 2024 - Presente</p>
-                    </div>
-                    <span class="icon">+</span>
-                </summary>
-                <div class="accordion-content">
-                    <p>Monitoreo proactivo de la red corporativa. Mantenimiento preventivo y correctivo de hardware, resolución de tickets de soporte técnico nivel 2 y administración de políticas de seguridad en la red local y remota.</p>
+        <div class="bento-card contact-card slide-up" style="--delay: 0.9s; border-bottom: 3px solid var(--accent-green);">
+            <h3 class="card-title hacker-text parallax-layer-1" data-value="CONECTAR">Conectar</h3>
+            <div class="social-links-container parallax-layer-2">
+                <div class="social-grid">
+                    <a href="{{ data.profile.github }}" target="_blank" rel="noopener noreferrer" class="social-box magnetic-element">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="{{ data.profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="social-box magnetic-element">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
                 </div>
-            </details>
-            <details class="accordion-item">
-                <summary class="accordion-header">
-                    <div>
-                        <h3>Especialista en Soporte e Infraestructura</h3>
-                        <p class="text-muted">2021 - 2023</p>
+                
+                <button onclick="openModal()" class="contact-action-btn magnetic-element">
+                    <div class="btn-content">
+                        <i class="fas fa-envelope"></i>
+                        <span>CONTACTAR</span>
                     </div>
-                    <span class="icon">+</span>
-                </summary>
-                <div class="accordion-content">
-                    <p>Instalación de cableado estructurado, configuración de baluns de video HD, mantenimiento a sistemas de alarmas y soporte en sitio a usuarios finales y directivos.</p>
-                </div>
-            </details>
-        </div>
-    </section>
-
-    <!-- Sección Contacto (Nueva) -->
-    <section id="contact" class="section bg-alt">
-        <div class="section-header">
-            <p class="section-subtitle">LET'S WORK TOGETHER</p>
-            <h2 class="section-title">Get In Touch</h2>
-        </div>
-        <div class="contact-container">
-            <p>¿Buscas optimizar tu infraestructura de red o necesitas soporte técnico especializado? Colaboremos para transformar tus operaciones de TI.</p>
-            <div class="contact-links">
-                <a href="mailto:tu-correo@ejemplo.com" class="btn-primary">hector@ejemplo.com</a>
-                <a href="#" class="btn-secondary">LinkedIn</a>
+                </button>
             </div>
         </div>
-    </section>
+
+    </div>
+
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <h3 style="margin-top: 0; font-size: 1.4rem; margin-bottom: 1.5rem; font-weight: 700; letter-spacing: -0.5px;">Enviar Mensaje Directo</h3>
+            
+            <form id="contactForm" onsubmit="submitForm(event)">
+                <div class="form-group-modal">
+                    <label class="form-label">Tu Correo Electrónico</label>
+                    <input type="email" id="sender_email" class="modal-input" name="email" required placeholder="ejemplo@correo.com">
+                </div>
+                <div class="form-group-modal">
+                    <label class="form-label">Asunto</label>
+                    <input type="text" id="subject" class="modal-input" name="subject" required placeholder="Oportunidad laboral / Proyecto...">
+                </div>
+
+                <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+                
+                <div class="form-group-modal">
+                    <label class="form-label">Mensaje</label>
+                    <textarea id="message" class="modal-textarea" name="message" required placeholder="Escribe los detalles de tu mensaje aquí..."></textarea>
+                </div>
+                <button type="submit" id="submit-msg-btn" class="glow-btn" style="width: 100%; justify-content: center; border: none; cursor: pointer; font-family: 'Inter', sans-serif; margin-top: 5px; padding: 12px; background: var(--accent-blue); color: white; border-radius: 8px;">
+                    <i class="fas fa-paper-plane"></i> Enviar Mensaje
+                </button>
+            </form>
+            <div id="form-status" style="margin-top: 15px; font-size: 0.9rem; text-align: center; font-weight: 500;"></div>
+        </div>
+    </div>
+
+    <script>
+        let isScrolling;
+        window.addEventListener('scroll', () => {
+            window.clearTimeout(isScrolling);
+            isScrolling = setTimeout(function() {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                document.getElementById('scroll-progress').style.width = scrolled + "%";
+            }, 10);
+        });
+
+        let uptimeSeconds = 86392500; 
+        function updateUptime() {
+            uptimeSeconds++;
+            let d = Math.floor(uptimeSeconds / (3600*24));
+            let h = Math.floor(uptimeSeconds % (3600*24) / 3600);
+            let m = Math.floor(uptimeSeconds % 3600 / 60);
+            let s = Math.floor(uptimeSeconds % 60);
+            document.getElementById("uptime-counter").innerText = `UPTIME: ${d}d ${h}h ${m}m ${s}s`;
+        }
+        setInterval(updateUptime, 1000);
+
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
+        document.querySelectorAll('.hacker-text').forEach(el => {
+            el.addEventListener('mouseover', event => {
+                let iterations = 0;
+                const interval = setInterval(() => {
+                    event.target.innerText = event.target.innerText.split("")
+                        .map((letter, index) => {
+                            if(index < iterations) return event.target.dataset.value[index];
+                            return letters[Math.floor(Math.random() * 42)];
+                        }).join("");
+                    if(iterations >= event.target.dataset.value.length) clearInterval(interval);
+                    iterations += 1 / 3;
+                }, 30);
+            });
+        });
+
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let particlesArray = [];
+        const mouse = { x: null, y: null, radius: 150 };
+
+        window.addEventListener('mousemove', function(event) { mouse.x = event.x; mouse.y = event.y; });
+        window.addEventListener('mouseout', function(){ mouse.x = undefined; mouse.y = undefined; });
+        window.addEventListener('resize', function(){ canvas.width = innerWidth; canvas.height = innerHeight; initNetwork(); });
+
+        class Node {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY; this.size = size; this.color = color;
+            }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false); ctx.fillStyle = this.color; ctx.fill(); }
+            update() {
+                if(this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+                if(this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+                let dx = mouse.x - this.x; let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx*dx + dy*dy);
+                if(distance < mouse.radius + this.size){
+                    if(mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 1;
+                    if(mouse.x > this.x && this.x > this.size * 10) this.x -= 1;
+                    if(mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 1;
+                    if(mouse.y > this.y && this.y > this.size * 10) this.y -= 1;
+                }
+                this.x += this.directionX; this.y += this.directionY;
+                this.draw();
+            }
+        }
+        function initNetwork() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 18000; 
+            for(let i=0; i<numberOfParticles; i++){
+                let size = (Math.random() * 2) + 0.5;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * 1) - 0.5;
+                let directionY = (Math.random() * 1) - 0.5;
+                particlesArray.push(new Node(x, y, directionX, directionY, size, '#3b82f6'));
+            }
+        }
+        function connectNodes() {
+            let opacityValue = 1;
+            for(let a=0; a<particlesArray.length; a++){
+                for(let b=a; b<particlesArray.length; b++){
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    if(distance < (canvas.width/8) * (canvas.height/8)){
+                        opacityValue = 1 - (distance/18000);
+                        ctx.strokeStyle = 'rgba(16, 185, 129,' + opacityValue + ')';
+                        ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(particlesArray[a].x, particlesArray[a].y); ctx.lineTo(particlesArray[b].x, particlesArray[b].y); ctx.stroke();
+                    }
+                }
+            }
+        }
+        function animateNetwork() {
+            requestAnimationFrame(animateNetwork);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+            for(let i=0; i<particlesArray.length; i++) particlesArray[i].update();
+            connectNodes();
+        }
+        initNetwork(); animateNetwork();
+
+        const modal = document.getElementById('contactModal');
+        const statusDiv = document.getElementById('form-status');
+        function openModal() { modal.classList.add('active'); statusDiv.innerHTML = ''; }
+        function closeModal() { modal.classList.remove('active'); document.getElementById('contactForm').reset(); }
+        
+        async function submitForm(event) {
+            event.preventDefault();
+            const btn = document.getElementById('submit-msg-btn');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+            btn.style.pointerEvents = 'none';
+            const FORMSPREE_URL = "https://formspree.io/f/mqakevzz"; 
+            
+            const formData = new FormData(document.getElementById('contactForm'));
+            const payload = Object.fromEntries(formData.entries());
+            
+            try {
+                const res = await fetch(FORMSPREE_URL, { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (res.ok) { statusDiv.innerHTML = '<span style="color: var(--accent-green);"><i class="fas fa-check-circle"></i> Mensaje enviado exitosamente.</span>'; document.getElementById('contactForm').reset(); setTimeout(closeModal, 2500); } 
+                else { statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error al enviar.</span>'; }
+            } catch(e) { statusDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Error de red.</span>'; } 
+            finally { btn.innerHTML = originalContent; btn.style.pointerEvents = 'auto'; }
+        }
+
+        if (window.matchMedia("(min-width: 768px)").matches) {
+            let isTicking = false;
+            document.querySelectorAll('.bento-card').forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    if(!isTicking) {
+                        window.requestAnimationFrame(() => {
+                            const rect = card.getBoundingClientRect();
+                            const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+                            card.style.setProperty("--mouse-x", `${x}px`); card.style.setProperty("--mouse-y", `${y}px`);
+                            const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -4; 
+                            const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 4;
+                            card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                            card.style.zIndex = "10";
+                            isTicking = false;
+                        });
+                        isTicking = true;
+                    }
+                });
+                card.addEventListener('mouseleave', () => { card.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`; card.style.zIndex = "1"; });
+            });
+        }
+
+        function updateClock() { document.getElementById('live-time').innerText = new Date().toLocaleTimeString('es-MX', { timeZone: 'America/Tijuana', hour: '2-digit', minute:'2-digit', second:'2-digit', hour12: false }); }
+        setInterval(updateClock, 1000); updateClock();
+
+        const phrases = [
+            "sincronizando radioenlaces de microondas...",
+            "monitoreando anillos core de fibra óptica... OK.",
+            "analizando umbrales de pérdida por inserción óptica...",
+            "validando esquemas de enrutamiento dinámico (BGP/OSPF)...",
+            "mantenimiento proactivo NOC: disponibilidad 99.99%."
+        ];
+        let idx = 0; let chIdx = 0; let isDeleting = false; let isWaiting = false;
+        function typeLoop() {
+            if (isWaiting) return;
+            const currentPhrase = phrases[idx];
+            const typewriterEl = document.getElementById("typewriter");
+            if (!typewriterEl) return;
+            if (isDeleting) { 
+                typewriterEl.innerText = currentPhrase.substring(0, chIdx - 1); 
+                chIdx--; 
+                if (chIdx === 0) { isDeleting = false; idx = (idx + 1) % phrases.length; } 
+            } else { 
+                typewriterEl.innerText = currentPhrase.substring(0, chIdx + 1); 
+                chIdx++; 
+                if (chIdx === currentPhrase.length) { isWaiting = true; setTimeout(() => { isWaiting = false; isDeleting = true; }, 2500); } 
+            }
+            setTimeout(typeLoop, isDeleting ? 20 : 45);
+        }
+        typeLoop();
+
+        let docTitle = document.title;
+        window.addEventListener("blur", () => { document.title = "⚠️ NOC ALERT: Enlace inactivo | " + docTitle.split(" - ")[0]; });
+        window.addEventListener("focus", () => { document.title = docTitle; });
+    </script>
 </body>
 </html>
