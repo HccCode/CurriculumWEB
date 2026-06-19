@@ -158,8 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
         function iniciarSecuenciaNOC(ip) {
             const mensajes = [
                 `Iniciando escaneo de red...`,
-                `Detectando conexión entrante desde IP: ${ip}...`,
-                `sincronizando radioenlaces de microondas...`
+                `Detectando conexión entrante desde IP: ${ip}...`
             ];
             
             let mensajeIndex = 0;
@@ -218,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- TITLE ALERT ON BLUR ---
     let docTitle = document.title;
-    window.addEventListener("blur", () => { document.title = "⚠️ NOC ALERT: Enlace inactivo | " + docTitle.split(" - ")[0]; });
+    window.addEventListener("blur", () => { document.title = "⚠️ ALERT: Enlace inactivo | " + docTitle.split(" - ")[0]; });
     window.addEventListener("focus", () => { document.title = docTitle; });
 
 }); // Fin del DOMContentLoaded
@@ -242,7 +241,7 @@ async function submitForm(event) {
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
     btn.style.pointerEvents = 'none';
     
-    const FORMSPREE_URL = "https://formspree.io/f/mqakevzz"; 
+    const FORMSPREE_URL = "https://formspree.io/f/xjgddjpa"; 
     const formData = new FormData(document.getElementById('contactForm'));
     
     try {
