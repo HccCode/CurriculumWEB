@@ -157,8 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
         function iniciarSecuenciaNOC(ip) {
             const mensajes = [
                 `Iniciando escaneo de red...`,
-                `Detectando conexión entrante desde IP: ${ip}...`,
-                `sincronizando radioenlaces de microondas...`
+                `Detectando conexión entrante desde IP: ${ip}...`
             ];
             
             let mensajeIndex = 0;
