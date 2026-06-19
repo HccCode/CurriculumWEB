@@ -11,16 +11,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="/static/css/all.css?v=4.0">
+    <link rel="stylesheet" href="/static/css/all.css?v=5.0">
 
     <style>
+        /* --- BARRAS DE SEÑAL DINÁMICAS (INCREMENTO/DECREMENTO) --- */
+        .network-signal { display: flex; align-items: flex-end; gap: 3px; height: 16px; margin-right: 5px; }
+        .network-signal .bar { width: 4px; background-color: rgba(16, 185, 129, 0.2); border-radius: 2px; }
+        .network-signal .bar-1 { height: 6px;  animation: sig1 2s infinite ease-in-out; }
+        .network-signal .bar-2 { height: 9px;  animation: sig2 2s infinite ease-in-out; }
+        .network-signal .bar-3 { height: 12px; animation: sig3 2s infinite ease-in-out; }
+        .network-signal .bar-4 { height: 16px; animation: sig4 2s infinite ease-in-out; }
+
+        @keyframes sig1 { 0%, 100% { opacity: 0.3; } 10%, 90% { opacity: 1; background-color: #10b981; box-shadow: 0 0 8px #10b981; } }
+        @keyframes sig2 { 0%, 100% { opacity: 0.3; } 25%, 75% { opacity: 1; background-color: #10b981; box-shadow: 0 0 8px #10b981; } }
+        @keyframes sig3 { 0%, 100% { opacity: 0.3; } 40%, 60% { opacity: 1; background-color: #10b981; box-shadow: 0 0 8px #10b981; } }
+        @keyframes sig4 { 0%, 100% { opacity: 0.3; } 50%, 55% { opacity: 1; background-color: #10b981; box-shadow: 0 0 8px #10b981; } }
+
+        /* --- BOTONES DE CONTACTO (BENTO GRID) --- */
         .social-links-container { display: flex; flex-direction: column; gap: 12px; height: 100%; justify-content: center; }
         .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         
         .social-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 20px 10px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; color: #94a3b8; text-decoration: none; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); position: relative; overflow: hidden; }
         .social-box i { font-size: 1.9rem; transition: all 0.4s ease; z-index: 2; }
         .social-box span { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.5px; z-index: 2; transition: all 0.3s ease; }
-        
         .social-box::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%); transform: translate(-50%, -50%); transition: width 0.4s ease, height 0.4s ease; z-index: 1; border-radius: 50%; }
         
         .social-box:hover { background: rgba(255, 255, 255, 0.04); border-color: rgba(59, 130, 246, 0.3); transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); }
@@ -31,24 +44,11 @@
         .contact-action-btn { position: relative; width: 100%; padding: 16px; background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 16px; color: #3b82f6; font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; font-weight: 700; letter-spacing: 1px; cursor: pointer; overflow: hidden; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); margin-top: 4px; box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.05); }
         .contact-action-btn .btn-content { display: flex; align-items: center; justify-content: center; gap: 10px; position: relative; z-index: 2; transition: color 0.3s ease; }
         .contact-action-btn .btn-content i { font-size: 1.1rem; }
-        
         .contact-action-btn::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); opacity: 0; transition: opacity 0.3s ease; z-index: 1; }
         
         .contact-action-btn:hover { transform: translateY(-4px); border-color: transparent; box-shadow: 0 12px 24px rgba(59, 130, 246, 0.3); }
         .contact-action-btn:hover::after { opacity: 1; }
         .contact-action-btn:hover .btn-content { color: #ffffff; }
-
-        /* Animación para la señal activa */
-        @keyframes signalPulse {
-            0%, 100% { opacity: 0.4; text-shadow: 0 0 5px rgba(16, 185, 129, 0.2); transform: scale(0.95); }
-            50% { opacity: 1; text-shadow: 0 0 15px rgba(16, 185, 129, 0.9); transform: scale(1); }
-        }
-        .active-signal {
-            color: #10b981;
-            font-size: 1.1rem;
-            animation: signalPulse 1.2s infinite ease-in-out;
-        }
-
     </style>
 </head>
 <body>
@@ -79,28 +79,34 @@
             </div>
         </div>
 
-            <div class="bento-card location-card slide-up" style="--delay: 0.2s;">
-                        <div class="location-info parallax-layer-2">
-                            <div class="radar-container">
-                                <i class="fas fa-globe-americas icon-glow"></i>
-                            </div>
-                            <div>
-                                <h3 class="loc-title hacker-text" data-value="BASE DE OPERACIONES">Base de Operaciones</h3>
-                                <p class="loc-text">{{ data.profile.location }}</p>
-                            </div>
-                        </div>
-                        
-                        <div class="time-display parallax-layer-3" style="display:flex; justify-content:center; align-items:center; width:100%; margin-top: 15px;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <i class="fas fa-signal active-signal"></i>
-                                
-                                <div>
-                                    <span id="live-time">00:00:00</span>
-                                    <span class="time-zone" style="margin-left: 4px;">PST</span>
-                                </div>
-                            </div>
-                        </div>
+        <div class="bento-card location-card slide-up" style="--delay: 0.2s;">
+            <div class="location-info parallax-layer-2">
+                <div class="radar-container">
+                    <i class="fas fa-globe-americas icon-glow"></i>
+                </div>
+                <div>
+                    <h3 class="loc-title hacker-text" data-value="BASE DE OPERACIONES">Base de Operaciones</h3>
+                    <p class="loc-text">{{ data.profile.location }}</p>
+                </div>
+            </div>
+            
+            <div class="time-display parallax-layer-3" style="display:flex; justify-content:center; align-items:center; width:100%; margin-top: 15px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    
+                    <div class="network-signal">
+                        <span class="bar bar-1"></span>
+                        <span class="bar bar-2"></span>
+                        <span class="bar bar-3"></span>
+                        <span class="bar bar-4"></span>
                     </div>
+                    
+                    <div>
+                        <span id="live-time">00:00:00</span>
+                        <span class="time-zone" style="margin-left: 4px;">PST</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="bento-card marquee-card slide-up" style="--delay: 0.3s;">
             <div class="marquee-track parallax-layer-1">
