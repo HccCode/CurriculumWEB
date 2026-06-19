@@ -243,3 +243,26 @@ async function submitForm(event) {
         btn.style.pointerEvents = 'auto'; 
     }
 }
+
+// --- SCROLL TO TOP BUTTON ---
+    const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+    
+    if (scrollToTopBtn) {
+        // Escucha el evento de scroll en la ventana
+        window.addEventListener("scroll", () => {
+            // Mostrar el botón solo si el usuario ha bajado más de 300 píxeles
+            if (window.scrollY > 300) {
+                scrollToTopBtn.classList.add("show");
+            } else {
+                scrollToTopBtn.classList.remove("show");
+            }
+        });
+
+        // Acción al hacer clic en el botón
+        scrollToTopBtn.addEventListener("click", () => {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth" // Deslizamiento suave, sin saltos bruscos
+            });
+        });
+    }
