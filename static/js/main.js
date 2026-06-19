@@ -245,24 +245,21 @@ async function submitForm(event) {
 }
 
 // --- SCROLL TO TOP BUTTON ---
-    const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+    const botonSubir = document.getElementById("scrollToTopBtn");
     
-    if (scrollToTopBtn) {
-        // Escucha el evento de scroll en la ventana
+    if (botonSubir) {
         window.addEventListener("scroll", () => {
-            // Mostrar el botón solo si el usuario ha bajado más de 300 píxeles
             if (window.scrollY > 300) {
-                scrollToTopBtn.classList.add("show");
+                botonSubir.classList.add("show");
             } else {
-                scrollToTopBtn.classList.remove("show");
+                botonSubir.classList.remove("show");
             }
         });
 
-        // Acción al hacer clic en el botón
-        scrollToTopBtn.addEventListener("click", () => {
+        botonSubir.addEventListener("click", () => {
             window.scrollTo({
                 top: 0,
-                behavior: "smooth" // Deslizamiento suave, sin saltos bruscos
+                behavior: "smooth"
             });
         });
     }
