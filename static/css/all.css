@@ -154,12 +154,104 @@ body { font-family: 'Inter', sans-serif; background-color: transparent; color: v
 .exp-company { display: block; font-size: 0.9rem; color: var(--accent-blue); margin-bottom: 0.5rem; font-weight: 600; }
 .exp-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; text-align: justify; }
 
-/* --- NODOS DE STACK TÉCNICO --- */
-.mono-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.84rem; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 8px; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); color: #cbd5e1; position: relative; overflow: hidden; transition: all 0.3s ease; }
-.mono-tag::after { content: ''; display: inline-block; width: 6px; height: 6px; background-color: #94a3b8; border-radius: 50%; margin-left: auto; transition: all 0.3s ease; }
-.mono-tag:hover { background: rgba(59, 130, 246, 0.05); border-color: rgba(59, 130, 246, 0.4); color: #ffffff; transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); }
-.mono-tag:hover::after { background-color: #10b981; box-shadow: 0 0 8px #10b981; }
-.mono-tag i { color: #3b82f6; }
+/* --- NUEVO DISEÑO: MÓDULOS DE MONITOREO (TECH STACK) --- */
+.tags-container { 
+    display: grid; 
+    /* Crea columnas responsivas que se ajustan automáticamente */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+    gap: 16px; 
+}
+
+.mono-tag { 
+    font-family: 'JetBrains Mono', monospace; 
+    font-size: 0.85rem; 
+    font-weight: 600; 
+    background: rgba(10, 15, 25, 0.6); 
+    border: 1px solid rgba(59, 130, 246, 0.1); 
+    border-top: 2px solid rgba(59, 130, 246, 0.3); /* Borde superior brillante tipo servidor blade */
+    border-radius: 8px; 
+    padding: 20px 16px; 
+    display: flex; 
+    flex-direction: column; /* Apila el ícono y el texto */
+    align-items: flex-start; 
+    gap: 12px; 
+    color: #cbd5e1; 
+    position: relative; 
+    overflow: hidden; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: crosshair;
+}
+
+.mono-tag i { 
+    font-size: 1.8rem; 
+    color: var(--accent-blue); 
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.mono-tag .tech-name {
+    z-index: 2;
+}
+
+/* Texto de estado "ONLINE" */
+.mono-tag::before { 
+    content: 'ONLINE';
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    color: var(--accent-green);
+    opacity: 0.8;
+}
+
+/* LED verde parpadeante */
+.mono-tag::after { 
+    content: ''; 
+    position: absolute;
+    top: 18px;
+    right: 58px; /* Posicionado justo a la izquierda de la palabra ONLINE */
+    width: 6px; 
+    height: 6px; 
+    background-color: var(--accent-green); 
+    border-radius: 50%; 
+    box-shadow: 0 0 8px var(--accent-green);
+    animation: pulseNode 2s infinite;
+}
+
+/* Barra de carga en la base del módulo */
+.progress-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--accent-blue);
+    width: 20%;
+    transition: width 0.4s ease, background 0.4s ease;
+}
+
+/* Interacción al pasar el cursor */
+.mono-tag:hover { 
+    background: rgba(59, 130, 246, 0.08); 
+    border-top-color: var(--accent-blue); 
+    transform: translateY(-4px); 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(59, 130, 246, 0.1);
+    color: #ffffff;
+}
+
+.mono-tag:hover i {
+    transform: scale(1.15);
+    text-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+}
+
+.mono-tag:hover .progress-line {
+    width: 100%;
+    background: var(--accent-green);
+}
+
+@keyframes pulseNode { 
+    0%, 100% { opacity: 1; } 
+    50% { opacity: 0.2; } 
+}
 
 /* --- TARJETAS DE PROYECTO (SERVER RACK ESTÉTICA) --- */
 .project-list { display: flex; flex-direction: column; gap: 1.2rem; }
