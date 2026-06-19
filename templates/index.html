@@ -67,23 +67,28 @@
             </div>
         </div>
 
-        <div class="bento-card location-card slide-up" style="--delay: 0.2s;">
-            <div class="location-info parallax-layer-2">
-                <div class="radar-container">
-                    <i class="fas fa-globe-americas icon-glow"></i>
+            <div class="bento-card location-card slide-up" style="--delay: 0.2s;">
+                <div class="location-info parallax-layer-2">
+                    <div class="radar-container">
+                        <i class="fas fa-globe-americas icon-glow"></i>
+                    </div>
+                    <div>
+                        <h3 class="loc-title hacker-text" data-value="BASE DE OPERACIONES">Base de Operaciones</h3>
+                        <p class="loc-text">{{ data.profile.location }}</p>
+                    </div>
                 </div>
-                <div>
-                    <h3 class="loc-title hacker-text" data-value="BASE DE OPERACIONES">Base de Operaciones</h3>
-                    <p class="loc-text">{{ data.profile.location }}</p>
+                
+                <div class="time-display parallax-layer-3" style="display:flex; justify-content:center; align-items:center; width:100%; margin-top: 15px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-signal" style="color: var(--accent-green); font-size: 1.1rem; text-shadow: 0 0 10px rgba(16, 185, 129, 0.6);"></i>
+                        
+                        <div>
+                            <span id="live-time">00:00:00</span>
+                            <span class="time-zone" style="margin-left: 4px;">PST</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="time-display parallax-layer-3" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                <div>
-                    <span id="live-time">00:00:00</span>
-                    <span class="time-zone">PST</span>
-                </div>
-            </div>
-        </div>
 
         <div class="bento-card marquee-card slide-up" style="--delay: 0.3s;">
             <div class="marquee-track parallax-layer-1">
