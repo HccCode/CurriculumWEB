@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hector Uribe Montaño | Portfolio</title>
+    <title>Hector Uribe Montaño | Operations & Support Engineer</title>
     <link rel="stylesheet" href="/static/css/all.css">
 </head>
 <body>
@@ -16,7 +16,7 @@
             <li><a href="#about">About</a></li>
             <li><a href="#expertise">Expertise</a></li>
             <li><a href="#skills">Skills</a></li>
-            <li><a href="#projects">Projects</a></li>
+            <li><a href="#projects">Deployments</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
         <a href="#" class="btn-resume">Resume</a>
@@ -27,10 +27,10 @@
         <div class="hero-content">
             <h1 class="hero-title">Hello,<br>I'm <span class="text-accent">Hector</span></h1>
             <p class="hero-subtitle">
-                Desarrollador Web radicado en Mexicali, especializado en React, Vite y JavaScript, enfocado en construir interfaces interactivas, dashboards y arquitecturas escalables.
+                Ingeniero de Operación y Soporte radicado en Mexicali. Especializado en el monitoreo de centros de operaciones (NOC), infraestructura de redes, sistemas de videovigilancia y automatización de hardware.
             </p>
             <div class="hero-buttons">
-                <a href="#projects" class="btn-primary">View My Work</a>
+                <a href="#projects" class="btn-primary">View Infrastructure</a>
                 <a href="#contact" class="btn-secondary">Contact Me</a>
             </div>
             <div class="hero-stats">
@@ -39,8 +39,8 @@
                     <p>Years Exp.</p>
                 </div>
                 <div class="stat-item">
-                    <h3>15+</h3>
-                    <p>Projects</p>
+                    <h3>99.9%</h3>
+                    <p>Uptime Maintained</p>
                 </div>
             </div>
         </div>
@@ -49,13 +49,29 @@
             <div class="image-container">
                 <!-- Reemplaza la URL con tu foto -->
                 <img src="https://via.placeholder.com/400" alt="Hector Uribe Montaño">
-                <div class="floating-badge badge-1">React / Vite</div>
-                <div class="floating-badge badge-2">Phaser.js</div>
+                <div class="floating-badge badge-1">UniFi / Cambium</div>
+                <div class="floating-badge badge-2">CCTV Systems</div>
             </div>
         </div>
     </header>
 
-    <!-- Sección Expertise (Tarjetas) -->
+    <!-- Sección About (Nueva) -->
+    <section id="about" class="section bg-alt">
+        <div class="section-header">
+            <p class="section-subtitle">A LITTLE ABOUT ME AND MY JOURNEY</p>
+            <h2 class="section-title">About Me</h2>
+        </div>
+        <div class="about-content">
+            <p class="about-text">
+                Mi enfoque profesional se centra en garantizar la continuidad del negocio a través de una infraestructura tecnológica robusta. Puenteo la brecha entre el hardware físico y la gestión en la nube, asegurando redes estables, control de acceso seguro y sistemas de monitoreo proactivos.
+            </p>
+            <blockquote class="about-quote">
+                "Una red invisible es una red bien administrada. El verdadero soporte ocurre antes de que el usuario note el problema."
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- Sección Expertise -->
     <section id="expertise" class="section">
         <div class="section-header">
             <p class="section-subtitle">WHAT I BRING TO THE TABLE</p>
@@ -63,21 +79,39 @@
         </div>
         <div class="grid-container">
             <div class="card">
-                <h3>Frontend Architecture</h3>
-                <p>Desarrollo de interfaces modernas utilizando React y Vite, implementando tablas de datos dinámicas y gestión de estados complejos.</p>
+                <h3>Network Infrastructure</h3>
+                <p>Despliegue y administración de redes inalámbricas corporativas, configuración de puntos de acceso, servidores UniFi OS y ruteo avanzado con equipos Cambium y Ubiquiti.</p>
             </div>
             <div class="card">
-                <h3>Interactive Web Games</h3>
-                <p>Creación de experiencias interactivas y mecánicas de juego en el navegador utilizando Phaser.js y control de físicas.</p>
+                <h3>Security & Surveillance</h3>
+                <p>Implementación de sistemas cerrados de televisión (CCTV) análogos e IP, configuración de DVRs (Dahua, Swann) y sistemas de alarma con monitoreo remoto.</p>
             </div>
             <div class="card">
-                <h3>UI/UX Enhancements</h3>
-                <p>Diseño enfocado en la usabilidad, implementación de parallax, diseño responsivo y validaciones en tiempo real.</p>
+                <h3>Hardware Automation</h3>
+                <p>Instalación de cerraduras electrónicas inteligentes, cableado estructurado de red y automatización de entornos de trabajo (Smart Office) para máxima eficiencia operativa.</p>
             </div>
         </div>
     </section>
 
-    <!-- Sección Experiencia (Acordeón) -->
+    <!-- Sección Skills (Nueva) -->
+    <section id="skills" class="section bg-alt">
+        <div class="section-header">
+            <p class="section-subtitle">CORE STRENGTHS</p>
+            <h2 class="section-title">Skills & Stack</h2>
+        </div>
+        <div class="skills-grid">
+            <div class="skill-tag">UniFi OS Server</div>
+            <div class="skill-tag">Cambium Networks</div>
+            <div class="skill-tag">Dahua / Swann CCTV</div>
+            <div class="skill-tag">Python 3.10 / Bash</div>
+            <div class="skill-tag">Helpdesk & Ticketing</div>
+            <div class="skill-tag">Structured Cabling</div>
+            <div class="skill-tag">IoT & Access Control</div>
+            <div class="skill-tag">Linux Server Admin</div>
+        </div>
+    </section>
+
+    <!-- Sección Experiencia -->
     <section id="experience" class="section">
         <div class="section-header">
             <p class="section-subtitle">MY PROFESSIONAL JOURNEY</p>
@@ -87,27 +121,42 @@
             <details class="accordion-item" open>
                 <summary class="accordion-header">
                     <div>
-                        <h3>Senior Web Developer</h3>
+                        <h3>NOC Engineer & IT Admin</h3>
                         <p class="text-muted">Enero 2024 - Presente</p>
                     </div>
                     <span class="icon">+</span>
                 </summary>
                 <div class="accordion-content">
-                    <p>Desarrollo de sistemas de gestión de habitaciones y dashboards estadísticos. Implementación de validaciones de ubicación y estados de servicio.</p>
+                    <p>Monitoreo proactivo de la red corporativa. Mantenimiento preventivo y correctivo de hardware, resolución de tickets de soporte técnico nivel 2 y administración de políticas de seguridad en la red local y remota.</p>
                 </div>
             </details>
             <details class="accordion-item">
                 <summary class="accordion-header">
                     <div>
-                        <h3>Frontend & Game Developer</h3>
-                        <p class="text-muted">2022 - 2023</p>
+                        <h3>Especialista en Soporte e Infraestructura</h3>
+                        <p class="text-muted">2021 - 2023</p>
                     </div>
                     <span class="icon">+</span>
                 </summary>
                 <div class="accordion-content">
-                    <p>Creación de juegos web interactivos ajustando controles de personajes, gravedad y optimización de rendimiento gráfico.</p>
+                    <p>Instalación de cableado estructurado, configuración de baluns de video HD, mantenimiento a sistemas de alarmas y soporte en sitio a usuarios finales y directivos.</p>
                 </div>
             </details>
+        </div>
+    </section>
+
+    <!-- Sección Contacto (Nueva) -->
+    <section id="contact" class="section bg-alt">
+        <div class="section-header">
+            <p class="section-subtitle">LET'S WORK TOGETHER</p>
+            <h2 class="section-title">Get In Touch</h2>
+        </div>
+        <div class="contact-container">
+            <p>¿Buscas optimizar tu infraestructura de red o necesitas soporte técnico especializado? Colaboremos para transformar tus operaciones de TI.</p>
+            <div class="contact-links">
+                <a href="mailto:tu-correo@ejemplo.com" class="btn-primary">hector@ejemplo.com</a>
+                <a href="#" class="btn-secondary">LinkedIn</a>
+            </div>
         </div>
     </section>
 </body>
