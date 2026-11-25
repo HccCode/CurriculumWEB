@@ -3,258 +3,598 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Interface - CV Editor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Editor de CV — CurriculumWEB</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     <style>
-        :root { --bg: #0f172a; --panel: #1e293b; --text: #f8fafc; --accent: #3b82f6; --border: #334155; --danger: #ef4444; --success: #10b981; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 2rem; }
-        .dashboard { max-width: 1000px; margin: 0 auto; display: grid; gap: 2rem; }
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
-        .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; position: relative; }
-        h2 { margin-top: 0; font-size: 1.2rem; color: #94a3b8; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; display: flex; align-items: center; gap: 10px; }
-        .form-group { margin-bottom: 1rem; }
-        label { display: block; font-size: 0.85rem; margin-bottom: 0.5rem; color: #cbd5e1; }
-        input, textarea { width: 100%; background: #0f172a; border: 1px solid var(--border); color: white; padding: 0.8rem; border-radius: 6px; font-family: 'Inter', sans-serif; box-sizing: border-box; }
-        textarea { resize: vertical; min-height: 80px; }
-        input:focus, textarea:focus { outline: none; border-color: var(--accent); }
-        .btn { background: var(--accent); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
-        .btn:hover { background: #2563eb; }
-        .btn-outline { background: transparent; border: 1px solid var(--border); color: #f8fafc;}
-        .btn-outline:hover { background: rgba(255,255,255,0.05); }
-        .btn-danger { background: var(--danger); }
-        .btn-danger:hover { background: #dc2626; }
-        .btn-success { background: var(--success); }
-        .btn-success:hover { background: #059669; }
-        .dynamic-item { background: #0f172a; border: 1px solid var(--border); padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; position: relative; }
-        .item-actions { display: flex; justify-content: flex-end; margin-top: 0.5rem; }
-        .toast { position: fixed; bottom: 20px; right: 20px; background: var(--success); color: white; padding: 1rem 2rem; border-radius: 8px; transform: translateY(100px); opacity: 0; transition: 0.3s; z-index: 100;}
-        .toast.show { transform: translateY(0); opacity: 1; }
-        .toast.error { background: var(--danger); }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
-        .tags-wrapper { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
-        .tag-pill { background: #334155; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); }
-        .section-header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        :root {
+            --bg-canvas: hsl(222 26% 6%);
+            --bg-elevated: hsl(222 22% 9.5%);
+            --bg-surface: hsl(222 20% 12.5%);
+            --border-subtle: hsla(215 24% 78% / 0.11);
+            --border-strong: hsla(215 24% 78% / 0.22);
+            --text-primary: hsl(210 30% 96%);
+            --text-secondary: hsl(215 16% 72%);
+            --text-tertiary: hsl(215 14% 52%);
+            --accent: hsl(204 88% 58%);
+            --accent-hover: hsl(204 92% 64%);
+            --accent-soft: hsla(204 88% 58% / 0.14);
+            --success: hsl(160 64% 46%);
+            --success-hover: hsl(160 64% 40%);
+            --warning: hsl(38 92% 58%);
+            --danger: hsl(0 74% 60%);
+            --danger-hover: hsl(0 74% 52%);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --font-display: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-canvas);
+            color: var(--text-primary);
+            margin: 0;
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: hsla(222 26% 6% / 0.86);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .topbar-inner {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 0.9rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.85rem;
+        }
+
+        .topbar-title {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .topbar-title h1 {
+            margin: 0;
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .dirty-badge {
+            display: none;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--warning);
+            background: hsla(38 92% 58% / 0.12);
+            border: 1px solid hsla(38 92% 58% / 0.3);
+            padding: 0.22rem 0.65rem;
+            border-radius: 999px;
+        }
+        .dirty-badge.visible { display: inline-flex; align-items: center; gap: 6px; }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            flex-wrap: wrap;
+        }
+
+        .dashboard {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+            display: grid;
+            gap: 1.75rem;
+        }
+
+        .panel {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 1.65rem;
+            box-shadow: 0 1px 0 hsla(210 40% 98% / 0.04) inset, 0 10px 28px hsla(222 50% 2% / 0.35);
+        }
+
+        .panel h2 {
+            margin: 0 0 1.35rem 0;
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .panel h2 i { color: var(--accent); font-size: 0.95rem; }
+
+        .section-header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.35rem;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 0.75rem;
+        }
         .section-header-actions h2 { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
+
+        .form-group { margin-bottom: 1rem; }
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: var(--text-secondary);
+        }
+
+        input, textarea {
+            width: 100%;
+            background: var(--bg-canvas);
+            border: 1px solid var(--border-strong);
+            color: var(--text-primary);
+            padding: 0.7rem 0.85rem;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            transition: border-color 160ms ease, box-shadow 160ms ease;
+        }
+        textarea { resize: vertical; min-height: 84px; line-height: 1.55; }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        .btn {
+            background: var(--accent);
+            color: hsl(222 36% 7%);
+            border: 1px solid transparent;
+            padding: 0.6rem 1.1rem;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            white-space: nowrap;
+        }
+        .btn:hover { background: var(--accent-hover); }
+        .btn:disabled { opacity: 0.65; cursor: not-allowed; }
+        .btn-outline { background: transparent; border-color: var(--border-strong); color: var(--text-primary); }
+        .btn-outline:hover { background: hsla(215 24% 78% / 0.08); }
+        .btn-success { background: var(--success); color: hsl(222 36% 7%); }
+        .btn-success:hover { background: var(--success-hover); }
+        .btn-danger { background: hsla(0 74% 60% / 0.14); border-color: hsla(0 74% 60% / 0.35); color: hsl(0 86% 74%); }
+        .btn-danger:hover { background: var(--danger); color: #fff; border-color: transparent; }
+        .btn-icon { padding: 0.48rem 0.65rem; font-size: 0.8rem; }
+
+        .dynamic-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            padding: 1.3rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        .dynamic-item:last-child { margin-bottom: 0; }
+
+        .item-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .order-group { display: flex; gap: 0.4rem; }
+
+        .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr auto; gap: 1rem; align-items: end; }
+
+        .tags-wrapper { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 0.75rem; }
+        .tag-pill {
+            background: var(--bg-surface);
+            padding: 0.48rem 0.85rem;
+            border-radius: 999px;
+            font-size: 0.84rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid var(--border-strong);
+        }
+        .tag-remove {
+            background: transparent;
+            border: none;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            padding: 2px 4px;
+            display: inline-flex;
+            align-items: center;
+            transition: color 150ms ease;
+        }
+        .tag-remove:hover { color: var(--danger); }
+
+        .empty-note { color: var(--text-tertiary); font-style: italic; font-size: 0.9rem; margin: 0; }
+        .kbd-hint { font-family: var(--font-mono); font-size: 0.72rem; opacity: 0.72; }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: hsl(222 36% 7%);
+            padding: 0.85rem 1.35rem;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 250ms ease, opacity 250ms ease;
+            z-index: 100;
+            box-shadow: 0 14px 36px hsla(222 50% 2% / 0.6);
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.error { background: var(--danger); color: #ffffff; }
+
+        @media (max-width: 720px) {
+            .topbar-inner, .dashboard { padding-left: 1rem; padding-right: 1rem; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .panel { padding: 1.25rem; }
+        }
     </style>
 </head>
 <body>
+    {% set profile = data.profile if data.profile else {} %}
 
-    <div class="dashboard">
-        <div class="header">
-            <h1>Panel de Control Maestro</h1>
-            <div>
-                <a href="/" target="_blank" class="btn btn-outline" style="text-decoration:none; margin-right:10px;"><i class="fas fa-external-link-alt"></i> Ver CV Público</a>
-                <button class="btn" id="save-btn" onclick="saveData()"><i class="fas fa-save"></i> Guardar Cambios</button>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="topbar-title">
+                <h1>Editor de CV</h1>
+                <span id="dirty-badge" class="dirty-badge">Cambios sin guardar</span>
+            </div>
+            <div class="topbar-actions">
+                <a href="/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+                    <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                    <span>Ver CV Público</span>
+                </a>
+                <button type="button" class="btn" id="save-btn" onclick="saveData()">
+                    <i class="fas fa-save" aria-hidden="true"></i>
+                    <span>Guardar Cambios</span>
+                    <span class="kbd-hint">(Ctrl+S)</span>
+                </button>
             </div>
         </div>
+    </header>
 
-        <div class="panel">
-            <h2><i class="fas fa-user"></i> Información General</h2>
-            <div class="form-group">
-                <label>Nombre Completo</label>
-                <input type="text" id="p_name" value="{{ data.profile.name if data.profile else '' }}">
+    <main class="dashboard">
+        <section class="panel" aria-labelledby="sec-profile">
+            <h2 id="sec-profile"><i class="fas fa-user" aria-hidden="true"></i> Información General</h2>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label for="p_name">Nombre Completo</label>
+                    <input type="text" id="p_name" value="{{ profile.name or '' }}" oninput="markDirty()">
+                </div>
+                <div class="form-group">
+                    <label for="p_role">Rol / Título Profesional</label>
+                    <input type="text" id="p_role" value="{{ profile.role or '' }}" oninput="markDirty()">
+                </div>
             </div>
             <div class="form-group">
-                <label>Rol / Título Profesional</label>
-                <input type="text" id="p_role" value="{{ data.profile.role if data.profile else '' }}">
-            </div>
-            <div class="form-group">
-                <label>Biografía (Resumen)</label>
-                <textarea id="p_bio">{{ data.profile.bio if data.profile else '' }}</textarea>
+                <label for="p_bio">Biografía (Resumen)</label>
+                <textarea id="p_bio" oninput="markDirty()">{{ profile.bio or '' }}</textarea>
             </div>
             <div class="grid-2">
-                <div class="form-group"><label>Ubicación</label><input type="text" id="p_location" value="{{ data.profile.location if data.profile else '' }}"></div>
-                <div class="form-group"><label>Email</label><input type="text" id="p_email" value="{{ data.profile.email if data.profile else '' }}"></div>
-                <div class="form-group"><label>GitHub URL</label><input type="text" id="p_github" value="{{ data.profile.github if data.profile else '' }}"></div>
-                <div class="form-group"><label>LinkedIn URL</label><input type="text" id="p_linkedin" value="{{ data.profile.linkedin if data.profile else '' }}"></div>
+                <div class="form-group">
+                    <label for="p_location">Ubicación</label>
+                    <input type="text" id="p_location" value="{{ profile.location or '' }}" oninput="markDirty()">
+                </div>
+                <div class="form-group">
+                    <label for="p_email">Correo Electrónico</label>
+                    <input type="email" id="p_email" value="{{ profile.email or '' }}" oninput="markDirty()">
+                </div>
+                <div class="form-group">
+                    <label for="p_github">GitHub URL</label>
+                    <input type="url" id="p_github" value="{{ profile.github or '' }}" oninput="markDirty()">
+                </div>
+                <div class="form-group">
+                    <label for="p_linkedin">LinkedIn URL</label>
+                    <input type="url" id="p_linkedin" value="{{ profile.linkedin or '' }}" oninput="markDirty()">
+                </div>
+                <div class="form-group">
+                    <label for="p_resume">Enlace de CV (PDF)</label>
+                    <input type="text" id="p_resume" value="{{ profile.resume_link or '' }}" placeholder="CV_Hector_Uribe.pdf" oninput="markDirty()">
+                </div>
             </div>
-        </div>
+        </section>
 
-        <div class="panel">
+        <section class="panel" aria-labelledby="sec-exp">
             <div class="section-header-actions">
-                <h2><i class="fas fa-briefcase"></i> Experiencia Laboral</h2>
-                <button class="btn btn-success" onclick="addExp()"><i class="fas fa-plus"></i> Añadir Experiencia</button>
+                <h2 id="sec-exp"><i class="fas fa-briefcase" aria-hidden="true"></i> Experiencia Laboral</h2>
+                <button type="button" class="btn btn-success" onclick="addExp()">
+                    <i class="fas fa-plus" aria-hidden="true"></i> Añadir Experiencia
+                </button>
             </div>
             <div id="experience-container"></div>
-        </div>
+        </section>
 
-        <div class="panel">
+        <section class="panel" aria-labelledby="sec-projects">
             <div class="section-header-actions">
-                <h2><i class="fas fa-code"></i> Arquitectura y Desarrollo (Proyectos)</h2>
-                <button class="btn btn-success" onclick="addProj()"><i class="fas fa-plus"></i> Añadir Proyecto</button>
+                <h2 id="sec-projects"><i class="fas fa-code" aria-hidden="true"></i> Arquitectura y Desarrollo (Proyectos)</h2>
+                <button type="button" class="btn btn-success" onclick="addProj()">
+                    <i class="fas fa-plus" aria-hidden="true"></i> Añadir Proyecto
+                </button>
             </div>
             <div id="projects-container"></div>
-        </div>
+        </section>
 
-        <div class="panel">
-            <h2><i class="fas fa-tools"></i> Stack Técnico & Herramientas</h2>
+        <section class="panel" aria-labelledby="sec-tech">
+            <h2 id="sec-tech"><i class="fas fa-tools" aria-hidden="true"></i> Stack Técnico &amp; Herramientas</h2>
             <div class="form-group">
-                <div class="grid-3" style="align-items: end;">
+                <div class="grid-3">
                     <div>
-                        <label>Nombre de la Tecnología</label>
-                        <input type="text" id="new-tech-name" placeholder="ej. React">
+                        <label for="new-tech-name">Nombre de la Tecnología</label>
+                        <input type="text" id="new-tech-name" placeholder="ej. React" onkeydown="if(event.key==='Enter'){event.preventDefault();addTech();}">
                     </div>
                     <div>
-                        <label>Icono FontAwesome (Clase completa)</label>
-                        <input type="text" id="new-tech-icon" placeholder="ej. fab fa-react">
+                        <label for="new-tech-icon">Icono FontAwesome (Clase completa)</label>
+                        <input type="text" id="new-tech-icon" placeholder="ej. fab fa-react" onkeydown="if(event.key==='Enter'){event.preventDefault();addTech();}">
                     </div>
                     <div>
-                        <button class="btn btn-success" type="button" onclick="addTech()" style="width: 100%; justify-content: center; height: 46px;">
-                            <i class="fas fa-plus"></i> Agregar Stack
+                        <button class="btn btn-success" type="button" onclick="addTech()" style="width: 100%; height: 42px;">
+                            <i class="fas fa-plus" aria-hidden="true"></i> Agregar Stack
                         </button>
                     </div>
                 </div>
             </div>
             <div class="tags-wrapper" id="tech-container"></div>
-        </div>
-    </div>
+        </section>
+    </main>
 
-    <div id="toast" class="toast"><i class="fas fa-check-circle"></i> Cambios guardados correctamente</div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
     <script>
         let experienceList = {{ (data.experience if data.experience else []) | tojson | safe }};
         let projectsList = {{ (data.projects if data.projects else []) | tojson | safe }};
         let techList = {{ (data.tech_stack if data.tech_stack else []) | tojson | safe }};
+        let isDirty = false;
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function markDirty() {
+            isDirty = true;
+            document.getElementById('dirty-badge').classList.add('visible');
+        }
+
+        function clearDirty() {
+            isDirty = false;
+            document.getElementById('dirty-badge').classList.remove('visible');
+        }
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = isError ? 'toast error show' : 'toast show';
+            window.clearTimeout(toast._timer);
+            toast._timer = window.setTimeout(() => toast.classList.remove('show'), 3200);
+        }
 
         function renderExperience() {
             const container = document.getElementById('experience-container');
-            container.innerHTML = '';
             if (experienceList.length === 0) {
-                container.innerHTML = '<p style="color: #64748b; font-style: italic;">No hay registros de experiencia.</p>';
+                container.innerHTML = '<p class="empty-note">No hay registros de experiencia.</p>';
                 return;
             }
-            experienceList.forEach((exp, index) => {
-                container.innerHTML += `
-                    <div class="dynamic-item">
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label>Puesto / Rol</label>
-                                <input type="text" value="${exp.role || ''}" oninput="updateExp(${index}, 'role', this.value)">
-                            </div>
-                            <div class="form-group">
-                                <label>Empresa</label>
-                                <input type="text" value="${exp.company || ''}" oninput="updateExp(${index}, 'company', this.value)">
-                            </div>
+            container.innerHTML = experienceList.map((exp, index) => `
+                <div class="dynamic-item">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Puesto / Rol</label>
+                            <input type="text" value="${escapeHtml(exp.role)}" oninput="updateExp(${index}, 'role', this.value)">
                         </div>
                         <div class="form-group">
-                            <label>Periodo de Tiempo (ej. 2022 — Pres)</label>
-                            <input type="text" value="${exp.date || ''}" oninput="updateExp(${index}, 'date', this.value)">
-                        </div>
-                        <div class="form-group">
-                            <label>Descripción de Funciones / Logros</label>
-                            <textarea oninput="updateExp(${index}, 'desc', this.value)">${exp.desc || ''}</textarea>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn btn-danger" onclick="removeExp(${index})"><i class="fas fa-trash"></i> Eliminar</button>
+                            <label>Empresa</label>
+                            <input type="text" value="${escapeHtml(exp.company)}" oninput="updateExp(${index}, 'company', this.value)">
                         </div>
                     </div>
-                `;
-            });
+                    <div class="form-group">
+                        <label>Periodo de Tiempo (ej. 2022 — Pres)</label>
+                        <input type="text" value="${escapeHtml(exp.date)}" oninput="updateExp(${index}, 'date', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción de Funciones / Logros</label>
+                        <textarea oninput="updateExp(${index}, 'desc', this.value)">${escapeHtml(exp.desc)}</textarea>
+                    </div>
+                    <div class="item-actions">
+                        <div class="order-group">
+                            <button type="button" class="btn btn-outline btn-icon" onclick="moveExp(${index}, -1)" ${index === 0 ? 'disabled' : ''} aria-label="Subir">
+                                <i class="fas fa-arrow-up" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline btn-icon" onclick="moveExp(${index}, 1)" ${index === experienceList.length - 1 ? 'disabled' : ''} aria-label="Bajar">
+                                <i class="fas fa-arrow-down" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-danger" onclick="removeExp(${index})">
+                            <i class="fas fa-trash" aria-hidden="true"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function updateExp(index, field, value) {
             experienceList[index][field] = value;
+            markDirty();
         }
-
         function addExp() {
-            experienceList.push({ role: '', company: '', date: '', desc: '' });
+            experienceList.unshift({ role: '', company: '', date: '', desc: '' });
+            markDirty();
             renderExperience();
         }
-
         function removeExp(index) {
             experienceList.splice(index, 1);
+            markDirty();
+            renderExperience();
+        }
+        function moveExp(index, delta) {
+            const target = index + delta;
+            if (target < 0 || target >= experienceList.length) return;
+            [experienceList[index], experienceList[target]] = [experienceList[target], experienceList[index]];
+            markDirty();
             renderExperience();
         }
 
         function renderProjects() {
             const container = document.getElementById('projects-container');
-            container.innerHTML = '';
             if (projectsList.length === 0) {
-                container.innerHTML = '<p style="color: #64748b; font-style: italic;">No hay registros de proyectos.</p>';
+                container.innerHTML = '<p class="empty-note">No hay registros de proyectos.</p>';
                 return;
             }
-            projectsList.forEach((proj, index) => {
-                container.innerHTML += `
-                    <div class="dynamic-item">
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label>Título del Proyecto</label>
-                                <input type="text" value="${proj.title || ''}" oninput="updateProj(${index}, 'title', this.value)">
-                            </div>
-                            <div class="form-group">
-                                <label>Clase de Icono FontAwesome (ej. fas fa-desktop)</label>
-                                <input type="text" value="${proj.icon || ''}" oninput="updateProj(${index}, 'icon', this.value)">
-                            </div>
+            container.innerHTML = projectsList.map((proj, index) => `
+                <div class="dynamic-item">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Título del Proyecto</label>
+                            <input type="text" value="${escapeHtml(proj.title)}" oninput="updateProj(${index}, 'title', this.value)">
                         </div>
                         <div class="form-group">
-                            <label>Descripción del Proyecto</label>
-                            <textarea oninput="updateProj(${index}, 'desc', this.value)">${proj.desc || ''}</textarea>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn btn-danger" onclick="removeProj(${index})"><i class="fas fa-trash"></i> Eliminar</button>
+                            <label>Clase de Icono FontAwesome (ej. fas fa-desktop)</label>
+                            <input type="text" value="${escapeHtml(proj.icon)}" oninput="updateProj(${index}, 'icon', this.value)">
                         </div>
                     </div>
-                `;
-            });
+                    <div class="form-group">
+                        <label>Descripción del Proyecto</label>
+                        <textarea oninput="updateProj(${index}, 'desc', this.value)">${escapeHtml(proj.desc)}</textarea>
+                    </div>
+                    <div class="item-actions">
+                        <div class="order-group">
+                            <button type="button" class="btn btn-outline btn-icon" onclick="moveProj(${index}, -1)" ${index === 0 ? 'disabled' : ''} aria-label="Subir">
+                                <i class="fas fa-arrow-up" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline btn-icon" onclick="moveProj(${index}, 1)" ${index === projectsList.length - 1 ? 'disabled' : ''} aria-label="Bajar">
+                                <i class="fas fa-arrow-down" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-danger" onclick="removeProj(${index})">
+                            <i class="fas fa-trash" aria-hidden="true"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function updateProj(index, field, value) {
             projectsList[index][field] = value;
+            markDirty();
         }
-
         function addProj() {
             projectsList.push({ title: '', icon: 'fas fa-code', desc: '' });
+            markDirty();
             renderProjects();
         }
-
         function removeProj(index) {
             projectsList.splice(index, 1);
+            markDirty();
+            renderProjects();
+        }
+        function moveProj(index, delta) {
+            const target = index + delta;
+            if (target < 0 || target >= projectsList.length) return;
+            [projectsList[index], projectsList[target]] = [projectsList[target], projectsList[index]];
+            markDirty();
             renderProjects();
         }
 
         function renderTechStack() {
             const container = document.getElementById('tech-container');
-            container.innerHTML = '';
             if (techList.length === 0) {
-                container.innerHTML = '<p style="color: #64748b; font-style: italic;">No hay tecnologías añadidas.</p>';
+                container.innerHTML = '<p class="empty-note">No hay tecnologías añadidas.</p>';
                 return;
             }
-            techList.forEach((tech, index) => {
-                container.innerHTML += `
-                    <div class="tag-pill">
-                        <i class="${tech.icon || 'fas fa-code'}" style="color: #3b82f6;"></i>
-                        <span>${tech.name || ''}</span>
-                        <i class="fas fa-times" onclick="removeTech(${index})" style="color: #ef4444; cursor: pointer; margin-left: 5px;"></i>
-                    </div>
-                `;
-            });
+            container.innerHTML = techList.map((tech, index) => `
+                <div class="tag-pill">
+                    <i class="${escapeHtml(tech.icon || 'fas fa-code')}" style="color: var(--accent);" aria-hidden="true"></i>
+                    <span>${escapeHtml(tech.name)}</span>
+                    <button type="button" class="tag-remove" onclick="removeTech(${index})" aria-label="Eliminar ${escapeHtml(tech.name)}">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+            `).join('');
         }
 
         function addTech() {
             const nameInput = document.getElementById('new-tech-name');
             const iconInput = document.getElementById('new-tech-icon');
-            if (nameInput.value.trim() !== '') {
-                techList.push({
-                    name: nameInput.value.trim(),
-                    icon: iconInput.value.trim() || 'fas fa-code'
-                });
-                nameInput.value = '';
-                iconInput.value = '';
-                renderTechStack();
-            }
+            const name = nameInput.value.trim();
+            if (!name) return;
+
+            techList.push({
+                name,
+                icon: iconInput.value.trim() || 'fas fa-code'
+            });
+            nameInput.value = '';
+            iconInput.value = '';
+            markDirty();
+            renderTechStack();
+            nameInput.focus();
         }
 
         function removeTech(index) {
             techList.splice(index, 1);
+            markDirty();
             renderTechStack();
         }
 
         async function saveData() {
             const btn = document.getElementById('save-btn');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
-            
+            const originalHTML = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i><span>Guardando...</span>';
+
             const payload = {
                 profile: {
                     name: document.getElementById('p_name').value,
@@ -264,7 +604,7 @@
                     email: document.getElementById('p_email').value,
                     github: document.getElementById('p_github').value,
                     linkedin: document.getElementById('p_linkedin').value,
-                    resume_link: "CV_Hector_Uribe.pdf"
+                    resume_link: document.getElementById('p_resume').value
                 },
                 experience: experienceList,
                 projects: projectsList,
@@ -278,22 +618,35 @@
                     body: JSON.stringify(payload)
                 });
 
-                const toast = document.getElementById('toast');
-                if(res.ok) {
-                    toast.innerHTML = '<i class="fas fa-check-circle"></i> Cambios sincronizados con data.json';
-                    toast.className = 'toast show';
+                if (res.ok) {
+                    clearDirty();
+                    showToast('Cambios sincronizados con data.json');
                 } else {
-                    toast.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error al guardar';
-                    toast.className = 'toast show error';
+                    const errBody = await res.json().catch(() => ({}));
+                    showToast(errBody.detail || 'Error al guardar los cambios', true);
                 }
-                setTimeout(() => toast.classList.remove('show'), 3000);
             } catch (error) {
                 console.error(error);
-                alert("Error de comunicación");
+                showToast('Error de comunicación con el servidor', true);
             } finally {
-                btn.innerHTML = '<i class="fas fa-save"></i> Guardar Cambios';
+                btn.disabled = false;
+                btn.innerHTML = originalHTML;
             }
         }
+
+        document.addEventListener('keydown', (event) => {
+            if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
+                event.preventDefault();
+                saveData();
+            }
+        });
+
+        window.addEventListener('beforeunload', (event) => {
+            if (isDirty) {
+                event.preventDefault();
+                event.returnValue = '';
+            }
+        });
 
         renderExperience();
         renderProjects();

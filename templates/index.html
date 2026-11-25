@@ -4,216 +4,300 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    
-    <title>{{ data.profile.name }} </title>
-    
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='%2310b981' stroke-width='10'/><circle cx='50' cy='50' r='15' fill='%233b82f6'/></svg>">
-    
+    <meta name="theme-color" content="#0b0e14">
+
+    {% set profile = data.profile if data.profile else {} %}
+    {% set clean_role = (profile.role or 'Ingeniero de Operación y Soporte') | replace('> ', '') %}
+    {% set name_parts = (profile.name or 'HU').split() %}
+    {% set initials = (name_parts[0][0] ~ (name_parts[1][0] if name_parts|length > 1 else '')) | upper %}
+
+    <title>{{ profile.name or 'Curriculum Vitae' }} — {{ clean_role }}</title>
+    <meta name="description" content="{{ (profile.bio or '')[:160] }}">
+    <meta property="og:title" content="{{ profile.name or 'Curriculum Vitae' }} — {{ clean_role }}">
+    <meta property="og:description" content="{{ (profile.bio or '')[:160] }}">
+    <meta property="og:type" content="profile">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0e14'/><circle cx='50' cy='50' r='32' fill='none' stroke='%2338bdf8' stroke-width='8'/><circle cx='50' cy='50' r='11' fill='%2310b981'/></svg>">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="/static/css/all.css?v=3.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+
+    <link rel="stylesheet" href="/static/css/all.css?v=4.0">
 </head>
-<body>
+<body id="top">
+    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+    <div id="scroll-progress" aria-hidden="true"></div>
 
-    <div id="scroll-progress"></div>
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="#top" class="brand-link" aria-label="Inicio — {{ profile.name }}">
+                <span class="brand-mark" aria-hidden="true">{{ initials }}</span>
+                <span class="brand-name">{{ profile.name }}</span>
+            </a>
 
-    <canvas id="network-canvas" class="mesh-bg"></canvas>
-    <div class="noise-bg"></div>
+            <nav class="main-nav" aria-label="Navegación principal">
+                <a href="#experiencia" class="nav-link">Experiencia</a>
+                <a href="#proyectos" class="nav-link">Proyectos</a>
+                <a href="#stack" class="nav-link">Stack</a>
+                <a href="#contacto" class="nav-link">Contacto</a>
+            </nav>
 
-    <div class="bento-container" id="bento-container">
-        
-        <div class="bento-card hero-card slide-up" style="--delay: 0.1s; border-top: 3px solid var(--accent-blue);">
+            <div class="header-actions">
+                <button type="button" id="print-cv-btn" class="btn btn-ghost btn-sm" onclick="window.print()">
+                    <i class="fas fa-print" aria-hidden="true"></i>
+                    <span>Imprimir / PDF</span>
+                </button>
+                <button type="button" id="header-contact-btn" class="btn btn-primary btn-sm" onclick="openModal()">
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                    <span>Contactar</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" class="page-shell">
+        <!-- Hero -->
+        <section class="hero" aria-labelledby="hero-heading">
             <div class="hero-content">
-                <div class="status-badge parallax-layer-2">
-                    <span class="pulse-dot"></span> <span id="uptime-counter" style="font-family: 'JetBrains Mono'; margin-left: 5px;">UPTIME: calculando...</span>
+                <div class="hero-meta">
+                    <span class="meta-item">
+                        <i class="fas fa-location-dot" aria-hidden="true"></i>
+                        <span>{{ profile.location }}</span>
+                    </span>
+                    <span class="meta-sep" aria-hidden="true">/</span>
+                    <span class="meta-item">
+                        <i class="fas fa-clock" aria-hidden="true"></i>
+                        <time id="live-time" datetime="">--:--:--</time>
+                        <span class="clock-tz">PST</span>
+                    </span>
                 </div>
-                <h1 class="name gradient-text hover-glitch parallax-layer-3">{{ data.profile.name }}</h1>
-                <h2 class="role parallax-layer-2">{{ data.profile.role }}</h2>
-                <p class="bio parallax-layer-1">
-                    {{ data.profile.bio }}
-                </p>
-            </div>
-            <div class="hero-visual parallax-layer-3">
-                <div class="avatar-wrapper">
-                    <img src="https://pbs.twimg.com/media/CMOrTsXVEAAF6tr.jpg" alt="{{ data.profile.name }}" class="avatar">
-                </div>
-            </div>
-        </div>
 
-        <div class="bento-card location-card slide-up" style="--delay: 0.2s;">
-            <div class="location-info parallax-layer-2">
-                <div class="radar-container">
-                    <i class="fas fa-globe-americas icon-glow"></i>
-                </div>
-                <div>
-                    <h3 class="loc-title hacker-text" >Localización</h3>
-                    <p class="loc-text">{{ data.profile.location }}</p>
-                </div>
-            </div>
-            
-            <div class="time-display parallax-layer-3" style="display:flex; justify-content:center; align-items:center; width:100%; margin-top: 15px;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <div class="network-signal">
-                        <span class="bar bar-1"></span>
-                        <span class="bar bar-2"></span>
-                        <span class="bar bar-3"></span>
-                        <span class="bar bar-4"></span>
-                    </div>
-                    <div>
-                        <span id="live-time">00:00:00</span>
-                        <span class="time-zone" style="margin-left: 4px;">PST</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+                <h1 id="hero-heading" class="hero-title">{{ profile.name }}</h1>
+                <p class="hero-role">{{ clean_role }}</p>
+                <p class="hero-bio">{{ profile.bio }}</p>
 
-        <div class="bento-card marquee-card slide-up" style="--delay: 0.3s;">
-            <div class="marquee-track parallax-layer-1">
-                <div class="marquee-content">
-                    <span>MICROWAVE BACKHAUL SYSTEMS</span> <span class="star">✦</span>
-                    <span>CWDM FIBER OPTIC CORE</span> <span class="star">✦</span>
-                    <span>NETWORK OPERATION CENTER (NOC)</span> <span class="star">✦</span>
-                    <span>UBIQUITI & CAMBIUM NETWORKS</span> <span class="star">✦</span>
-                    <span>SLA HIGH AVAILABILITY</span> <span class="star">✦</span>
-                    <span>MIKROTIK / RAISECOM / FORTINET</span> <span class="star">✦</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="bento-card terminal-card slide-up" style="--delay: 0.4s;">
-            <div class="terminal-header parallax-layer-1">
-                <div class="term-dots">
-                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
-                </div>
-                <span class="term-title">network_monitor.exe</span>
-            </div>
-            <div class="terminal-body crt-effect" id="terminal-body">
-                <p class="parallax-layer-2">
-                    <span class="prompt">core_noc@hector_uribe:~$</span> 
-                    <span id="terminal-typing-text"></span><span class="cursor-blink">_</span>
-                </p>
-            </div>
-        </div>
-
-        <div class="bento-card stats-card slide-up" style="--delay: 0.5s;">
-            <div class="stat-box parallax-layer-2">
-                <span class="stat-number">10+</span>
-                <span class="stat-label">Años en<br>Soporte & TI</span>
-            </div>
-            <div class="stat-divider parallax-layer-1"></div>
-            <div class="stat-box parallax-layer-2">
-                <span class="stat-number">99.9<span class="stat-small">%</span></span>
-                <span class="stat-label">Disponibilidad<br>Mantenida</span>
-            </div>
-            <div class="stat-divider parallax-layer-1"></div>
-            <div class="stat-box parallax-layer-2">
-                <span class="stat-number">24/7</span>
-                <span class="stat-label">Monitoreo<br>Proactivo</span>
-            </div>
-        </div>
-
-        <div class="bento-card exp-card slide-up" style="--delay: 0.6s;">
-            <h3 class="card-title hacker-text parallax-layer-1" data-value="EXPERIENCIA PROFESIONAL">Experiencia Profesional</h3>
-            <div class="exp-list">
-                {% for exp in data.experience %}
-                <div class="exp-item parallax-layer-2">
-                    <div class="exp-header">
-                        <span class="exp-role">{{ exp.role }}</span>
-                        <span class="exp-date">{{ exp.date }}</span>
-                    </div>
-                    <span class="exp-company">{{ exp.company }}</span>
-                    <p class="exp-desc parallax-layer-1">{{ exp.desc }}</p>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="bento-card projects-card slide-up" style="--delay: 0.7s;">
-            <h3 class="card-title hacker-text parallax-layer-1" data-value="INFRAESTRUCTURA & DESPLIEGUES">Infraestructura & Despliegues</h3>
-            <div class="project-list">
-                {% for proj in data.projects %}
-                <div class="project-box parallax-layer-2">
-                    <div class="project-top">
-                        <i class="{{ proj.icon }} project-icon"></i>
-                        <h4>{{ proj.title }}</h4>
-                    </div>
-                    <p class="parallax-layer-1">{{ proj.desc }}</p>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="bento-card tech-card slide-up" style="--delay: 0.8s;">
-            <h3 class="card-title hacker-text parallax-layer-1" data-value="MÓDULOS DE MONITOREO & STACK">Módulos de Monitoreo & Stack</h3>
-            <div class="tags-container parallax-layer-2">
-                {% for tech in data.tech_stack %}
-                <div class="mono-tag">
-                    <i class="{{ tech.icon }}"></i> 
-                    <span class="tech-name">{{ tech.name }}</span>
-                    <div class="progress-line"></div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <div class="bento-card contact-card slide-up" style="--delay: 0.9s; border-bottom: 3px solid var(--accent-green);">
-            <h3 class="card-title hacker-text parallax-layer-1" data-value="CONECTAR">Conectar</h3>
-            <div class="social-links-container parallax-layer-2">
-                <div class="social-grid">
-                    <a href="{{ data.profile.github }}" target="_blank" rel="noopener noreferrer" class="social-box magnetic-element">
-                        <i class="fab fa-github"></i>
+                <div class="hero-actions">
+                    <button type="button" id="hero-contact-btn" class="btn btn-primary" onclick="openModal()">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                        <span>Enviar Mensaje</span>
+                    </button>
+                    {% if profile.email %}
+                    <button type="button" id="hero-copy-email-btn" class="btn btn-secondary" data-email="{{ profile.email }}" onclick="copyEmail(this)">
+                        <i class="fas fa-copy" aria-hidden="true"></i>
+                        <span>Copiar Correo</span>
+                    </button>
+                    {% endif %}
+                    {% if profile.github %}
+                    <a id="hero-github-link" href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+                        <i class="fab fa-github" aria-hidden="true"></i>
                         <span>GitHub</span>
                     </a>
-                    <a href="{{ data.profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="social-box magnetic-element">
-                        <i class="fab fa-linkedin"></i>
+                    {% endif %}
+                    {% if profile.linkedin %}
+                    <a id="hero-linkedin-link" href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+                        <i class="fab fa-linkedin" aria-hidden="true"></i>
                         <span>LinkedIn</span>
                     </a>
+                    {% endif %}
                 </div>
-                <button onclick="openModal()" class="contact-action-btn magnetic-element">
-                    <div class="btn-content">
-                        <i class="fas fa-envelope"></i>
-                        <span>CONTACTAR</span>
-                    </div>
-                </button>
             </div>
-        </div>
 
-    </div>
+            <div class="hero-visual">
+                <div class="avatar-frame" id="avatar-frame">
+                    <img
+                        src="{{ profile.avatar_url or 'https://pbs.twimg.com/media/CMOrTsXVEAAF6tr.jpg' }}"
+                        alt="Fotografía de {{ profile.name }}"
+                        class="avatar-img"
+                        width="146"
+                        height="146"
+                        loading="eager"
+                        decoding="async"
+                        onerror="document.getElementById('avatar-frame').classList.add('is-fallback')"
+                    >
+                    <span class="avatar-fallback" aria-hidden="true">{{ initials }}</span>
+                </div>
+            </div>
+        </section>
 
-    <button id="scrollToTopBtn" class="scroll-to-top" aria-label="Volver arriba">
-        <i class="fas fa-chevron-up"></i>
+        <!-- Key Metrics & Core Capabilities -->
+        <section class="metrics-band reveal" aria-label="Métricas clave y especialidades">
+            <div class="metrics-grid">
+                <div class="metric-cell">
+                    <span class="metric-value">10<span class="metric-unit">+</span></span>
+                    <span class="metric-label">Años en Operación, Soporte &amp; TI</span>
+                </div>
+                <div class="metric-cell">
+                    <span class="metric-value">99.9<span class="metric-unit">%</span></span>
+                    <span class="metric-label">Disponibilidad Troncal SLA Mantenida</span>
+                </div>
+                <div class="metric-cell">
+                    <span class="metric-value">24<span class="metric-unit">/7</span></span>
+                    <span class="metric-label">Monitoreo Proactivo &amp; Respuesta Crítica</span>
+                </div>
+            </div>
+
+            <div class="capabilities-strip" aria-label="Áreas de especialidad">
+                <span class="capability-chip">Microwave Backhaul</span>
+                <span class="capability-chip">DWDM / CWDM Fiber Core</span>
+                <span class="capability-chip">Network Operation Center (NOC)</span>
+                <span class="capability-chip">Ubiquiti &amp; Cambium Networks</span>
+                <span class="capability-chip">SLA High Availability</span>
+                <span class="capability-chip">MikroTik · Raisecom · Fortinet</span>
+            </div>
+        </section>
+
+        <!-- Experience -->
+        <section id="experiencia" class="cv-section reveal" aria-labelledby="exp-heading">
+            <div class="section-split">
+                <div class="section-header-sticky">
+                    <span class="section-kicker">01 / Trayectoria</span>
+                    <h2 id="exp-heading" class="section-title">Experiencia Profesional</h2>
+                    <p class="section-subtitle">
+                        Operación continua de infraestructura troncal, fibra óptica, radioenlaces y soporte crítico corporativo.
+                    </p>
+                </div>
+
+                <div class="exp-timeline">
+                    {% for exp in data.experience or [] %}
+                    <article class="exp-item">
+                        <div class="exp-top">
+                            <h3 class="exp-role">{{ exp.role }}</h3>
+                            <span class="exp-date">{{ exp.date }}</span>
+                        </div>
+                        <span class="exp-company">{{ exp.company }}</span>
+                        <p class="exp-desc">{{ exp.desc }}</p>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <section id="proyectos" class="cv-section reveal" aria-labelledby="projects-heading">
+            <div class="section-header-top">
+                <span class="section-kicker">02 / Ingeniería</span>
+                <h2 id="projects-heading" class="section-title">Infraestructura &amp; Despliegues</h2>
+            </div>
+
+            <div class="projects-grid">
+                {% for proj in data.projects or [] %}
+                <article class="project-card">
+                    <div class="project-icon-wrap" aria-hidden="true">
+                        <i class="{{ proj.icon or 'fas fa-code' }}"></i>
+                    </div>
+                    <h3 class="project-title">{{ proj.title }}</h3>
+                    <p class="project-desc">{{ proj.desc }}</p>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Tech Stack -->
+        <section id="stack" class="cv-section reveal" aria-labelledby="stack-heading">
+            <div class="section-header-top">
+                <span class="section-kicker">03 / Capacidades</span>
+                <h2 id="stack-heading" class="section-title">Módulos de Monitoreo &amp; Stack Técnico</h2>
+            </div>
+
+            <div class="stack-grid">
+                {% for tech in data.tech_stack or [] %}
+                <div class="stack-item">
+                    <div class="stack-icon" aria-hidden="true">
+                        <i class="{{ tech.icon or 'fas fa-code' }}"></i>
+                    </div>
+                    <span class="stack-name">{{ tech.name }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contacto" class="cv-section reveal" aria-labelledby="contact-heading">
+            <div class="contact-panel">
+                <div class="contact-copy">
+                    <span class="section-kicker">04 / Contacto</span>
+                    <h2 id="contact-heading" class="section-title">¿Hablamos de infraestructura o nuevos proyectos?</h2>
+                    <p>
+                        Disponible para roles de ingeniería de operación troncal, automatización NOC, soporte crítico de redes y arquitectura de telecomunicaciones.
+                    </p>
+                </div>
+
+                <div class="contact-actions">
+                    <button type="button" id="contact-open-modal-btn" class="btn btn-primary btn-full" onclick="openModal()">
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                        <span>Enviar Mensaje Directo</span>
+                    </button>
+                    <div class="contact-row">
+                        {% if profile.github %}
+                        <a id="contact-github-link" href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                            <i class="fab fa-github" aria-hidden="true"></i>
+                            <span>GitHub</span>
+                        </a>
+                        {% endif %}
+                        {% if profile.linkedin %}
+                        <a id="contact-linkedin-link" href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                            <i class="fab fa-linkedin" aria-hidden="true"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% if profile.email %}
+                    <button type="button" id="contact-copy-email-btn" class="btn btn-ghost btn-full" data-email="{{ profile.email }}" onclick="copyEmail(this)">
+                        <i class="fas fa-at" aria-hidden="true"></i>
+                        <span>{{ profile.email }}</span>
+                    </button>
+                    {% endif %}
+                    <div id="copy-feedback" class="copy-feedback" role="status" aria-live="polite"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <span>{{ profile.name }} · {{ profile.location }}</span>
+        <a href="#top" class="footer-link">Volver arriba ↑</a>
+    </footer>
+
+    <button type="button" id="scrollToTopBtn" class="scroll-to-top" aria-label="Volver arriba">
+        <i class="fas fa-chevron-up" aria-hidden="true"></i>
     </button>
 
-    <div class="modal-overlay" id="contactModal">
+    <!-- Accessible Contact Modal -->
+    <div class="modal-overlay" id="contactModal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
         <div class="modal-content">
-            <button class="close-modal" onclick="closeModal()"><i class="fas fa-times"></i></button>
-            <h3 style="margin-top: 0; font-size: 1.4rem; margin-bottom: 1.5rem; font-weight: 700; letter-spacing: -0.5px;">Enviar Mensaje Directo</h3>
-            
-            <form id="contactForm" action="https://formspree.io/f/mqakevzz" method="POST" onsubmit="submitForm(event)">
+            <div class="modal-header">
+                <h2 id="modal-title" class="modal-title">Enviar Mensaje Directo</h2>
+                <button type="button" id="close-modal-btn" class="close-modal" onclick="closeModal()" aria-label="Cerrar ventana">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <form id="contactForm" action="https://formspree.io/f/xjgddjpa" method="POST" onsubmit="submitForm(event)">
                 <div class="form-group-modal">
-                    <label class="form-label">Tu Correo Electrónico</label>
-                    <input type="email" id="sender_email" class="modal-input" name="email" required placeholder="ejemplo@correo.com">
+                    <label class="form-label" for="sender_email">Tu Correo Electrónico</label>
+                    <input type="email" id="sender_email" class="modal-input" name="email" required autocomplete="email" placeholder="ejemplo@correo.com">
                 </div>
                 <div class="form-group-modal">
-                    <label class="form-label">Asunto</label>
+                    <label class="form-label" for="subject">Asunto</label>
                     <input type="text" id="subject" class="modal-input" name="subject" required placeholder="Soporte / Oportunidad Laboral...">
                 </div>
-                <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+                <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
                 <div class="form-group-modal">
-                    <label class="form-label">Mensaje</label>
+                    <label class="form-label" for="message">Mensaje</label>
                     <textarea id="message" class="modal-textarea" name="message" required placeholder="Escribe los detalles aquí..."></textarea>
                 </div>
-                <button type="submit" id="submit-msg-btn" class="glow-btn" style="width: 100%; justify-content: center; border: none; cursor: pointer; font-family: 'Inter', sans-serif; margin-top: 5px; padding: 12px; background: var(--accent-blue); color: white; border-radius: 8px;">
-                    <i class="fas fa-paper-plane"></i> Enviar Mensaje
+                <button type="submit" id="submit-msg-btn" class="btn btn-primary btn-full">
+                    <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                    <span>Enviar Mensaje</span>
                 </button>
             </form>
-            <div id="form-status" style="margin-top: 15px; font-size: 0.9rem; text-align: center; font-weight: 500;"></div>
+            <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
         </div>
     </div>
 
-    <script src="/static/js/main.js?v=3.0"></script>
+    <script defer src="/static/js/main.js?v=4.0"></script>
 </body>
 </html>
