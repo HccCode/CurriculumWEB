@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <meta name="theme-color" content="#0b0e14">
+    <meta name="theme-color" content="#090d14">
 
     {% set profile = data.profile if data.profile else {} %}
     {% set clean_role = (profile.role or 'Ingeniero de Operación y Soporte') | replace('> ', '') %}
@@ -17,7 +17,7 @@
     <meta property="og:description" content="{{ (profile.bio or '')[:160] }}">
     <meta property="og:type" content="profile">
 
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0e14'/><circle cx='50' cy='50' r='32' fill='none' stroke='%2338bdf8' stroke-width='8'/><circle cx='50' cy='50' r='11' fill='%2310b981'/></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23090d14'/><circle cx='50' cy='50' r='32' fill='none' stroke='%2338bdf8' stroke-width='8'/><circle cx='50' cy='50' r='11' fill='%2310b981'/></svg>">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,11 +25,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 
-    <link rel="stylesheet" href="/static/css/all.css?v=4.0">
+    <link rel="stylesheet" href="/static/css/all.css?v=5.0">
 </head>
 <body id="top">
     <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
     <div id="scroll-progress" aria-hidden="true"></div>
+    <canvas id="network-canvas" aria-hidden="true"></canvas>
 
     <header class="site-header">
         <div class="header-inner">
@@ -59,101 +60,142 @@
     </header>
 
     <main id="main-content" class="page-shell">
-        <!-- Hero -->
-        <section class="hero" aria-labelledby="hero-heading">
-            <div class="hero-content">
-                <div class="hero-meta">
-                    <span class="meta-item">
-                        <i class="fas fa-location-dot" aria-hidden="true"></i>
-                        <span>{{ profile.location }}</span>
-                    </span>
-                    <span class="meta-sep" aria-hidden="true">/</span>
-                    <span class="meta-item">
-                        <i class="fas fa-clock" aria-hidden="true"></i>
+        <!-- Modern Asymmetric Bento Header (Hero + Telemetry Location + Marquee + Terminal + Metrics) -->
+        <section class="bento-top" aria-labelledby="hero-heading">
+            <article class="hero-card surface-card">
+                <div class="hero-content">
+                    <div class="hero-eyebrow">
+                        <span class="signal-dot" aria-hidden="true"></span>
+                        <span id="uptime-counter">UPTIME: calculando...</span>
+                    </div>
+
+                    <h1 id="hero-heading" class="hero-title">{{ profile.name }}</h1>
+                    <p class="hero-role">&gt; {{ clean_role }}</p>
+                    <p class="hero-bio">{{ profile.bio }}</p>
+
+                    <div class="hero-actions">
+                        <button type="button" id="hero-contact-btn" class="btn btn-primary" onclick="openModal()">
+                            <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                            <span>Enviar Mensaje</span>
+                        </button>
+                        {% if profile.email %}
+                        <button type="button" id="hero-copy-email-btn" class="btn btn-secondary" data-email="{{ profile.email }}" onclick="copyEmail(this)">
+                            <i class="fas fa-copy" aria-hidden="true"></i>
+                            <span>Copiar Correo</span>
+                        </button>
+                        {% endif %}
+                        {% if profile.github %}
+                        <a id="hero-github-link" href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+                            <i class="fab fa-github" aria-hidden="true"></i>
+                            <span>GitHub</span>
+                        </a>
+                        {% endif %}
+                        {% if profile.linkedin %}
+                        <a id="hero-linkedin-link" href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+                            <i class="fab fa-linkedin" aria-hidden="true"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="avatar-frame" id="avatar-frame">
+                        <img
+                            src="{{ profile.avatar_url or 'https://pbs.twimg.com/media/CMOrTsXVEAAF6tr.jpg' }}"
+                            alt="Fotografía de {{ profile.name }}"
+                            class="avatar-img"
+                            width="134"
+                            height="134"
+                            loading="eager"
+                            decoding="async"
+                            onerror="document.getElementById('avatar-frame').classList.add('is-fallback')"
+                        >
+                        <span class="avatar-fallback" aria-hidden="true">{{ initials }}</span>
+                    </div>
+                </div>
+            </article>
+
+            <aside class="location-card surface-card" aria-label="Localización y hora local">
+                <div class="radar-container" aria-hidden="true">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <div>
+                    <span class="loc-label hacker-text" data-value="LOCALIZACIÓN">Localización</span>
+                    <p class="loc-city">{{ profile.location }}</p>
+                </div>
+                <div class="time-pill">
+                    <div class="network-signal" aria-hidden="true">
+                        <span class="bar bar-1"></span>
+                        <span class="bar bar-2"></span>
+                        <span class="bar bar-3"></span>
+                        <span class="bar bar-4"></span>
+                    </div>
+                    <div>
                         <time id="live-time" datetime="">--:--:--</time>
                         <span class="clock-tz">PST</span>
-                    </span>
+                    </div>
                 </div>
+            </aside>
 
-                <h1 id="hero-heading" class="hero-title">{{ profile.name }}</h1>
-                <p class="hero-role">{{ clean_role }}</p>
-                <p class="hero-bio">{{ profile.bio }}</p>
-
-                <div class="hero-actions">
-                    <button type="button" id="hero-contact-btn" class="btn btn-primary" onclick="openModal()">
-                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
-                        <span>Enviar Mensaje</span>
-                    </button>
-                    {% if profile.email %}
-                    <button type="button" id="hero-copy-email-btn" class="btn btn-secondary" data-email="{{ profile.email }}" onclick="copyEmail(this)">
-                        <i class="fas fa-copy" aria-hidden="true"></i>
-                        <span>Copiar Correo</span>
-                    </button>
-                    {% endif %}
-                    {% if profile.github %}
-                    <a id="hero-github-link" href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
-                        <i class="fab fa-github" aria-hidden="true"></i>
-                        <span>GitHub</span>
-                    </a>
-                    {% endif %}
-                    {% if profile.linkedin %}
-                    <a id="hero-linkedin-link" href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
-                        <i class="fab fa-linkedin" aria-hidden="true"></i>
-                        <span>LinkedIn</span>
-                    </a>
-                    {% endif %}
+            <div class="marquee-card surface-card" aria-label="Áreas de especialidad">
+                <div class="marquee-track">
+                    <div class="marquee-content">
+                        <span>MICROWAVE BACKHAUL SYSTEMS</span> <span class="marquee-sep" aria-hidden="true">✦</span>
+                        <span>CWDM / DWDM FIBER OPTIC CORE</span> <span class="marquee-sep" aria-hidden="true">✦</span>
+                        <span>NETWORK OPERATION CENTER (NOC)</span> <span class="marquee-sep" aria-hidden="true">✦</span>
+                        <span>UBIQUITI &amp; CAMBIUM NETWORKS</span> <span class="marquee-sep" aria-hidden="true">✦</span>
+                        <span>SLA HIGH AVAILABILITY</span> <span class="marquee-sep" aria-hidden="true">✦</span>
+                        <span>MIKROTIK / RAISECOM / FORTINET</span> <span class="marquee-sep" aria-hidden="true">✦</span>
+                        <span aria-hidden="true">MICROWAVE BACKHAUL SYSTEMS</span> <span class="marquee-sep" aria-hidden="true">✦</span>
+                        <span aria-hidden="true">CWDM / DWDM FIBER OPTIC CORE</span> <span class="marquee-sep" aria-hidden="true">✦</span>
+                        <span aria-hidden="true">NETWORK OPERATION CENTER (NOC)</span> <span class="marquee-sep" aria-hidden="true">✦</span>
+                        <span aria-hidden="true">UBIQUITI &amp; CAMBIUM NETWORKS</span> <span class="marquee-sep" aria-hidden="true">✦</span>
+                        <span aria-hidden="true">SLA HIGH AVAILABILITY</span> <span class="marquee-sep" aria-hidden="true">✦</span>
+                        <span aria-hidden="true">MIKROTIK / RAISECOM / FORTINET</span> <span class="marquee-sep" aria-hidden="true">✦</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="hero-visual">
-                <div class="avatar-frame" id="avatar-frame">
-                    <img
-                        src="{{ profile.avatar_url or 'https://pbs.twimg.com/media/CMOrTsXVEAAF6tr.jpg' }}"
-                        alt="Fotografía de {{ profile.name }}"
-                        class="avatar-img"
-                        width="146"
-                        height="146"
-                        loading="eager"
-                        decoding="async"
-                        onerror="document.getElementById('avatar-frame').classList.add('is-fallback')"
-                    >
-                    <span class="avatar-fallback" aria-hidden="true">{{ initials }}</span>
+            <div class="terminal-card surface-card" aria-label="Consola de telemetría NOC">
+                <div class="terminal-header">
+                    <div class="term-dots" aria-hidden="true">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <span class="term-title">network_monitor.exe</span>
                 </div>
-            </div>
-        </section>
-
-        <!-- Key Metrics & Core Capabilities -->
-        <section class="metrics-band reveal" aria-label="Métricas clave y especialidades">
-            <div class="metrics-grid">
-                <div class="metric-cell">
-                    <span class="metric-value">10<span class="metric-unit">+</span></span>
-                    <span class="metric-label">Años en Operación, Soporte &amp; TI</span>
-                </div>
-                <div class="metric-cell">
-                    <span class="metric-value">99.9<span class="metric-unit">%</span></span>
-                    <span class="metric-label">Disponibilidad Troncal SLA Mantenida</span>
-                </div>
-                <div class="metric-cell">
-                    <span class="metric-value">24<span class="metric-unit">/7</span></span>
-                    <span class="metric-label">Monitoreo Proactivo &amp; Respuesta Crítica</span>
+                <div class="terminal-body">
+                    <p>
+                        <span class="term-prompt">core_noc@hector_uribe:~$</span>
+                        <span id="terminal-typing-text">Iniciando diagnóstico de enlaces troncales...</span><span class="cursor-blink" aria-hidden="true"></span>
+                    </p>
+                    <span class="term-meta">CORE DWDM · MICROONDAS · SLA 99.99% [OPERATIONAL]</span>
                 </div>
             </div>
 
-            <div class="capabilities-strip" aria-label="Áreas de especialidad">
-                <span class="capability-chip">Microwave Backhaul</span>
-                <span class="capability-chip">DWDM / CWDM Fiber Core</span>
-                <span class="capability-chip">Network Operation Center (NOC)</span>
-                <span class="capability-chip">Ubiquiti &amp; Cambium Networks</span>
-                <span class="capability-chip">SLA High Availability</span>
-                <span class="capability-chip">MikroTik · Raisecom · Fortinet</span>
+            <div class="stats-card surface-card" aria-label="Métricas clave">
+                <div class="stat-cell">
+                    <span class="stat-number">10<span class="stat-unit">+</span></span>
+                    <span class="stat-label">Años en<br>Soporte &amp; TI</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-number">99.9<span class="stat-unit">%</span></span>
+                    <span class="stat-label">Disponibilidad<br>Mantenida</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-number">24<span class="stat-unit">/7</span></span>
+                    <span class="stat-label">Monitoreo<br>Proactivo</span>
+                </div>
             </div>
         </section>
 
-        <!-- Experience -->
+        <!-- Experience (Fiber-Optic Timeline) -->
         <section id="experiencia" class="cv-section reveal" aria-labelledby="exp-heading">
             <div class="section-split">
                 <div class="section-header-sticky">
-                    <span class="section-kicker">01 / Trayectoria</span>
+                    <span class="section-kicker hacker-text" data-value="01 / TRAYECTORIA">01 / Trayectoria</span>
                     <h2 id="exp-heading" class="section-title">Experiencia Profesional</h2>
                     <p class="section-subtitle">
                         Operación continua de infraestructura troncal, fibra óptica, radioenlaces y soporte crítico corporativo.
@@ -162,31 +204,36 @@
 
                 <div class="exp-timeline">
                     {% for exp in data.experience or [] %}
-                    <article class="exp-item">
-                        <div class="exp-top">
-                            <h3 class="exp-role">{{ exp.role }}</h3>
-                            <span class="exp-date">{{ exp.date }}</span>
-                        </div>
-                        <span class="exp-company">{{ exp.company }}</span>
-                        <p class="exp-desc">{{ exp.desc }}</p>
-                    </article>
+                    <div class="exp-node">
+                        <article class="exp-item surface-card">
+                            <div class="exp-top">
+                                <h3 class="exp-role">{{ exp.role }}</h3>
+                                <span class="exp-date">{{ exp.date }}</span>
+                            </div>
+                            <span class="exp-company">{{ exp.company }}</span>
+                            <p class="exp-desc">{{ exp.desc }}</p>
+                        </article>
+                    </div>
                     {% endfor %}
                 </div>
             </div>
         </section>
 
-        <!-- Projects -->
+        <!-- Projects (Server-Rack Cards) -->
         <section id="proyectos" class="cv-section reveal" aria-labelledby="projects-heading">
             <div class="section-header-top">
-                <span class="section-kicker">02 / Ingeniería</span>
+                <span class="section-kicker hacker-text" data-value="02 / INGENIERÍA">02 / Ingeniería</span>
                 <h2 id="projects-heading" class="section-title">Infraestructura &amp; Despliegues</h2>
             </div>
 
             <div class="projects-grid">
                 {% for proj in data.projects or [] %}
-                <article class="project-card">
-                    <div class="project-icon-wrap" aria-hidden="true">
-                        <i class="{{ proj.icon or 'fas fa-code' }}"></i>
+                <article class="project-card surface-card">
+                    <div class="project-head">
+                        <div class="project-icon-wrap" aria-hidden="true">
+                            <i class="{{ proj.icon or 'fas fa-code' }}"></i>
+                        </div>
+                        <span class="project-index">NODE-0{{ loop.index }}</span>
                     </div>
                     <h3 class="project-title">{{ proj.title }}</h3>
                     <p class="project-desc">{{ proj.desc }}</p>
@@ -195,20 +242,24 @@
             </div>
         </section>
 
-        <!-- Tech Stack -->
+        <!-- Tech Stack (Telemetry Modules) -->
         <section id="stack" class="cv-section reveal" aria-labelledby="stack-heading">
             <div class="section-header-top">
-                <span class="section-kicker">03 / Capacidades</span>
+                <span class="section-kicker hacker-text" data-value="03 / CAPACIDADES">03 / Capacidades</span>
                 <h2 id="stack-heading" class="section-title">Módulos de Monitoreo &amp; Stack Técnico</h2>
             </div>
 
             <div class="stack-grid">
                 {% for tech in data.tech_stack or [] %}
-                <div class="stack-item">
-                    <div class="stack-icon" aria-hidden="true">
-                        <i class="{{ tech.icon or 'fas fa-code' }}"></i>
+                <div class="stack-item surface-card">
+                    <div class="stack-top">
+                        <div class="stack-icon" aria-hidden="true">
+                            <i class="{{ tech.icon or 'fas fa-code' }}"></i>
+                        </div>
+                        <span class="stack-status">ONLINE</span>
                     </div>
                     <span class="stack-name">{{ tech.name }}</span>
+                    <div class="stack-progress" aria-hidden="true"></div>
                 </div>
                 {% endfor %}
             </div>
@@ -216,9 +267,9 @@
 
         <!-- Contact -->
         <section id="contacto" class="cv-section reveal" aria-labelledby="contact-heading">
-            <div class="contact-panel">
+            <div class="contact-panel surface-card">
                 <div class="contact-copy">
-                    <span class="section-kicker">04 / Contacto</span>
+                    <span class="section-kicker hacker-text" data-value="04 / CONECTAR">04 / Conectar</span>
                     <h2 id="contact-heading" class="section-title">¿Hablamos de infraestructura o nuevos proyectos?</h2>
                     <p>
                         Disponible para roles de ingeniería de operación troncal, automatización NOC, soporte crítico de redes y arquitectura de telecomunicaciones.
@@ -298,6 +349,6 @@
         </div>
     </div>
 
-    <script defer src="/static/js/main.js?v=4.0"></script>
+    <script defer src="/static/js/main.js?v=5.0"></script>
 </body>
 </html>
